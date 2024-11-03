@@ -372,6 +372,7 @@
   }
 }
 
+
 /* Mobile */
 @media (max-width: 700px) {
   .main {
@@ -610,4 +611,41 @@
   }
 }
 
+.overlayText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  z-index: 10;
+  font-weight: bold;
+  font-size: 3rem;
+  line-height: 1.2;
+  max-width: 80%;
+  width: 100%;
+  white-space: normal; /* Allows text to wrap */
+  padding: 0 1rem; /* Adds padding to prevent text from touching edges */
+}
 
+/* Adjustments for medium screens */
+@media (max-width: 900px) {
+  .overlayText {
+    font-size: 2.5rem;
+  }
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 600px) {
+  .overlayText {
+    font-size: 2rem;
+  }
+}
+
+/* Adjustments for very small screens */
+@media (max-width: 400px) {
+  .overlayText {
+    font-size: 1.5rem;
+    max-width: 100%; /* Ensure full width on very small screens */
+  }
+}
