@@ -34,7 +34,7 @@ export default function App() {
   return (
     <main>
       <CustomNavbar/>
-      <h1>My todos</h1>
+      <h1>My todos and task</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
