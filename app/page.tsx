@@ -8,6 +8,7 @@ import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import CustomNavbar from "./CustomNavbar";
+import HPheader from "./HPheader";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -33,12 +34,9 @@ export default function App() {
 
   return (
     <main>
-<<<<<<< HEAD
-      <h1>My todos and task</h1>
-=======
       <CustomNavbar/>
+      <HPheader />
       <h1>My todos</h1>
->>>>>>> origin/Hussin-Branch
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
