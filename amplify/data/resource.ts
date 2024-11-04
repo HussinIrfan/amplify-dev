@@ -7,15 +7,106 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
-  Emails: a
+  Subscriber: a
     .model({
+      emailID: a.id(),
       emails: a.string(),
+      //customer: a.belongsTo("Customer", "emailID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
-  Store: a
+  Products: a
     .model({
-      emails: a.string(),
+      productID: a.id(),
+      //category: a.belongsTo("ProductCategory", "productID"),
+      name: a.string(),
+      price: a.float(),
+      description: a.string(),
+      size: a.enum(["XS", "S", "M", "L", "XL"]),
+      stock: a.integer(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  ProductCategory: a
+    .model({
+      categoryID: a.id(),
+      categoryName: a.string(),
+      //products: a.hasMany("Products", "productID"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Orders: a
+    .model({
+      orderID: a.id(),
+      //customer: a.belongsTo("Customer", "orderID"),
+      orderTotal: a.float(),
+      orderDate: a.date(),
+      //products: a.hasMany("Products", "productID"), // Link to products in the order
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  
+
+  Customer: a
+    .model({
+      customerID: a.id(),
+      //orders: a.hasMany("Orders", "orderID"),
+      firstName: a.string(),
+      lastName: a.string(),
+      phone: a.phone(),
+      //email: a.hasOne("Subscriber", "emailID"),
+      //shipAddress: a.hasOne("ShipAddress", "customerID"),
+      //billingAddress: a.hasOne("BillAddress", "customerID"),
+      //payment: a.hasMany("Payment", "customerID"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  ShipAddress: a
+    .model({
+      addressID: a.id(),
+      //customerID: a.belongsTo("Customer", "customerID"),
+      country: a.string(),
+      state: a.string(),
+      city: a.string(),
+      street: a.string(),
+      zipCode: a.string(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  BillAddress: a
+    .model({
+      addressID: a.id(),
+      //customerID: a.belongsTo("Customer", "customerID"),
+      country: a.string(),
+      state: a.string(),
+      city: a.string(),
+      street: a.string(),
+      zipCode: a.string(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Payment: a
+    .model({
+      paymentID: a.id(),
+      //customerID: a.belongsTo("Customer", "customerID"),
+      method: a.enum(["VISA", "MASTERCARD", "DISCOVER", "AMERICAN_EXPRESS"]),
+      amount: a.float(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Tracking: a
+    .model({
+      trackingID: a.id(),
+      trackingStatus: a.string(),
+      //order: a.belongsTo("Orders", "orderID"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Cart: a
+    .model({
+      cartID: a.id(),
+      //customer: a.belongsTo("Customer", "customerID"),
+      //products: a.hasMany("Products", "productID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
