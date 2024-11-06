@@ -1,3 +1,6 @@
+
+/* Moble-first styles */
+
 body {
     margin: 0;
     background: #FFFFFF; /* Changed background color to white */
@@ -63,3 +66,57 @@ body {
     font-weight: 800;
     text-decoration: none;
   }
+
+
+/* Tablet (min-width: 768px) */
+@media (min-width: 768px) {
+  body {
+    width: 100%; /* Allow the body to take full width on larger screens */
+    justify-content: flex-start; /* Adjust alignment for larger screens */
+    padding: 0 20px; /* Add some padding for better spacing */
+  }
+
+  main {
+    align-items: center;
+    max-width: 720px; /* Limit the width of main content on tablets */
+  }
+
+  .banner-text {
+    font-size: 1.5rem; /* Increase font size for readability on tablet */
+  }
+
+  ul {
+    flex-direction: row; /* Arrange list items in a row on larger screens */
+    gap: 4px;
+  }
+}
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+  body {
+    justify-content: center; /* Center the body content for a more balanced look */
+    padding: 0 40px;
+  }
+
+  main {
+    max-width: 960px; /* Limit the main content width on desktop */
+  }
+
+  .banner-text {
+    font-size: 2rem; /* Further increase font size for desktop */
+  }
+
+  ul {
+    flex-direction: row;
+    padding: 8px;
+  }
+
+  li {
+    padding: 16px; /* Increase padding for list items on desktop */
+  }
+
+  button {
+    padding: 0.8em 1.5em;
+    font-size: 1.1em; /* Increase button size for better accessibility */
+  }
+}

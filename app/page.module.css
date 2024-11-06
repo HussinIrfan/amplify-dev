@@ -1,19 +1,22 @@
+/* Mobile-first styles */
 
+/* Base styling for the main container */
 .main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 0; /* Change from 6rem to 0 to remove top padding */
+  padding: 0;
   min-height: 100vh;
 }
 
+/* Styling for the description section */
 .description {
-  display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 0.85rem;
-  max-width: var(--max-width);
+  max-width: 100%; /* Adjusted to fit screen width */
   width: 100%;
   z-index: 2;
   font-family: var(--font-mono);
@@ -35,235 +38,92 @@
   border-radius: var(--border-radius);
 }
 
+/* Styling for the code font */
 .code {
   font-weight: 700;
   font-family: var(--font-mono);
 }
 
+/* Grid layout for cards or sections */
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
+  grid-template-columns: 1fr; /* Single column by default for mobile */
   max-width: 100%;
-  width: var(--max-width);
+  width: 100%;
+  gap: 1rem; /* Space between grid items */
+  text-align: center;
 }
 
 .card {
-  padding: 1rem 1.2rem;
+  padding: 1rem;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
   transition: background 200ms, border 200ms, box-shadow 200ms;
 }
 
-.card span {
-  display: inline-block;
-  transition: transform 200ms;
-}
-
-.card h2 {
-  font-weight: 600;
-  margin-bottom: 0.7rem;
-}
-
-.card p {
-  margin: 0;
-  opacity: 0.6;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  max-width: 30ch;
+/* Styling for card hover effects */
+.card:hover {
+  background: rgba(var(--card-rgb), 0.1);
+  border: 1px solid rgba(var(--card-border-rgb), 0.15);
+  box-shadow: 0px 4px 12px 0px #CBBEFF;
 }
 
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   padding: 4rem 0;
-  gap: 4rem;
+  gap: 2rem;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(var(--card-rgb), 0.1);
-    border: 1px solid rgba(var(--card-border-rgb), 0.15);
-    box-shadow: 0px 4px 12px 0px #CBBEFF;
-  }
+/* Responsive Adjustments */
 
-  .card:hover span {
-    transform: translateX(4px);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .card:hover {
-      box-shadow: none;
-    }
-  }
-}
-
-@media (prefers-reduced-motion) {
-  .card:hover span {
-    transform: none;
-  }
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-  .content {
-    padding: 4rem;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
-    text-align: center;
-  }
-
-  .card {
-    padding: 1rem 2.5rem;
-  }
-
-  .card h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .center {
-    padding: 8rem 0 6rem;
-  }
-
-  .center::before {
-    transform: none;
-    height: 300px;
+/* Tablet (min-width: 768px) */
+@media (min-width: 768px) {
+  .main {
+    max-width: 720px;
   }
 
   .description {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    max-width: 80%;
   }
 
-  .description a {
-    padding: 1rem;
-  }
-
-  .description p,
-  .description div {
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-  }
-
-  .description p {
-    align-items: center;
-    inset: 0 0 auto;
-    padding: 2rem 1rem 1.4rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--background-start-rgb), 1),
-      rgba(var(--callout-rgb), 0.5)
-    );
-    background-clip: padding-box;
-    backdrop-filter: blur(24px);
-  }
-
-  .description div {
-    align-items: flex-end;
-    pointer-events: none;
-    inset: auto 0 0;
-    padding: 2rem;
-    height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
-    z-index: 1;
-  }
-}
-
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
   .grid {
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: repeat(2, 1fr); /* Two columns on tablet */
+    gap: 1.5rem;
+  }
+
+  .card {
+    padding: 1rem 1.5rem;
+  }
+
+  .center {
+    padding: 6rem 0;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .main {
+    max-width: 960px;
   }
-}
 
-
-@keyframes rotate {
-  from {
-    transform: rotate(360deg);
+  .description {
+    font-size: 1.2rem;
   }
-  to {
-    transform: rotate(0deg);
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr); /* Three columns on desktop */
+    gap: 2rem;
   }
-}
 
-.imageContainer {
-  position: relative; /* Set relative positioning for the container */
-  width: 100%; /* Full width of the parent */
-  max-height: 400px; /* Set a max height for the image */
-  overflow: hidden; /* Prevent overflow */
-  margin-top: 0; /* Remove any top margin */
-  padding-top: 0; /* Remove any top padding */
-}
+  .card {
+    padding: 1.5rem;
+  }
 
-.navbarImage {
-  max-width: 100%; /* Makes the image span the entire width */
-  height: auto; /* Maintains the aspect ratio */
-  display: block; /* Prevents inline spacing */
-  margin: 0; /* Ensure no margin is applied */
-}
-
-.overlayText {
-  position: absolute; /* Set absolute positioning for the text */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust position to truly center */
-  color: white; /* Text color */
-  font-size: 3rem; /* Adjust font size as needed */
-  text-align: center; /* Center text */
-  z-index: 10; /* Ensure it's above the image */
-  white-space: nowrap; /* Prevents text wrapping */
-  width: auto; /* Allows the width to adjust based on content */
-  max-width: 80%; /* Optional: Limits the max width */
-}
-
-.navbar {
-  background-color: black; /* Navbar background color */
-  padding: 0; /* Remove padding to eliminate space */
-  margin: 0; /* Remove margin */
-  width: 100%; /* Make the navbar span the full width */
-  position: relative; /* Change from fixed to relative */
-  z-index: 1000; /* Ensure it's above other content */
-  top: 0; /* Align it to the top of the page */
-}
-
-.navbarContent {
-  display: flex; /* Use flexbox for horizontal alignment */
-  justify-content: center; /* Center items horizontally */
-  align-items: center; /* Center items vertically */
-  width: 100%; /* Ensure the content also takes full width */
-}
-
-.navbarItem {
-  color: white; /* Text color for navbar items */
-  text-decoration: none; /* Remove underline from links */
-  padding: 0.5rem 2rem; /* Increase horizontal padding for spacing */
-  transition: background-color 0.3s, transform 0.3s; /* Transition effect */
-  font-size: 1rem; /* Increase font size */
-  font-weight: bold; /* Make text bold */
-}
-
-.navbarItem:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Hover effect */
-  transform: scale(1.05); /* Slightly scale up on hover */
+  .center {
+    padding: 8rem 0;
+  }
 }
