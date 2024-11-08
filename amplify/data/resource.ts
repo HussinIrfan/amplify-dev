@@ -11,19 +11,21 @@ const schema = a.schema({
     .model({
       emailID: a.id(),
       emails: a.string(),
-      //customer: a.belongsTo("Customer", "emailID"),
+      //customer: a.belongsTo("User", "emailID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
   Products: a
     .model({
       productID: a.id(),
-      //category: a.belongsTo("ProductCategory", "productID"),
+      category: a.belongsTo("ProductCategory", "productID"),
       name: a.string(),
       price: a.float(),
       description: a.string(),
       size: a.enum(["XS", "S", "M", "L", "XL"]),
       stock: a.integer(),
+      carts: a.hasMany("CartProducts", "productID"),
+      orders: a.hasMany("OrderProducts", "productID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
@@ -31,40 +33,63 @@ const schema = a.schema({
     .model({
       categoryID: a.id(),
       categoryName: a.string(),
-      //products: a.hasMany("Products", "productID"),
+      products: a.hasMany("Products", "productID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
   Orders: a
     .model({
       orderID: a.id(),
-      //customer: a.belongsTo("Customer", "orderID"),
+      trackingID: a.hasOne("Tracking", "trackingID"),
+      customer: a.belongsTo("Customer", "orderID"),
       orderTotal: a.float(),
       orderDate: a.date(),
-      //products: a.hasMany("Products", "productID"), // Link to products in the order
+      products: a.hasMany("OrderProducts", "orderID"), // Link to products in the order
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
-  
+  OrderProducts: a
+  .model({
+    orderProductID: a.id(),
+    orderID: a.id().required(),
+    productID: a.id().required(),
+    order: a.belongsTo("Orders", "orderID"),
+    product: a.belongsTo("Products", "productID"),
+    quantity: a.integer(),
+    price: a.float(),
+
+  }).authorization((allow) => [allow.publicApiKey()]),
+
+  User: a
+  .model({
+    userID: a.id(),
+    customerID: a.hasOne("Customer", "customerID"),
+    firstName: a.string(),
+    lastName: a.string(),
+    phone: a.phone(),
+    email: a.email(),//a.hasOne("Subscriber", "emailID"),
+    events: a.belongsTo("Event", "userID"),
+    password: a.string(),
+    role: a.string(),
+
+  }).authorization((allow) => [allow.publicApiKey()]),
 
   Customer: a
     .model({
       customerID: a.id(),
-      //orders: a.hasMany("Orders", "orderID"),
-      firstName: a.string(),
-      lastName: a.string(),
-      phone: a.phone(),
-      //email: a.hasOne("Subscriber", "emailID"),
-      //shipAddress: a.hasOne("ShipAddress", "customerID"),
-      //billingAddress: a.hasOne("BillAddress", "customerID"),
-      //payment: a.hasMany("Payment", "customerID"),
+      user: a.belongsTo("User", "customerID"),
+      orders: a.hasMany("Orders", "orderID"),
+      shipAddress: a.hasOne("ShipAddress", "sAddressID"),
+      billingAddress: a.hasOne("BillAddress", "bAddressID"),
+      payment: a.hasOne("Payment", "paymentID"),
+      cart: a.hasOne("Cart", "cartID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
   ShipAddress: a
     .model({
-      addressID: a.id(),
-      //customerID: a.belongsTo("Customer", "customerID"),
+      sAddressID: a.id(),
+      customerID: a.belongsTo("Customer", "sAddressID"),
       country: a.string(),
       state: a.string(),
       city: a.string(),
@@ -75,8 +100,8 @@ const schema = a.schema({
 
   BillAddress: a
     .model({
-      addressID: a.id(),
-      //customerID: a.belongsTo("Customer", "customerID"),
+      bAddressID: a.id(),
+      customerID: a.belongsTo("Customer", "bAddressID"),
       country: a.string(),
       state: a.string(),
       city: a.string(),
@@ -88,7 +113,7 @@ const schema = a.schema({
   Payment: a
     .model({
       paymentID: a.id(),
-      //customerID: a.belongsTo("Customer", "customerID"),
+      customerID: a.belongsTo("Customer", "paymentID"),
       method: a.enum(["VISA", "MASTERCARD", "DISCOVER", "AMERICAN_EXPRESS"]),
       amount: a.float(),
     })
@@ -98,15 +123,43 @@ const schema = a.schema({
     .model({
       trackingID: a.id(),
       trackingStatus: a.string(),
-      //order: a.belongsTo("Orders", "orderID"),
+      order: a.belongsTo("Orders", "trackingID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
   Cart: a
     .model({
       cartID: a.id(),
-      //customer: a.belongsTo("Customer", "customerID"),
-      //products: a.hasMany("Products", "productID"),
+      customer: a.belongsTo("Customer", "cartID"),
+      products: a.hasMany("CartProducts", "cartID"),
+      cost: a.float(),
+      totalCount: a.integer(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+    CartProducts: a
+    .model({
+      cartID: a.id().required(),
+      productID: a.id().required(),
+      cart: a.belongsTo("Cart", "cartID"),  
+      product: a.belongsTo("Products", "productID"),
+      itemCount: a.integer(),
+      
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+    //Calendar tables
+
+    Event: a
+    .model({
+      eventID: a.id(),
+      eventTitle: a.string(),
+      eventDate: a.date(),
+      eventTime: a.time(),
+      eventLocation: a.string(),
+      eventDetails: a.string(),
+      addentees: a.hasMany("User", "userID"),
+
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
