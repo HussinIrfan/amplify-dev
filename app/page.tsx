@@ -7,7 +7,8 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
-
+import CustomNavbar from "./CustomNavbar";
+import HPheader from "./HPheader";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -109,7 +110,9 @@ export default function App() {
 
   return (
     <main>
-      <h1>My subs</h1>
+      <CustomNavbar/>
+      <HPheader />
+      <h1>My Email / Subs</h1>
       <button onClick={createTodo}>+ new</button>
       <button onClick={deleteSub}> - Sub</button>
       <button onClick={updateSub}> & Update</button>
@@ -120,13 +123,6 @@ export default function App() {
         ))}
       </ul>
       
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/">
-          Review next steps of this tutorial.
-        </a>
-      </div>
     </main>
   );
 }
