@@ -31,7 +31,9 @@ export default function App() {
 
     if (newEmail) {
       // Check for duplicate emails
-      const existingEmails = subs.map((sub) => sub.emails.toLowerCase());
+      const existingEmails = subs
+        .map((sub) => sub.emails?.toLowerCase())
+        .filter(Boolean);  // This removes any null or undefined emails
       if (existingEmails.includes(newEmail.toLowerCase())) {
         alert("This email is already subscribed.");
         return;
@@ -46,10 +48,10 @@ export default function App() {
 
   function deleteSub() {
     const emailToDelete = window.prompt("Enter the email to delete:");
-    
+
     if (emailToDelete) {
       // Find the subscriber that matches the email
-      const subscriberToDelete = subs.find(sub => sub.emails.toLowerCase() === emailToDelete.toLowerCase());
+      const subscriberToDelete = subs.find(sub => sub.emails?.toLowerCase() === emailToDelete.toLowerCase());
 
       if (subscriberToDelete) {
         const confirmDelete = window.confirm(`Are you sure you want to delete ${emailToDelete}?`);
@@ -71,22 +73,22 @@ export default function App() {
 
   function updateSub() {
     const emailToUpdate = window.prompt("Enter the email to update:");
-  
+
     if (emailToUpdate) {
       // Find the subscriber that matches the email
-      const subscriberToUpdate = subs.find(sub => sub.emails.toLowerCase() === emailToUpdate.toLowerCase());
-      
+      const subscriberToUpdate = subs.find(sub => sub.emails?.toLowerCase() === emailToUpdate.toLowerCase());
+
       if (subscriberToUpdate) {
         const newEmail = window.prompt("Enter the new email:");
-        const existingEmails = subs.map((sub) => sub.emails.toLowerCase());
-  
+        const existingEmails = subs.map((sub) => sub.emails?.toLowerCase()).filter(Boolean);
+
         if (newEmail) {
           // Check for duplicate emails
           if (existingEmails.includes(newEmail.toLowerCase())) {
             alert("This email is already subscribed.");
             return;
           }
-  
+
           // Proceed to update the subscriber
           client.models.Subscriber.update({
             id: subscriberToUpdate.id,
@@ -94,8 +96,10 @@ export default function App() {
           })
             .then((updatedSubscriber) => {
               // Update the local state with the new subscriber information
-              setSubs((prevSubs) => 
-                prevSubs.map((sub) => sub.id === updatedSubscriber.id ? updatedSubscriber : sub)
+              setSubs((prevSubs) =>
+                prevSubs.map((sub) =>
+                  sub.id === updatedSubscriber.id ? updatedSubscriber : sub
+                )
               );
             })
             .catch((error) => {
@@ -110,7 +114,7 @@ export default function App() {
 
   return (
     <main>
-      <CustomNavbar/>
+      <CustomNavbar />
       <HPheader />
       <h1>My Email / Subs</h1>
       <button onClick={createTodo}>+ new</button>
@@ -119,7 +123,7 @@ export default function App() {
       
       <ul>
         {subs.map((sub) => (
-          <li key={sub.id}>{sub.emails}</li>
+          <li key={sub.id}>{sub.emails ?? "No email provided"}</li>
         ))}
       </ul>
       
