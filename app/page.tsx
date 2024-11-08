@@ -19,6 +19,7 @@ export default function App() {
   function listTodos() {
     client.models.Subscriber.observeQuery().subscribe({
       next: (data) => setSubs([...data.items]),
+      error: (error) => console.error("Error fetching subscribers:", error),
     });
   }
 
@@ -28,21 +29,29 @@ export default function App() {
 
   function createTodo() {
     const newEmail = window.prompt("Email to Add");
-
+  
     if (newEmail) {
       // Check for duplicate emails
       const existingEmails = subs
         .map((sub) => sub.emails?.toLowerCase())
         .filter(Boolean);  // This removes any null or undefined emails
+  
       if (existingEmails.includes(newEmail.toLowerCase())) {
         alert("This email is already subscribed.");
         return;
       }
-
+  
       // If no duplicates, proceed to create new subscriber
       client.models.Subscriber.create({
         emails: newEmail,
-      });
+      })
+      .then((response) => {
+        const newSubscriber = response.data;  // Assuming the new subscriber is in `data`
+        if (newSubscriber) {
+          setSubs((prevSubs) => [...prevSubs, newSubscriber]);
+        }
+      })
+      .catch((error) => console.error("Error creating subscriber:", error));
     }
   }
 
@@ -73,32 +82,38 @@ export default function App() {
 
   function updateSub() {
     const emailToUpdate = window.prompt("Enter the email to update:");
-
+  
     if (emailToUpdate) {
-      // Find the subscriber that matches the email
-      const subscriberToUpdate = subs.find(sub => sub.emails?.toLowerCase() === emailToUpdate.toLowerCase());
-
+      const subscriberToUpdate = subs.find(
+        (sub) => sub.emails?.toLowerCase() === emailToUpdate.toLowerCase()
+      );
+  
       if (subscriberToUpdate) {
         const newEmail = window.prompt("Enter the new email:");
         const existingEmails = subs.map((sub) => sub.emails?.toLowerCase()).filter(Boolean);
-
+  
         if (newEmail) {
           // Check for duplicate emails
           if (existingEmails.includes(newEmail.toLowerCase())) {
             alert("This email is already subscribed.");
             return;
           }
-
+  
           // Proceed to update the subscriber
           client.models.Subscriber.update({
             id: subscriberToUpdate.id,
             emails: newEmail,
           })
             .then((updatedSubscriber) => {
-              // Update the local state with the new subscriber information
+              // Ensure only the required fields are updated in the state
+              const updatedSubscriberData = {
+                ...subscriberToUpdate,
+                emails: newEmail,
+              };
+  
               setSubs((prevSubs) =>
                 prevSubs.map((sub) =>
-                  sub.id === updatedSubscriber.id ? updatedSubscriber : sub
+                  sub.id === updatedSubscriberData.id ? updatedSubscriberData : sub
                 )
               );
             })
@@ -111,7 +126,7 @@ export default function App() {
       }
     }
   }
-
+  
   return (
     <main>
       <CustomNavbar />
