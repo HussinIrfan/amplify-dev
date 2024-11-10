@@ -9,6 +9,8 @@ import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import CustomNavbar from "./CustomNavbar";
 import HPheader from "./HPheader";
+import ContactInfoBox from "./components/ContactInfoBox";
+
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -34,8 +36,9 @@ export default function App() {
 
   return (
     <main>
-      <CustomNavbar/>
+      <CustomNavbar />
       <HPheader />
+      <ContactInfoBox />
       <h1>My todos</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
