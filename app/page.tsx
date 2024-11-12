@@ -7,6 +7,7 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
+import Link from "next/link";
 
 Amplify.configure(outputs);
 
@@ -47,6 +48,9 @@ export default function App() {
           Review next steps of this tutorial.
         </a>
       </div>
+      <br />
+      {/* Link to the login page */}
+      <Link href="/login">Go to Login Page</Link>
     </main>
   );
 }
