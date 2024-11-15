@@ -1,30 +1,35 @@
-import React from "react";
+import Head from "next/head";
 
-
-const NewsletterPopup: React.FC = () => {
+const NewsletterPopup = () => {
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.cardHeader}>
-          <h2>Keep up with our organization</h2>
-        </div>
-        <div style={styles.cardBody}>
-          <p>Subscribe and receive monthly newsletters.</p>
-          <div style={styles.inputContainer}>
-            <button style={styles.button}>Subscribe</button>
-            <input
-              type="email"
-              placeholder="Email Address"
-              style={styles.input}
-            />
+    <>
+      <Head>
+        <title>Newsletter Popup Page</title>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      <div style={styles.container}>
+        <div style={styles.card}>
+          <div style={styles.cardHeader}>
+            <h2 style={styles.headerText}>Keep up with our organization</h2>
           </div>
-          <p style={styles.note}>No spam, unsubscribe at anytime</p>
+          <div style={styles.cardBody}>
+            <p>Subscribe and receive monthly newsletters.</p>
+            <div style={styles.inputContainer}>
+              <button style={styles.button}>Subscribe</button>
+              <input
+                type="email"
+                placeholder="Email Address"
+                style={styles.input}
+              />
+            </div>
+            <p style={styles.note}>No spam, unsubscribe at anytime</p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
-
 
 const styles = {
   container: {
@@ -46,11 +51,16 @@ const styles = {
     textAlign: "center" as const,
     backgroundColor: "rgba(252, 229, 25, 0.89)",
     color: "black",
-    padding: "30px",
+    padding: "30px", // Reduced top padding
     height: "50px",
     margin: 0,
     borderTopLeftRadius: "20px",
     borderTopRightRadius: "20px",
+    display: "flex",
+    alignItems: "flex-start", // Moves content to the top of the header
+  },
+  headerText: {
+    marginTop: "-10px", // Moves the text further up
   },
   cardBody: {
     padding: "30px",
@@ -81,6 +91,5 @@ const styles = {
     textAlign: "center" as const,
   },
 };
-
 
 export default NewsletterPopup;

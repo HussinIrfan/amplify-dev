@@ -9,6 +9,7 @@ import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import CustomNavbar from "./CustomNavbar";
 import HPheader from "./HPheader";
+import NewsletterPopup from "./NewsletterPopup";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -131,6 +132,7 @@ export default function App() {
     <main>
       <CustomNavbar />
       <HPheader />
+      <NewsletterPopup />
       <h1>My Email / Subs</h1>
       <button onClick={createTodo}>+ new</button>
       <button onClick={deleteSub}> - Sub</button>
