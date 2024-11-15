@@ -10,7 +10,7 @@ const schema = a.schema({
   Subscriber: a
     .model({
       emailID: a.id(),
-      emails: a.string(),
+      emails: a.email(),
       //customer: a.belongsTo("User", "emailID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
