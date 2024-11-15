@@ -9,15 +9,17 @@ import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import CustomNavbar from "./CustomNavbar";
 import HPheader from "./HPheader";
+import Link from "next/link";
+
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
 export default function App() {
-  const [subs, setSubs] = useState<Array<Schema["Subscriber"]["type"]>>([]);
+  const [subs, setSubs] = useState<Array<Schema["Subscribers"]["type"]>>([]);
 
   function listTodos() {
-    client.models.Subscriber.observeQuery().subscribe({
+    client.models.Subscribers.observeQuery().subscribe({
       next: (data) => setSubs([...data.items]),
       error: (error) => console.error("Error fetching subscribers:", error),
     });
@@ -31,10 +33,10 @@ export default function App() {
     const newEmail = window.prompt("Email to Add");
   
     if (newEmail) {
-      // Check for duplicate emails
+      // Check for duplicate email
       const existingEmails = subs
-        .map((sub) => sub.emails?.toLowerCase())
-        .filter(Boolean);  // This removes any null or undefined emails
+        .map((sub) => sub.email?.toLowerCase())
+        .filter(Boolean);  // This removes any null or undefined email
   
       if (existingEmails.includes(newEmail.toLowerCase())) {
         alert("This email is already subscribed.");
@@ -42,8 +44,8 @@ export default function App() {
       }
   
       // If no duplicates, proceed to create new subscriber
-      client.models.Subscriber.create({
-        emails: newEmail,
+      client.models.Subscribers.create({
+        email: newEmail,
       })
       .then((response) => {
         const newSubscriber = response.data;  // Assuming the new subscriber is in `data`
@@ -60,12 +62,12 @@ export default function App() {
 
     if (emailToDelete) {
       // Find the subscriber that matches the email
-      const subscriberToDelete = subs.find(sub => sub.emails?.toLowerCase() === emailToDelete.toLowerCase());
+      const subscriberToDelete = subs.find(sub => sub.email?.toLowerCase() === emailToDelete.toLowerCase());
 
       if (subscriberToDelete) {
         const confirmDelete = window.confirm(`Are you sure you want to delete ${emailToDelete}?`);
         if (confirmDelete) {
-          client.models.Subscriber.delete(subscriberToDelete)
+          client.models.Subscribers.delete(subscriberToDelete)
             .then(() => {
               // Remove the deleted subscriber from the local state
               setSubs((prevSubs) => prevSubs.filter((sub) => sub.id !== subscriberToDelete.id));
@@ -85,30 +87,30 @@ export default function App() {
   
     if (emailToUpdate) {
       const subscriberToUpdate = subs.find(
-        (sub) => sub.emails?.toLowerCase() === emailToUpdate.toLowerCase()
+        (sub) => sub.email?.toLowerCase() === emailToUpdate.toLowerCase()
       );
   
       if (subscriberToUpdate) {
         const newEmail = window.prompt("Enter the new email:");
-        const existingEmails = subs.map((sub) => sub.emails?.toLowerCase()).filter(Boolean);
+        const existingEmails = subs.map((sub) => sub.email?.toLowerCase()).filter(Boolean);
   
         if (newEmail) {
-          // Check for duplicate emails
+          // Check for duplicate email
           if (existingEmails.includes(newEmail.toLowerCase())) {
             alert("This email is already subscribed.");
             return;
           }
   
           // Proceed to update the subscriber
-          client.models.Subscriber.update({
+          client.models.Subscribers.update({
             id: subscriberToUpdate.id,
-            emails: newEmail,
+            email: newEmail,
           })
             .then((updatedSubscriber) => {
               // Ensure only the required fields are updated in the state
               const updatedSubscriberData = {
                 ...subscriberToUpdate,
-                emails: newEmail,
+                email: newEmail,
               };
   
               setSubs((prevSubs) =>
@@ -138,10 +140,16 @@ export default function App() {
       
       <ul>
         {subs.map((sub) => (
-          <li key={sub.id}>{sub.emails ?? "No email provided"}</li>
+          <li key={sub.id}>{sub.email ?? "No email provided"}</li>
         ))}
       </ul>
-      
+      <div>
+        🥳 App successfully hosted. Try creating a new todo.
+        <br />
+        <a href="https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/">
+          Review next steps of this tutorial.
+        </a>
+      </div>
     </main>
   );
 }
