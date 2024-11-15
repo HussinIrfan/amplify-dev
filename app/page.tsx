@@ -7,6 +7,8 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
+import Link from "next/link";
+
 import CustomNavbar from "./CustomNavbar";
 import HPheader from "./HPheader";
 Amplify.configure(outputs);
@@ -141,6 +143,16 @@ export default function App() {
           <li key={sub.id}>{sub.emails ?? "No email provided"}</li>
         ))}
       </ul>
+      <div>
+        🥳 App successfully hosted. Try creating a new todo.
+        <br />
+        <a href="https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/">
+          Review next steps of this tutorial.
+        </a>
+      </div>
+      <br />
+      {/* Link to the login page */}
+      <Link href="/login">Go to Login Page</Link>
       
     </main>
   );
