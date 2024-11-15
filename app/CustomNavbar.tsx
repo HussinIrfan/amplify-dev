@@ -1,42 +1,49 @@
-import { Navbar, Link } from "@nextui-org/react"; // Ensure you have this library installed
-import styles from './page.module.css'; // Import your CSS module
-import Image from 'next/image'; // Import Image from next/image
-import navbarImage from './navbarAssets/navbar_image.jpg'; // Adjust the path according to your folder structure
+import React, { useState } from 'react';
+import styles from './page.module.css';
+import Image from 'next/image';
+import navbarImage from './navbarAssets/navbar_image.jpg';
+
 export default function CustomNavbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
-    <>
+    <header>
+      {/* Background image and overlay text */}
       <div className={styles.imageContainer}>
         <Image 
           src={navbarImage} 
-          alt="Navbar" 
-          layout="responsive" // Makes the image responsive
-          objectFit="cover" // Maintains aspect ratio while covering the space
-          className={styles.navbarImage} // Add this for styling
+          alt="South Lake Tahoe FireFighter's Foundation" 
+          layout="fill" 
+          objectFit="cover" 
+          className={styles.navbarImage} 
+          priority 
         />
-        <div className={styles.overlayText}>South Lake Tahoe FireFighter's Foundation</div> {/* Add overlay text here */}
+        <div className={styles.overlayText}>South Lake Tahoe FireFighter's Foundation</div>
+
+        {/* Hamburger Icon - Positioned on top right of image */}
+        {!isMenuOpen && (
+          <div className={styles.hamburger} onClick={toggleMenu}>
+            ☰
+          </div>
+        )}
       </div>
-      <Navbar className={styles.navbar}>
-        <div className={styles.navbarContent}>
-          <Link className={styles.navbarItem} href="#">
-            About Us
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Our Work
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            News
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Calendar
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Donation
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Store
-          </Link>
+      
+      {/* Full-Screen Overlay Menu */}
+      {isMenuOpen && (
+        <div className={styles.fullScreenMenu}>
+          <div className={styles.hamburger} onClick={toggleMenu}>✖</div> {/* Close Icon */}
+          <ul className={styles.navLinks}>
+            <li className={styles.navItem}><a href="#">About Us</a></li>
+            <li className={styles.navItem}><a href="#">Our Work</a></li>
+            <li className={styles.navItem}><a href="#">News</a></li>
+            <li className={styles.navItem}><a href="#">Calendar</a></li>
+            <li className={styles.navItem}><a href="#">Donation</a></li>
+            <li className={styles.navItem}><a href="#">Store</a></li>
+          </ul>
         </div>
-      </Navbar>
-    </>
+      )}
+    </header>
   );
 }
