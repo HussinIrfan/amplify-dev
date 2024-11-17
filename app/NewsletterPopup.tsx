@@ -36,7 +36,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "100vh",
+    minHeight: "80vh",
     backgroundColor: "white",
     backgroundSize: "cover",
     margin: 0,
@@ -51,19 +51,22 @@ const styles = {
     textAlign: "center" as const,
     backgroundColor: "rgba(252, 229, 25, 0.89)",
     color: "black",
-    padding: "30px", // Reduced top padding
-    height: "50px",
+    padding: "30px",
+    height: "45px",
     margin: 0,
     borderTopLeftRadius: "20px",
     borderTopRightRadius: "20px",
     display: "flex",
-    alignItems: "flex-start", // Moves content to the top of the header
+    alignItems: "center",
+    justifyContent: "center",
   },
   headerText: {
-    marginTop: "-10px", // Moves the text further up
+    marginTop: "0",
+    fontSize: "23px",
+    lineHeight: "1.5",
   },
   cardBody: {
-    padding: "30px",
+    padding: "20px",
   },
   inputContainer: {
     width: "100%",
