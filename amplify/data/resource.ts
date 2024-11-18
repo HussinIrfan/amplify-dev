@@ -168,6 +168,7 @@ const schema = a.schema({
       aboutID: a.id(),
       picture: a.string(),
       name: a.string(),
+      row: a.string(),
       description: a.string(),
 
     })
