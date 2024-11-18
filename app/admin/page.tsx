@@ -1,136 +1,241 @@
 "use client";
 
-import { Amplify } from "aws-amplify";
-import { useState, useEffect } from "react";
-import outputs from "@/amplify_outputs.json";
-import "@aws-amplify/ui-react/styles.css";
-import "../page.module.css"
+import { useAdminLogic } from "./adminLogic"; // Import the logic file
 import CustomNavbar from "../CustomNavbar";
+import blankImage from "../global-images/blank-person.png";
+import "@aws-amplify/ui-react/styles.css";
+import "../page.module.css";
 import "./admin.css";
-import blankImage from"../global-images/blank-person.png";
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
 
-Amplify.configure(outputs);
-
-const client = generateClient<Schema>();
 export default function AdminPage() {
+  const {
+    emps,
+    editingEmps,
+    picture,
+    name,
+    title,
+    description,
+    setPicture,
+    setName,
+    setTitle,
+    setDescription,
+    handleAboutUsSubmit,
+    handleEditChange,
+    handleSaveChanges,
+    handleEditToggle,
+    handleCancelEdit,
+    deleteAboutUsEntry,
+    emails, // Get emails from the hook
+    handleEmailSubmit, // Handle email submission
+    emailError, // To show any errors related to email
+    emailInput, // The input state for email
+    setEmailInput, // To update the email input field
+  } = useAdminLogic(); // Destructure from the hook
 
-  // variables
-  const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
-
-  //about us variables
-  const [picture, setPicture] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-
-  function listAboutUs(){
-    client.models.aboutUs.observeQuery().subscribe({
-      next: (data) => setEmp([...data.items]),
-      error: (err) => console.log(err),
-    })
-  }
-
-  useEffect(() => {
-    listAboutUs();
-  }, []);
-
-  async function createAboutUsEntry(picture: string, name: string, description: string) {
-    try {
-      const result = await client.models.aboutUs.create({
-        picture,
-        name,
-        description,
-      });
-      console.log("New entry created:", result);
-      return result;
-    } catch (error) {
-      console.error("Error creating entry:", error);
-    }
-  }
-
-  function handleAboutUsSubmit(event: React.FormEvent) {
-    event.preventDefault(); // Prevent the page from refreshing
-    createAboutUsEntry(picture, name, description);
-    // Optionally reset the fields
-    setPicture("");
-    setName("");
-    setDescription("");
-  }
-
-  
   return (
     <main className="main">
       <CustomNavbar />
       <div>
         <h1 className="admin-h1"> Admin Settings</h1>
       </div>
-      <div>
+      <div className="div">
         <h2 className="admin-h2"> About Us </h2>
-        <p>Take out this p tag and create 4 buttons with the CRUD implematation</p>        
-        <form onSubmit={handleAboutUsSubmit}>
-        <div>
-          <label>
-            Picture URL:
+        <form onSubmit={handleAboutUsSubmit} className="about-us-form">
+          <div className="form-group">
+            <label htmlFor="picture">Picture URL:</label>
             <input
+              id="picture"
               type="text"
               value={picture}
               onChange={(e) => setPicture(e.target.value)}
               placeholder="Enter picture URL"
+              className="form-input"
             />
-          </label>
-        </div>
-        <div>
-          <label>
-            Name:
+          </div>
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
             <input
+              id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter name"
+              className="form-input"
             />
-          </label>
-        </div>
-        <div>
-          <label>
-            Description:
+          </div>
+          <div className="form-group">
+            <label htmlFor="title">Title:</label>
             <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter title"
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <input
+              id="description"
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter description"
+              className="form-input"
             />
-          </label>
+          </div>
+          <button type="submit" className="form-submit-btn">
+            Create Entry
+          </button>
+        </form>
+        <br />
+
+        {/* Table to display "About Us" entries */}
+        <table className="admin-about-us-table">
+          <thead>
+            <tr>
+              <th>Picture</th>
+              <th>Name</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {emps.map((emp) => {
+              const editingEmp = editingEmps.get(emp.id) || emp;
+              return (
+                <tr key={emp.id}>
+                  <td>
+                    {editingEmps.has(emp.id) ? (
+                      <input
+                        type="text"
+                        value={editingEmp.picture || ""}
+                        onChange={(e) =>
+                          handleEditChange(emp.id, "picture", e.target.value)
+                        }
+                      />
+                    ) : (
+                      <img
+                        className="admin-aboutUs-image"
+                        src={blankImage.src}
+                        alt="About Us"
+                      />
+                    )}
+                  </td>
+                  <td>
+                    {editingEmps.has(emp.id) ? (
+                      <input
+                        type="text"
+                        value={editingEmp.name || ""}
+                        onChange={(e) =>
+                          handleEditChange(emp.id, "name", e.target.value)
+                        }
+                      />
+                    ) : (
+                      emp.name
+                    )}
+                  </td>
+                  <td>
+                    {editingEmps.has(emp.id) ? (
+                      <input
+                        type="text"
+                        value={editingEmp.title || ""}
+                        onChange={(e) =>
+                          handleEditChange(emp.id, "title", e.target.value)
+                        }
+                      />
+                    ) : (
+                      emp.title
+                    )}
+                  </td>
+                  <td>
+                    {editingEmps.has(emp.id) ? (
+                      <input
+                        type="text"
+                        value={editingEmp.description || ""}
+                        onChange={(e) =>
+                          handleEditChange(
+                            emp.id,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      emp.description
+                    )}
+                  </td>
+                  <td>
+                    {editingEmps.has(emp.id) ? (
+                      <>
+                        <button onClick={() => handleSaveChanges(emp.id)}>
+                          Save Changes
+                        </button>
+                        <button onClick={() => handleCancelEdit(emp.id)}>
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button onClick={() => handleEditToggle(emp.id)}>
+                          Edit
+                        </button>
+                        <button onClick={() => deleteAboutUsEntry(emp.id)}>
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <br />
+      <div className="div">
+        <h2 className="admin-h2"> Email List </h2>
+        <form onSubmit={handleEmailSubmit} className="about-us-form">
+          <div className="form-group">
+            <label htmlFor="email">Add Email</label>
+            <input
+              id="email"
+              type="text"
+              value={emailInput} // Use the emailInput state
+              onChange={(e) => setEmailInput(e.target.value)} // Update emailInput state
+              placeholder="Enter Email Address"
+              className="form-input"
+            />
+          </div>
+          <button type="submit" className="form-submit-btn">
+            Create Entry
+          </button>
+        </form>
+
+        {/* Container for emails with scroll */}
+        <div className="email-list-container">
+          <table className="admin-about-us-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {emails.map((email) => (
+                <tr key={email.id}>
+                  <td>{email.email}</td>
+                  <td>
+                    <button>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <button type="submit">Create Entry</button>
-      </form>
-        <ul>
-        {emps.map((emp) => (
-          <li key={emp.aboutID}>
-            <h2>Picture URL:</h2>
-            <img src="../../global-images/blank-person.png"/>
-            <h2>Name:</h2>
-            <h3>{emp.name}</h3>
-            <h2>Description:</h2>
-            <p>{emp.description}</p>
-          </li>
-        ))}
-      </ul>
-      </div>
-      <div>
-      <h2 className="admin-h2"> Our Work </h2>
-      </div>      
-      <div>
-      <h2 className="admin-h2"> News</h2>
-      </div>
-      <div>
-      <h2 className="admin-h2"> Calendar </h2>
-      </div>
-      <div>
-      <h2 className="admin-h2"> Donation </h2>
-      </div>
-      <div>
-      <h2 className="admin-h2"> Store </h2>
       </div>
     </main>
   );

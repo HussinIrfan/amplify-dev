@@ -1,23 +1,263 @@
+.main {
+    
+    align-items: center; /* Center the content horizontally */
+  }
+
 .admin-h1 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.div{
+    margin: 20px;
+    padding: 20px;
+    width: 80vw;
+    align-content: center;
+    background-color: #f2f2f2;
+    /* Light gray background for better visibility */
+    color: #333;
+    border-radius: 5px;
 }
 
 .admin-h2 {
     text-align: left;
     margin: 10px;
     padding: 10px;
-    background-color: #030000; /* Light gray background for better visibility */
+    align-content: center;
+    background-color: #030000;
+    /* Light gray background for better visibility */
     color: #ccc;
     border-radius: 5px;
 }
 
 .admin-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Create 4 equal-width columns */
-    grid-gap: 20px; /* Add spacing between grid items */
-    padding: 20px; /* Add padding around the grid */
-    justify-items: center; /* Center grid items horizontally */
-    align-items: center; /* Center grid items vertically */
+    grid-template-columns: repeat(4, 1fr);
+    /* Create 4 equal-width columns */
+    grid-gap: 20px;
+    /* Add spacing between grid items */
+    padding: 20px;
+    /* Add padding around the grid */
+    justify-items: center;
+    /* Center grid items horizontally */
+    align-items: center;
+    /* Center grid items vertically */
 }
 
+.admin-aboutUs-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+
+}
+
+.admin-about-us-table {
+    width: 100%;
+    /* Ensure the table takes full width */
+    table-layout: fixed;
+    /* Ensures the columns have equal width */
+}
+
+.admin-about-us-table th,
+.admin-about-us-table td {
+    padding: 10px;
+    text-align: left;
+    /* Align text to the left, adjust if needed */
+}
+
+.admin-about-us-table th {
+    background-color: #f4f4f4;
+    /* Optional: Add a background color to headers */
+}
+
+.admin-about-us-table td {
+    overflow: hidden;
+    /* Prevent overflow if content is too long */
+    text-overflow: ellipsis;
+    /* Optional: add "..." for overflow text */
+}
+
+.admin-about-us-table tr:last-child {
+    border-bottom: none;
+    /* No line after the last row */
+}
+
+/* admin.css or your custom CSS file */
+
+.about-us-form {
+    display: grid;
+    gap: 1rem;
+    /* Space between form elements */
+    max-width: 500px;
+    /* Limit form width */
+    margin: 0 auto;
+    /* Center the form */
+    background-color: white;
+    /* White background for the form */
+    padding: 1.5rem;
+    /* Add some padding inside the form */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for better visibility */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: black;
+    /* Black text for labels */
+}
+
+.form-group input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    /* Light grey border */
+    border-radius: 5px;
+    background-color: white;
+    /* White background for inputs */
+    color: black;
+    /* Black text for inputs */
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: black;
+    /* Black border when focused */
+    outline: none;
+}
+
+.form-submit-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    background-color: black;
+    /* Black background for the button */
+    color: white;
+    /* White text for the button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-submit-btn:hover {
+    background-color: #333;
+    /* Darker black for the button hover effect */
+}
+
+/* Optional: Add some margin between form sections */
+form>div+div {
+    margin-top: 1rem;
+}
+
+/* Table styling */
+.admin-about-us-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    background-color: white;
+    /* Ensure table has white background */
+}
+
+.admin-about-us-table th,
+.admin-about-us-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ccc;
+    /* Light grey border */
+}
+
+.admin-about-us-table th {
+    background-color: black;
+    /* Black header background */
+    color: white;
+    /* White text in headers */
+}
+
+.admin-about-us-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Light grey for alternate rows */
+}
+
+.admin-about-us-table tr:hover {
+    background-color: #f1f1f1;
+    /* Slightly darker grey for hover */
+}
+
+.admin-aboutUs-image {
+    max-width: 50px;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* Buttons inside the table */
+button {
+    padding: 0.5rem 1rem;
+    background-color: black;
+    /* Black button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #333;
+    /* Darker black for hover effect */
+}
+
+/* Buttons when editing */
+button:disabled {
+    background-color: #ccc;
+    /* Greyed out button when disabled */
+    cursor: not-allowed;
+}
+
+/* admin.css */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.email-list-container {
+    width: 50vw; /* 50% of the viewport width */
+    max-height: 300px; /* Optional: Set max-height for vertical scroll */
+    overflow-y: auto; /* Enables vertical scrolling */
+    margin-top: 20px; /* Optional: Space between form and table */
+    border: 1px solid #ddd; /* Optional: Border around the box */
+    padding: 10px; /* Optional: Padding inside the box */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    display: flex;
+     /* Center the table inside the container */
+    
+  }
+  
+  /* Table styling */
+  .admin-about-us-table {
+    width: 100%; /* Ensure the table takes the full width of the container */
+    border-collapse: collapse;
+  }
+  
+  .admin-about-us-table th,
+  .admin-about-us-table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .admin-about-us-table th {
+    background-color: #0e0d0d;
+  }
+  
+  .admin-about-us-table td {
+    background-color: #fff;
+  }
