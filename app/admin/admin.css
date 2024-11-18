@@ -1,0 +1,23 @@
+.admin-h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-h2 {
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+    background-color: #030000; /* Light gray background for better visibility */
+    color: #ccc;
+    border-radius: 5px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Create 4 equal-width columns */
+    grid-gap: 20px; /* Add spacing between grid items */
+    padding: 20px; /* Add padding around the grid */
+    justify-items: center; /* Center grid items horizontally */
+    align-items: center; /* Center grid items vertically */
+}
+
