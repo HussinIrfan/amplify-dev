@@ -1,6 +1,24 @@
+import { useState } from "react";
 import Head from "next/head";
 
 const NewsletterPopup = () => {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = () => {
+    if(!email) {
+      setMessage("Please enter a valid email address.");
+    } else if (isSubscribed) {
+      setMessage("You are already subscribed!");
+    } else {
+      setIsSubscribed(true);
+      setMessage("Thank you for subscribing!");
+    }
+
+    setTimeout(() => setMessage(""), 3000);
+  };
+
   return (
     <>
       <Head>
@@ -21,6 +39,8 @@ const NewsletterPopup = () => {
                 type="email"
                 placeholder="Email Address"
                 style={styles.input}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <p style={styles.note}>No spam, unsubscribe at anytime</p>
@@ -89,6 +109,14 @@ const styles = {
     padding: "12px 20px",
     marginLeft: "10px",
     borderRadius: "5px",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    overflow: "hidden",
+    boxShadow: "none",
+  },
+  "button:hover": {
+    boxShadow: "0 0 0 5px black",
+    transition: "all 0.3s ease",
   },
   note: {
     textAlign: "center" as const,
