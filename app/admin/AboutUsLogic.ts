@@ -3,85 +3,37 @@ import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
 import { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
+import { Sanitize } from "../SanitizeInput";
 
 Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
-export function useAdminLogic() {
-  // Set listing variables
-  const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
-  const [editingEmps, setEditingEmps] = useState<
-    Map<string, Schema["aboutUs"]["type"]>
-  >(new Map());
+export function useAboutUsLogic() {
 
-  //Emails
-  const [emails, setEmail] = useState<Array<Schema["Subscribers"]["type"]>>([]);
-  const [emailInput, setEmailInput] = useState("");
-  const [emailError, setEmailError] = useState<string | null>(null);
+    const { sanitizeInput} = Sanitize();
 
-  // About Us form state
-  const [picture, setPicture] = useState("");
+    const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
+    const [editingEmps, setEditingEmps] = useState<
+      Map<string, Schema["aboutUs"]["type"]>
+    >(new Map());
+
+    const [picture, setPicture] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Function to list existing "About Us" entries
-  function listAboutUs() {
-    client.models.aboutUs.observeQuery().subscribe({
-      next: (data) => setEmp([...data.items]),
-      error: (err) => console.log(err),
-    });
-  }
+    // Function to list existing "About Us" entries
+    function listAboutUs() {
+        client.models.aboutUs.observeQuery().subscribe({
+          next: (data) => setEmp([...data.items]),
+          error: (err) => console.log(err),
+        });
+      }
 
-  // Function to list existing "Email List" entries from Subscribers table
-  function listEmails() {
-    client.models.Subscribers.observeQuery().subscribe({
-      next: (data) => setEmail([...data.items]),
-      error: (err) => console.log(err),
-    });
-  }
-
-  // UseEffect to fetch initial data
+        // UseEffect to fetch initial data
   useEffect(() => {
     listAboutUs();
-    listEmails(); // Fetch emails from the Subscribers table
   }, []);
-
-  const handleEmailSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput)) {
-      setEmailError("Invalid email format.");
-      return;
-    }
-
-    // Check if email already exists
-    const existingEmails = emails.filter((email) => email.email === emailInput);
-    if (existingEmails.length > 0) {
-      setEmailError("Email already subscribed.");
-      return;
-    }
-
-    try {
-      // Create new subscriber entry
-      const newSubscriber = await client.models.Subscribers.create({
-        email: emailInput,
-      });
-      console.log("Successfully added new subscriber:", newSubscriber);
-
-      // Clear the input and error state
-      setEmailInput("");
-      setEmailError(null);
-
-      // Refresh the email list
-      listEmails();
-    } catch (error) {
-      console.error("Error adding subscriber:", error);
-      setEmailError("Error adding subscriber to the database.");
-    }
-  };
 
   // Function to create a new About Us entry
   async function createAboutUsEntry(
@@ -102,7 +54,7 @@ export function useAdminLogic() {
     } catch (error) {
       console.error("Error creating entry:", error);
     }
-  }
+  };
 
   // Submit handler for creating new About Us entry
   function handleAboutUsSubmit(event: React.FormEvent) {
@@ -112,10 +64,10 @@ export function useAdminLogic() {
     setName("");
     setTitle("");
     setDescription("");
-  }
+  };
 
-  // Handle changes made in the editing form
-  const handleEditChange = (key: string, field: string, value: string) => {
+// Handle changes made in the editing form
+const handleEditChangeEmp = (key: string, field: string, value: string) => {
     const sanitizedValue = sanitizeInput(value);
     setEditingEmps((prev) => {
       const emp = prev.get(key);
@@ -129,13 +81,8 @@ export function useAdminLogic() {
     });
   };
 
-  // Sanitize inputs to prevent dangerous characters (basic SQL injection prevention)
-  const sanitizeInput = (input: string) => {
-    return input.replace(/['"\\;-]/g, ""); // Remove dangerous characters
-  };
-
-  // Handle saving all the edits to the database
-  const handleSaveChanges = async (empId: string) => {
+// Handle saving all the edits to the database
+const handleSaveChangesEmp = async (empId: string) => {
     if (window.confirm("Are you sure you want to save changes?")) {
       try {
         const updatedEmp = editingEmps.get(empId);
@@ -157,7 +104,7 @@ export function useAdminLogic() {
   };
 
   // Function to handle edit toggle
-  const handleEditToggle = (empId: string) => {
+  const handleEditToggleEmp = (empId: string) => {
     setEditingEmps((prev) => {
       const newEditingEmps = new Map(prev);
       if (newEditingEmps.has(empId)) {
@@ -173,7 +120,7 @@ export function useAdminLogic() {
   };
 
   // Function to cancel the editing
-  const handleCancelEdit = (empId: string) => {
+  const handleCancelEditEmp = (empId: string) => {
     setEditingEmps((prev) => {
       const newEditingEmps = new Map(prev);
       newEditingEmps.delete(empId); // Cancel the editing mode
@@ -182,10 +129,9 @@ export function useAdminLogic() {
   };
 
   // Function to delete an About Us entry
-  const deleteAboutUsEntry = async (empId: string) => {
+  const deleteEntry = async (empId: string) => {
     if (window.confirm("Are you sure you want to delete this entry?")) {
       try {
-        // Here we pass an object with an `id` key, not just a string
         const result = await client.models.aboutUs.delete({ id: empId });
 
         if (result) {
@@ -200,7 +146,7 @@ export function useAdminLogic() {
     }
   };
 
-  return {
+return{
     emps,
     editingEmps,
     picture,
@@ -212,15 +158,10 @@ export function useAdminLogic() {
     setTitle,
     setDescription,
     handleAboutUsSubmit,
-    handleEditChange,
-    handleSaveChanges,
-    handleEditToggle,
-    handleCancelEdit,
-    deleteAboutUsEntry,
-    emails, // Get emails from the hook
-    handleEmailSubmit, // Handle email submission
-    emailError, // To show any errors related to email
-    emailInput, // The input state for email
-    setEmailInput, // To update the email input field
-  };
+    handleEditChangeEmp,
+    handleSaveChangesEmp,
+    handleEditToggleEmp,
+    handleCancelEditEmp,
+    deleteEntry,
+}
 }

@@ -151,13 +151,15 @@ const schema = a.schema({
 
     Event: a
     .model({
-      eventID: a.id(),
       eventTitle: a.string(),
-      eventDate: a.date(),
-      eventTime: a.time(),
+      eventStartDate: a.date(),
+      eventEndDate: a.date(),
+      eventStartTime: a.time(),
+      eventEndTime: a.time(),
       eventLocation: a.string(),
       eventDetails: a.string(),
       addentees: a.hasMany("User", "userID"),
+      allday: a.boolean(),
 
     })
     .authorization((allow) => [allow.publicApiKey()]),
@@ -167,6 +169,15 @@ const schema = a.schema({
       picture: a.string(),
       name: a.string(),
       title: a.string(),
+      description: a.string(),
+
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+    ourWork: a
+    .model({
+      picture: a.string(),
+      business: a.string(),
       description: a.string(),
 
     })

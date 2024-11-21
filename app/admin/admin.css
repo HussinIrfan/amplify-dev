@@ -1,14 +1,14 @@
 .main {
-    
-    align-items: center; /* Center the content horizontally */
-  }
+    align-items: center;
+    /* Center the content horizontally */
+}
 
 .admin-h1 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.div{
+.div {
     margin: 20px;
     padding: 20px;
     width: 80vw;
@@ -26,8 +26,14 @@
     align-content: center;
     background-color: #030000;
     /* Light gray background for better visibility */
-    color: #ccc;
+    color: #e9e7e7;
     border-radius: 5px;
+}
+
+.admin-h3 {
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
 }
 
 .admin-grid {
@@ -48,7 +54,6 @@
     width: 150px;
     height: 150px;
     border-radius: 10%;
-
 }
 
 .admin-about-us-table {
@@ -102,6 +107,24 @@
     /* Subtle shadow for better visibility */
 }
 
+.add-email-form {
+    display: grid;
+    gap: 1rem;
+    /* Space between form elements */
+    max-width: 500px;
+    /* Limit form width */
+    margin: 0 auto;
+    /* Center the form */
+    background-color: white;
+    /* White background for the form */
+    padding: 1.5rem;
+    /* Add some padding inside the form */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for better visibility */
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -110,7 +133,7 @@
 .form-group label {
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     color: black;
     /* Black text for labels */
 }
@@ -154,18 +177,16 @@
 
 /* Optional: Add some margin between form sections */
 form>div+div {
-    margin-top: 1rem;
+    margin-top: 0.05rem;
 }
 
 /* Table styling */
 .admin-about-us-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 2rem;
-    background-color: white;
-    /* Ensure table has white background */
+    table-layout: fixed; /* Ensure the table takes full width with equal columns */
 }
 
+/* Styling for email list table */
 .admin-about-us-table th,
 .admin-about-us-table td {
     padding: 12px 15px;
@@ -176,19 +197,15 @@ form>div+div {
 
 .admin-about-us-table th {
     background-color: black;
-    /* Black header background */
     color: white;
-    /* White text in headers */
 }
 
 .admin-about-us-table tr:nth-child(even) {
     background-color: #f9f9f9;
-    /* Light grey for alternate rows */
 }
 
 .admin-about-us-table tr:hover {
     background-color: #f1f1f1;
-    /* Slightly darker grey for hover */
 }
 
 .admin-aboutUs-image {
@@ -207,10 +224,12 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-right: 10px;  /* Add some space between buttons */
+    
 }
 
 button:hover {
-    background-color: #333;
+    background-color: #66789b;
     /* Darker black for hover effect */
 }
 
@@ -228,36 +247,55 @@ button:disabled {
     margin-top: 8px;
 }
 
-.email-list-container {
-    width: 50vw; /* 50% of the viewport width */
-    max-height: 300px; /* Optional: Set max-height for vertical scroll */
-    overflow-y: auto; /* Enables vertical scrolling */
-    margin-top: 20px; /* Optional: Space between form and table */
-    border: 1px solid #ddd; /* Optional: Border around the box */
-    padding: 10px; /* Optional: Padding inside the box */
-    box-sizing: border-box; /* Ensure padding is included in width */
+/* Container for the email list */
+.email-list-parent {
     display: flex;
-     /* Center the table inside the container */
-    
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    width: 100%; /* Ensure it takes full width */
+}
+
+/* Scrollable container for the email list */
+.email-list-container {
+    width: 100%; /* Full width of the parent container */
+    max-height: 300px; /* Limit height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 10px; /* Optional: Space between the form and the table */
+    border: 1px solid #ddd; /* Light border around the container */
+    padding: 10px;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    display: block; /* Ensure it's displayed as a block element */
+}
+
+.deleteButtonContainer {
+    display: flex;               /* Use flexbox for the container */
+    justify-content: flex-end;   /* Align the button to the right */
+    margin-top: 20px;            /* Space between the table and button */
+    width: 100%;                 /* Make the container take full width */
+}
+
+.deleteButton {
+    padding: 0.5rem 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #66789b;
+}
+
+.dropdown-arrow {
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
   }
   
-  /* Table styling */
-  .admin-about-us-table {
-    width: 100%; /* Ensure the table takes the full width of the container */
-    border-collapse: collapse;
-  }
-  
-  .admin-about-us-table th,
-  .admin-about-us-table td {
-    padding: 8px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .admin-about-us-table th {
-    background-color: #0e0d0d;
-  }
-  
-  .admin-about-us-table td {
-    background-color: #fff;
+  .dropdown-arrow.collapsed {
+    transform: rotate(180deg);
   }
