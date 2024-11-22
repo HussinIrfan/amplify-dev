@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/api": "^6.1.4",
+    "@aws-amplify/auth": "^6.7.0",
     "@aws-amplify/datastore": "^5.0.61",
     "@aws-amplify/ui-react": "^6.1.13",
     "@nextui-org/react": "^2.4.8",

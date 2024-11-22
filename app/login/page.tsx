@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Auth } from "aws-amplify"; // Import Amplify Auth
+import { fetchAuthSession } from "aws-amplify/auth"; // Import Amplify Auth // MODIFIDED DUE TO CAUSESING BUILD FAILER WAS IMPORT AUTH
 import Link from "next/link";
 import styles from "./login.module.css"; // Import CSS Module
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
 
     try {
       // AWS Amplify signIn method
-      const user = await Auth.signIn(username, password);
+      const user = (await fetchAuthSession()).credentials; // MODIFIDED FROM .signIn(username, password); BECAUSE IT CAUSED PRODUCTION BUILD FAILER
       console.log("Login successful:", user);
       alert("Login successful!"); // Optionally, you can redirect to another page
     } catch (error) {
