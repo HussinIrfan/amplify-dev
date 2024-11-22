@@ -56,16 +56,18 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "80vh",
+    minHeight: "40vh",
     backgroundColor: "white",
     backgroundSize: "cover",
     margin: 0,
   },
   card: {
     backgroundColor: "white",
-    maxWidth: "400px",
+    maxWidth: "1850px",
     borderRadius: "20px",
     border: "1px solid black",
+    width: "100%",
+    boxSizing: "border-box"
   },
   cardHeader: {
     textAlign: "center" as const,
