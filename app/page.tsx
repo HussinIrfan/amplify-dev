@@ -13,6 +13,8 @@ import CustomNavbar from "./CustomNavbar";
 import HPheader from "./HPheader";
 import ImageCarousel from "./ImageCarousel";
 import NewsletterPopup from "./NewsletterPopup";
+import ContactInfoBox from "./components/ContactInfoBox";
+
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -137,6 +139,7 @@ export default function App() {
       <HPheader />
       <ImageCarousel />
       <NewsletterPopup />
+      <ContactInfoBox />
       <h1>My Email / Subs</h1>
       <button onClick={createTodo}>+ new</button>
       <button onClick={deleteSub}> - Sub</button>
