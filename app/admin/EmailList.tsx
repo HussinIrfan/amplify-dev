@@ -1,7 +1,7 @@
 "use client";
 
 import { useEmailListLogic } from "./EmailListLogic"; // Import the logic file
-import { useCollapse } from "../ToggleCollase";
+import { useCollapse } from "../supportFunctions/ToggleCollase";
 import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "./admin.css";

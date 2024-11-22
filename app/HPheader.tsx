@@ -11,8 +11,7 @@ const HPheader = () => {
       <div style={{
         position: "relative",
         width: "100%",
-        height: "720px", // Adjust height as needed
-        scale: "90%"
+        height: "400px", // Adjust height as needed
         //marginBottom: "20px"
       }}>
         <Image

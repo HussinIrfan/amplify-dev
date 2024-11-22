@@ -28,6 +28,7 @@
     /* Light gray background for better visibility */
     color: #e9e7e7;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .admin-h3 {
@@ -225,6 +226,7 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-right: 10px;  /* Add some space between buttons */
+    margin-bottom: 10px;
     
 }
 

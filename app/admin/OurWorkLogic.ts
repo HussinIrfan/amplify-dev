@@ -3,7 +3,7 @@ import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
 import { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
-import { Sanitize } from "../SanitizeInput";
+import { Sanitize } from "../supportFunctions/SanitizeInput";
 
 Amplify.configure(outputs);
 const client = generateClient<Schema>();

@@ -158,7 +158,7 @@ const schema = a.schema({
       eventEndTime: a.time(),
       eventLocation: a.string(),
       eventDetails: a.string(),
-      addentees: a.hasMany("User", "userID"),
+      addentees: a.email(),
       allday: a.boolean(),
 
     })

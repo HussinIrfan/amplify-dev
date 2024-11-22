@@ -4,7 +4,7 @@ import CustomNavbar from "../CustomNavbar";
 import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "./admin.css";
-import "../calendar/calendar.css";
+import "../calendar/index.css";
 import AboutUs from "./AboutUs";
 import EmailList from "./EmailList";
 import OurWork from "./OurWork";

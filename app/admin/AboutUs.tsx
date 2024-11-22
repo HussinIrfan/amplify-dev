@@ -1,7 +1,7 @@
 "use client";
 
 import { useAboutUsLogic } from "./AboutUsLogic"; // Import the logic file
-import { useCollapse } from "../ToggleCollase";
+import { useCollapse } from "../supportFunctions/ToggleCollase";
 import blankImage from "../global-images/blank-person.png";
 import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
