@@ -67,7 +67,7 @@ const schema = a.schema({
     lastName: a.string(),
     phone: a.phone(),
     email: a.email(),//a.hasOne("Subscriber", "emailID"),
-    events: a.string(),
+    events: a.string(), //relationships error
     password: a.string(),
     role: a.string(),
 
