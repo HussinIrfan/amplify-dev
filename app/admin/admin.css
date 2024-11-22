@@ -1,0 +1,303 @@
+.main {
+    align-items: center;
+    /* Center the content horizontally */
+}
+
+.admin-h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.div {
+    margin: 20px;
+    padding: 20px;
+    width: 80vw;
+    align-content: center;
+    background-color: #f2f2f2;
+    /* Light gray background for better visibility */
+    color: #333;
+    border-radius: 5px;
+}
+
+.admin-h2 {
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+    align-content: center;
+    background-color: #030000;
+    /* Light gray background for better visibility */
+    color: #e9e7e7;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.admin-h3 {
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Create 4 equal-width columns */
+    grid-gap: 20px;
+    /* Add spacing between grid items */
+    padding: 20px;
+    /* Add padding around the grid */
+    justify-items: center;
+    /* Center grid items horizontally */
+    align-items: center;
+    /* Center grid items vertically */
+}
+
+.admin-aboutUs-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+}
+
+.admin-about-us-table {
+    width: 100%;
+    /* Ensure the table takes full width */
+    table-layout: fixed;
+    /* Ensures the columns have equal width */
+}
+
+.admin-about-us-table th,
+.admin-about-us-table td {
+    padding: 10px;
+    text-align: left;
+    /* Align text to the left, adjust if needed */
+}
+
+.admin-about-us-table th {
+    background-color: #f4f4f4;
+    /* Optional: Add a background color to headers */
+}
+
+.admin-about-us-table td {
+    overflow: hidden;
+    /* Prevent overflow if content is too long */
+    text-overflow: ellipsis;
+    /* Optional: add "..." for overflow text */
+}
+
+.admin-about-us-table tr:last-child {
+    border-bottom: none;
+    /* No line after the last row */
+}
+
+/* admin.css or your custom CSS file */
+
+.about-us-form {
+    display: grid;
+    gap: 1rem;
+    /* Space between form elements */
+    max-width: 500px;
+    /* Limit form width */
+    margin: 0 auto;
+    /* Center the form */
+    background-color: white;
+    /* White background for the form */
+    padding: 1.5rem;
+    /* Add some padding inside the form */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for better visibility */
+}
+
+.add-email-form {
+    display: grid;
+    gap: 1rem;
+    /* Space between form elements */
+    max-width: 500px;
+    /* Limit form width */
+    margin: 0 auto;
+    /* Center the form */
+    background-color: white;
+    /* White background for the form */
+    padding: 1.5rem;
+    /* Add some padding inside the form */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for better visibility */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: black;
+    /* Black text for labels */
+}
+
+.form-group input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    /* Light grey border */
+    border-radius: 5px;
+    background-color: white;
+    /* White background for inputs */
+    color: black;
+    /* Black text for inputs */
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: black;
+    /* Black border when focused */
+    outline: none;
+}
+
+.form-submit-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    background-color: black;
+    /* Black background for the button */
+    color: white;
+    /* White text for the button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-submit-btn:hover {
+    background-color: #333;
+    /* Darker black for the button hover effect */
+}
+
+/* Optional: Add some margin between form sections */
+form>div+div {
+    margin-top: 0.05rem;
+}
+
+/* Table styling */
+.admin-about-us-table {
+    width: 100%;
+    table-layout: fixed; /* Ensure the table takes full width with equal columns */
+}
+
+/* Styling for email list table */
+.admin-about-us-table th,
+.admin-about-us-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ccc;
+    /* Light grey border */
+}
+
+.admin-about-us-table th {
+    background-color: black;
+    color: white;
+}
+
+.admin-about-us-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.admin-about-us-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.admin-aboutUs-image {
+    max-width: 50px;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* Buttons inside the table */
+button {
+    padding: 0.5rem 1rem;
+    background-color: black;
+    /* Black button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;  /* Add some space between buttons */
+    margin-bottom: 10px;
+    
+}
+
+button:hover {
+    background-color: #66789b;
+    /* Darker black for hover effect */
+}
+
+/* Buttons when editing */
+button:disabled {
+    background-color: #ccc;
+    /* Greyed out button when disabled */
+    cursor: not-allowed;
+}
+
+/* admin.css */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* Container for the email list */
+.email-list-parent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    width: 100%; /* Ensure it takes full width */
+}
+
+/* Scrollable container for the email list */
+.email-list-container {
+    width: 100%; /* Full width of the parent container */
+    max-height: 300px; /* Limit height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 10px; /* Optional: Space between the form and the table */
+    border: 1px solid #ddd; /* Light border around the container */
+    padding: 10px;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    display: block; /* Ensure it's displayed as a block element */
+}
+
+.deleteButtonContainer {
+    display: flex;               /* Use flexbox for the container */
+    justify-content: flex-end;   /* Align the button to the right */
+    margin-top: 20px;            /* Space between the table and button */
+    width: 100%;                 /* Make the container take full width */
+}
+
+.deleteButton {
+    padding: 0.5rem 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #66789b;
+}
+
+.dropdown-arrow {
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .dropdown-arrow.collapsed {
+    transform: rotate(180deg);
+  }

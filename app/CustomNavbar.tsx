@@ -51,7 +51,7 @@ export default function CustomNavbar() {
           <Link className={styles.navbarItem} href="#">
             Donation
           </Link>
-          <Link className={styles.navbarItem} href="#">
+          <Link className={styles.navbarItem} href="/admin">
             Store
           </Link>
 
