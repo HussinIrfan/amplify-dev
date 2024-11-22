@@ -6,6 +6,7 @@
   align-items: center;
   padding: 0; /* Change from 6rem to 0 to remove top padding */
   min-height: 100vh;
+  background-color: white;
 }
 
 .description {
@@ -223,19 +224,7 @@
   margin: 0; /* Ensure no margin is applied */
 }
 
-.overlayText {
-  position: absolute; /* Set absolute positioning for the text */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust position to truly center */
-  color: white; /* Text color */
-  font-size: 3rem; /* Adjust font size as needed */
-  text-align: center; /* Center text */
-  z-index: 10; /* Ensure it's above the image */
-  white-space: nowrap; /* Prevents text wrapping */
-  width: auto; /* Allows the width to adjust based on content */
-  max-width: 80%; /* Optional: Limits the max width */
-}
+
 
 .navbar {
   background-color: black; /* Navbar background color */
@@ -254,6 +243,7 @@
   width: 100%; /* Ensure the content also takes full width */
 }
 
+
 .navbarItem {
   color: white; /* Text color for navbar items */
   text-decoration: none; /* Remove underline from links */
@@ -266,6 +256,49 @@
 .navbarItem:hover {
   background-color: rgba(255, 255, 255, 0.2); /* Hover effect */
   transform: scale(1.05); /* Slightly scale up on hover */
+}
+.container {
+  position: relative;
+  width: 100%;
+  height: 280px; /* Adjust to your preferred height */
+  overflow: hidden;
+  background-color: white;
+}
+
+.textContainer {
+  position: absolute;
+  bottom: 10px; /* Adjust positioning */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  gap: 20px;
+}
+.overlayText {
+  color: white; /* Text color */
+  font-size: 3rem; /* Adjust font size as needed */
+  text-align: center; /* Center text */
+  z-index: 10; /* Ensure it's above the image */
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+.logoLink{
+  z-index: 1;
+  cursor: pointer;
+}
+
+.instaLink {
+  display: flex;
+  align-items: center;
+}
+
+.instaLogo {
+  object-fit: contain;
+}
+
+.instaLogo:hover {
+  transform: scale(1.1); /* Scale effect on hover */
 }
 
 .hp-header {

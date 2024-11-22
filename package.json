@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/api": "^6.1.4",
+    "@aws-amplify/auth": "^6.7.0",
+    "@aws-amplify/datastore": "^5.0.61",
     "@aws-amplify/ui-react": "^6.1.13",
     "@nextui-org/react": "^2.4.8",
     "@schedule-x/drag-and-drop": "^2.6.0",
@@ -16,17 +19,17 @@
     "@schedule-x/events-service": "^2.6.0",
     "@schedule-x/react": "^2.5.0",
     "@schedule-x/theme-default": "^2.6.0",
-    "aws-amplify": "^6.8.2",
+    "aws-amplify": "^6.9.0",
     "moment": "^2.30.1",
     "next": "^15.0.2",
     "react": "^18",
-    "react-big-calendar": "^1.15.0",
+    "react-big-calendar": "^1.16.0",
     "react-calendar": "^5.1.0",
     "react-dom": "^18",
     "react-modal": "^3.16.1"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.2.1",
+    "@aws-amplify/backend": "^1.8.0",
     "@aws-amplify/backend-cli": "^1.2.6",
     "@types/node": "^20",
     "@types/react": "^18",

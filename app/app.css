@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background: #FFFFFF; /* Changed background color to white */
+    background: white; /* Changed background color to white */
     display: flex;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     /* height: 100vw;     Removed for responsiveness */
