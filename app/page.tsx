@@ -12,6 +12,7 @@ import Link from "next/link";
 import CustomNavbar from "./CustomNavbar";
 import HPheader from "./HPheader";
 import ImageCarousel from "./ImageCarousel";
+import NewsletterPopup from "./NewsletterPopup";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -135,6 +136,7 @@ export default function App() {
       <CustomNavbar />
       <HPheader />
       <ImageCarousel />
+      <NewsletterPopup />
       <h1>My Email / Subs</h1>
       <button onClick={createTodo}>+ new</button>
       <button onClick={deleteSub}> - Sub</button>
