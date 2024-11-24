@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import "./news-letter.css";
+import { useEmailListLogic } from "../admin/EmailListLogic";
 
 const NewsletterPopup = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);

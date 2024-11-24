@@ -1,22 +1,22 @@
-import moment from "moment";
+import { useEffect } from "react";
 import CalendarLocal from "./CalendarLocal";
-
-const events = [
-  {
-    start: moment("2024-11-18T10:00:00").toDate(),
-    end: moment("2024-11-18T11:00:00").toDate(),
-    title: "Event 1",
-     allDay: false,
-  },
-];
+import useCalendar from "./Calendar";
 
 export default function BasicCalendar() {
+  const {
+    events,
+    // other state and handlers from useCalendar
+  } = useCalendar();
 
+  // Assuming CalendarLocal takes an array of events as a prop.
   return (
     <CalendarLocal
-      events={events}
-      view={"month"}
-      toolbar={false}
+      views={{
+        month: true,
+        agenda: true,
+      }}
+      toolbar={true}
+      events={events} // Pass the events fetched from the useCalendar hook
     />
   );
 }

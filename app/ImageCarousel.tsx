@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./ImageCarousel.module.css";
 import firefighters1Image from "./homepageAssets/firefighters1.jpg";
@@ -35,16 +35,46 @@ const images = [
 const ImageCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Initialize a ref to store the interval ID
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Function to start the interval for automatic image change
+  const startAutoTransition = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current); // Clear any existing interval
+    }
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 6000); // 6000ms = 6 seconds
+  };
+
+  // Start the interval when the component mounts
+  useEffect(() => {
+    startAutoTransition();
+
+    // Cleanup interval on component unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  // Reset the timer on manual navigation
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
+    startAutoTransition(); // Reset the interval
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
+    startAutoTransition(); // Reset the interval
   };
 
   return (

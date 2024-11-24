@@ -1,4 +1,5 @@
 
+
 .main {
   display: flex;
   flex-direction: column;
@@ -7,7 +8,9 @@
   padding: 0; /* Change from 6rem to 0 to remove top padding */
   min-height: 100vh;
   background-color: white;
+  box-sizing: border-box;
 }
+
 
 .description {
   display: inherit;
@@ -43,9 +46,10 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
+  grid-template-columns: repeat(4, minmax(25%, 1fr));
   max-width: 100%;
   width: var(--max-width);
+  box-sizing: border-box;
 }
 
 .card {
@@ -211,10 +215,11 @@
 .imageContainer {
   position: relative; /* Set relative positioning for the container */
   width: 100%; /* Full width of the parent */
-  max-height: 400px; /* Set a max height for the image */
+  max-height: 720px; /* Set a max height for the image */
   overflow: hidden; /* Prevent overflow */
   margin-top: 0; /* Remove any top margin */
   padding-top: 0; /* Remove any top padding */
+  box-sizing: border-box;
 }
 
 .navbarImage {
@@ -234,6 +239,7 @@
   position: relative; /* Change from fixed to relative */
   z-index: 1000; /* Ensure it's above other content */
   top: 0; /* Align it to the top of the page */
+  box-sizing: border-box;
 }
 
 .navbarContent {
@@ -263,11 +269,12 @@
   height: 280px; /* Adjust to your preferred height */
   overflow: hidden;
   background-color: white;
+  box-sizing: border-box;
 }
 
 .textContainer {
   position: absolute;
-  bottom: 10px; /* Adjust positioning */
+  bottom: -15px; /* Increase the value to push the logo lower */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -275,6 +282,7 @@
   z-index: 2;
   gap: 20px;
 }
+
 .overlayText {
   color: white; /* Text color */
   font-size: 3rem; /* Adjust font size as needed */
@@ -307,7 +315,7 @@
   font-weight: bold; /* Font weight */
   color: #000000; /* Text color */
   text-align: center; /* Center align the text */
-  margin-top: 20px; /* Adjust as needed for equal spacing above */
+  margin-top: 10px; /* Adjust as needed for equal spacing above */
   margin-bottom: 40px; /* Adjust as needed for equal spacing below */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Drop shadow effect */
 }

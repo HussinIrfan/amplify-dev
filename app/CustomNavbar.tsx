@@ -2,9 +2,12 @@ import { Navbar, Link } from "@nextui-org/react"; // Ensure you have this librar
 import styles from './page.module.css'; // Import your CSS module
 import Image from 'next/image'; // Import Image from next/image
 import navbarImage from './navbarAssets/navbar_image.jpg'; // Adjust the path according to your folder structure
-import logoImage from './navbarAssets/firelogo.png';
+import logoImage from './navbarAssets/Logo-CutOut.png';
 import instaLogo from './navbarAssets/instaLogo.png';
 export default function CustomNavbar() {
+
+  const instagramAccount = "https://www.instagram.com/sltfirefightersfoundation/";
+
   return (
     <>
     <div className = {styles.container}>
@@ -55,7 +58,7 @@ export default function CustomNavbar() {
             Store
           </Link>
 
-          <Link className={styles.instaLink} href = "https://instagram.com" target="_blank" rel="noopener noreferrer">
+          <Link className={styles.instaLink} href = {instagramAccount} target="_blank" rel="noopener noreferrer">
           
             <Image 
               src={instaLogo} 

@@ -16,6 +16,13 @@
     background-color: #63b5db;
 }
 
+.rbc-toolbar-label{
+    flex-grow: 20;
+    padding: 0 10px;
+    text-align: center;
+    font-size: larger;
+}
+
 .divButton {
     display: flex;
     justify-content: flex-end;
@@ -123,3 +130,5 @@
     gap: 10px;
     margin-bottom: 15px;
 }
+
+  
