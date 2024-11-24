@@ -33,12 +33,26 @@ const useCalendar = () => {
     const fetchEvents = async () => {
       try {
         const { data } = await client.models.Event.list();
-        const calendarEvents = data.map((event) => ({
-          start: moment(event.eventStartDate).toDate(),
-          end: moment(event.eventEndDate).toDate(),
-          title: event.eventTitle ?? "",
-          allDay: event.allday ?? false,
-        }));
+    
+        const calendarEvents = data.map((event) => {
+          const startDateTime = moment(
+            `${event.eventStartDate} ${event.eventStartTime}`, // Concatenate date and time
+            "YYYY-MM-DD HH:mm"
+          );
+          const endDateTime = moment(
+            `${event.eventEndDate} ${event.eventEndTime}`, // Concatenate date and time
+            "YYYY-MM-DD HH:mm"
+          );
+    
+          return {
+            start: startDateTime.toDate(), // Convert moment object to Date
+            end: endDateTime.toDate(),
+            title: event.eventTitle ?? "",
+            location: event.eventLocation ?? "",
+            details: event.eventDetails ?? "",
+            allDay: event.allday ?? false,
+          };
+        });
         setEvents(calendarEvents);
       } catch (error) {
         console.error("Error fetching events: ", error);
@@ -65,29 +79,47 @@ const useCalendar = () => {
       eventEndDate + " " + eventEndTime,
       "YYYY-MM-DD HH:mm"
     );
+    
 
     if (endDateTime.isBefore(startDateTime)) {
       setErrorMessage("End date/time cannot be before start date/time.");
       return;
     }
+    
 
     try {
       await client.models.Event.create({
         eventTitle,
         eventStartDate,
         eventEndDate,
+        eventStartTime,
+        eventEndTime,
         eventLocation,
         eventDetails,
         allday,
       });
 
       const { data } = await client.models.Event.list();
-      const updatedEvents = data.map((event) => ({
-        start: moment(event.eventStartDate).toDate(),
-        end: moment(event.eventEndDate).toDate(),
-        title: event.eventTitle ?? "",
-        allDay: event.allday ?? false,
-      }));
+    
+        const updatedEvents = data.map((event) => {
+          const startDateTime = moment(
+            `${event.eventStartDate} ${event.eventStartTime}`, // Concatenate date and time
+            "YYYY-MM-DD HH:mm"
+          );
+          const endDateTime = moment(
+            `${event.eventEndDate} ${event.eventEndTime}`, // Concatenate date and time
+            "YYYY-MM-DD HH:mm"
+          );
+    
+          return {
+            start: startDateTime.toDate(), // Convert moment object to Date
+            end: endDateTime.toDate(),
+            title: event.eventTitle ?? "",
+            location: event.eventLocation ?? "",
+            details: event.eventDetails ?? "",
+            allDay: event.allday ?? false,
+          };
+        });
       setEvents(updatedEvents);
       resetFormFields();
       setIsModalOpen(false);

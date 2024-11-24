@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CalendarLocal, { localizer } from "./CalendarLocal";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import useCalendar from "./Calendar"; // Import the hook
+import moment from 'moment';
 
 const DndDCalendar = withDragAndDrop(CalendarLocal);
 
@@ -160,20 +161,20 @@ const ControlCalendar: React.FC = () => {
 
       {/*TODO:CODE NEEDS TO PULL FROM DB NOT MOMENT INSTANCE. Modal for viewing event details */}
       {selectedEvent && (
-        <div className="divPopUp">
-          <h3>Event Details</h3>
-          <p><strong>Title:</strong> {selectedEvent.title}</p>
-          <p><strong>Start:</strong> {selectedEvent.start.toString()}</p>
-          <p><strong>End:</strong> {selectedEvent.end.toString()}</p>
-          <p><strong>Location:</strong> {selectedEvent.location}</p>
-          <p><strong>Details:</strong> {selectedEvent.details}</p>
-          <div className="divButton">
-            <button type="button" onClick={handleCloseModal} className="popUpCancelButton">
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+  <div className="divPopUp">
+    <h3>Event Details</h3>
+    <p><strong>Title:</strong> {selectedEvent.title}</p>
+    <p><strong>Start:</strong> {moment(selectedEvent.start).format("YYYY-MM-DD HH:mm:ss")}</p>
+    <p><strong>End:</strong> {moment(selectedEvent.end).format("YYYY-MM-DD HH:mm:ss")}</p>
+    <p><strong>Location:</strong> {selectedEvent.location}</p>
+    <p><strong>Details:</strong> {selectedEvent.details}</p>
+    <div className="divButton">
+      <button type="button" onClick={handleCloseModal} className="popUpCancelButton">
+        Close
+      </button>
+    </div>
+  </div>
+)}
 
       {isModalOpen && (
         <div
