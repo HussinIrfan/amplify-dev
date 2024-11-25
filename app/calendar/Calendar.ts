@@ -67,13 +67,13 @@ const useCalendar = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     // Check if the event title is empty
     if (!eventTitle.trim()) {
       setErrorMessage("Event title cannot be empty.");
       return;
     }
-  
+
     // If start or end time are empty, set them to null
     const startDateTime =
       eventStartDate && eventStartTime
@@ -83,13 +83,13 @@ const useCalendar = () => {
       eventEndDate && eventEndTime
         ? moment(eventEndDate + " " + eventEndTime, "YYYY-MM-DD HH:mm")
         : null;
-  
+
     // Validate time logic only if both are provided
     if (startDateTime && endDateTime && endDateTime.isBefore(startDateTime)) {
       setErrorMessage("End date/time cannot be before start date/time.");
       return;
     }
-  
+
     try {
       if (isEditMode) {
         // Ensure eventId is not null
@@ -97,7 +97,7 @@ const useCalendar = () => {
           setErrorMessage("Event ID is missing. Cannot update event.");
           return;
         }
-  
+
         // Proceed with the update
         console.log("Edit mode: ", isEditMode);
         console.log("Updating event with ID:", eventId);
@@ -112,7 +112,7 @@ const useCalendar = () => {
           eventDetails: eventDetails,
           allday: allday,
         });
-  
+
         console.log("Updated Event");
       } else {
         // Create a new event if not in edit mode
@@ -127,31 +127,10 @@ const useCalendar = () => {
           allday,
         });
       }
-  
-      // Fetch updated events
-      const { data } = await client.models.Event.list();
-  
-      const updatedEvents = data.map((event) => {
-        const startDateTime = moment(
-          `${event.eventStartDate} ${event.eventStartTime || ""}`,
-          "YYYY-MM-DD HH:mm"
-        );
-        const endDateTime = moment(
-          `${event.eventEndDate} ${event.eventEndTime || ""}`,
-          "YYYY-MM-DD HH:mm"
-        );
-  
-        return {
-          start: startDateTime.isValid() ? startDateTime.toDate() : null, // Handle null times gracefully
-          end: endDateTime.isValid() ? endDateTime.toDate() : null,
-          title: event.eventTitle ?? "",
-          location: event.eventLocation ?? "",
-          details: event.eventDetails ?? "",
-          allDay: event.allday ?? false,
-          id: event.id,
-        };
-      });
-  
+
+       // Fetch updated events using the newly created function
+       const updatedEvents = await fetchUpdatedEvents();
+
       setEvents(updatedEvents);
       resetFormFields();
       setIsModalOpen(false);
@@ -163,6 +142,34 @@ const useCalendar = () => {
     }
   };
 
+  // Function to fetch and process updated events
+const fetchUpdatedEvents = async () => {
+  const { data } = await client.models.Event.list();
+
+  const updatedEvents = data.map((event) => {
+    const startDateTime = moment(
+      `${event.eventStartDate} ${event.eventStartTime || ""}`,
+      "YYYY-MM-DD HH:mm"
+    );
+    const endDateTime = moment(
+      `${event.eventEndDate} ${event.eventEndTime || ""}`,
+      "YYYY-MM-DD HH:mm"
+    );
+
+    return {
+      start: startDateTime.isValid() ? startDateTime.toDate() : null, // Handle null times gracefully
+      end: endDateTime.isValid() ? endDateTime.toDate() : null,
+      title: event.eventTitle ?? "",
+      location: event.eventLocation ?? "",
+      details: event.eventDetails ?? "",
+      allDay: event.allday ?? false,
+      id: event.id,
+    };
+  });
+
+  return updatedEvents;
+};
+
   // Reset form fields to their initial state
   const resetFormFields = () => {
     setEventTitle("");
@@ -173,7 +180,7 @@ const useCalendar = () => {
     setEventLocation("");
     setEventDetails("");
     setIsAllDay(false);
-    setEventId("")
+    setEventId("");
     setErrorMessage("");
   };
 
@@ -225,6 +232,23 @@ const useCalendar = () => {
     }
   };
 
+  const handleDeleteEventClick = async () => {
+    if (
+      selectedEvent &&
+      window.confirm("Are you sure you want to delete this event")
+    ) {
+      try {
+        await client.models.Event.delete({ id: selectedEvent.id });
+        handleCloseModal();
+        const updatedEvents = await fetchUpdatedEvents();
+        setEvents(updatedEvents);
+        console.log("Deleted Event");
+      } catch (err) {
+        console.error("Error deleting event: ", err);
+      }
+    }
+  };
+
   return {
     events,
     isModalOpen,
@@ -260,6 +284,7 @@ const useCalendar = () => {
     handleAddEventClick,
     handleCloseModalBasic,
     handleEditEventClick,
+    handleDeleteEventClick,
   };
 };
 

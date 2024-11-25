@@ -34,6 +34,7 @@ const ControlCalendar: React.FC = () => {
     handleCloseModal,
     handleAddEventClick,
     handleEditEventClick, // New function to handle edit
+    handleDeleteEventClick,
   } = useCalendar(); // Use the custom hook to get the calendar logic
 
 
@@ -159,6 +160,9 @@ const ControlCalendar: React.FC = () => {
           <div className="divButton">
             <button type="button" onClick={handleEditEventClick} className="popUpCancelButton">
               Edit
+            </button>
+            <button type="button" onClick={handleDeleteEventClick} className="popUpCancelButton">
+              Delete
             </button>
             <button type="button" onClick={handleCloseModal} className="popUpCancelButton">
               Close
