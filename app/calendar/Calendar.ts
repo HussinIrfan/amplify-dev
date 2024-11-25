@@ -28,6 +28,7 @@ const useCalendar = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [eventId, setEventId] = useState<string | null>(null);
 
   // Fetch events from the database
   useEffect(() => {
@@ -52,6 +53,7 @@ const useCalendar = () => {
             location: event.eventLocation ?? "",
             details: event.eventDetails ?? "",
             allDay: event.allday ?? false,
+            id: event.id, //Hidden Database ID for editing events
           };
         });
         setEvents(calendarEvents);
@@ -65,13 +67,13 @@ const useCalendar = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     // Check if the event title is empty
     if (!eventTitle.trim()) {
       setErrorMessage("Event title cannot be empty.");
       return;
     }
-
+  
     // If start or end time are empty, set them to null
     const startDateTime =
       eventStartDate && eventStartTime
@@ -81,18 +83,26 @@ const useCalendar = () => {
       eventEndDate && eventEndTime
         ? moment(eventEndDate + " " + eventEndTime, "YYYY-MM-DD HH:mm")
         : null;
-
+  
     // Validate time logic only if both are provided
     if (startDateTime && endDateTime && endDateTime.isBefore(startDateTime)) {
       setErrorMessage("End date/time cannot be before start date/time.");
       return;
     }
-
+  
     try {
-      if (isEditMode && selectedEvent) {
-        console.log("Edit mode: " + isEditMode + " selectedEvent: " + selectedEvent);
+      if (isEditMode) {
+        // Ensure eventId is not null
+        if (!eventId) {
+          setErrorMessage("Event ID is missing. Cannot update event.");
+          return;
+        }
+  
+        // Proceed with the update
+        console.log("Edit mode: ", isEditMode);
+        console.log("Updating event with ID:", eventId);
         await client.models.Event.update({
-          id: selectedEvent.id,
+          id: eventId, // Use the eventId here
           eventTitle: eventTitle,
           eventStartDate: eventStartDate,
           eventEndDate: eventEndDate,
@@ -102,7 +112,8 @@ const useCalendar = () => {
           eventDetails: eventDetails,
           allday: allday,
         });
-        console.log("Updated Event")
+  
+        console.log("Updated Event");
       } else {
         // Create a new event if not in edit mode
         await client.models.Event.create({
@@ -116,10 +127,10 @@ const useCalendar = () => {
           allday,
         });
       }
-
+  
       // Fetch updated events
       const { data } = await client.models.Event.list();
-
+  
       const updatedEvents = data.map((event) => {
         const startDateTime = moment(
           `${event.eventStartDate} ${event.eventStartTime || ""}`,
@@ -129,7 +140,7 @@ const useCalendar = () => {
           `${event.eventEndDate} ${event.eventEndTime || ""}`,
           "YYYY-MM-DD HH:mm"
         );
-
+  
         return {
           start: startDateTime.isValid() ? startDateTime.toDate() : null, // Handle null times gracefully
           end: endDateTime.isValid() ? endDateTime.toDate() : null,
@@ -137,17 +148,18 @@ const useCalendar = () => {
           location: event.eventLocation ?? "",
           details: event.eventDetails ?? "",
           allDay: event.allday ?? false,
+          id: event.id,
         };
       });
-
+  
       setEvents(updatedEvents);
       resetFormFields();
       setIsModalOpen(false);
       setSelectedEvent(false);
       setIsEditMode(false);
-      console.log("Event created successfully!");
+      console.log("Event created/updated successfully!");
     } catch (error) {
-      console.error("Error creating event: ", error);
+      console.error("Error creating/updating event: ", error);
     }
   };
 
@@ -161,6 +173,7 @@ const useCalendar = () => {
     setEventLocation("");
     setEventDetails("");
     setIsAllDay(false);
+    setEventId("")
     setErrorMessage("");
   };
 
@@ -198,7 +211,7 @@ const useCalendar = () => {
 
   const handleEditEventClick = () => {
     if (selectedEvent) {
-      setEventTitle(selectedEvent.eventTitle);
+      setEventTitle(selectedEvent.title);
       setEventStartDate(moment(selectedEvent.start).format("YYYY-MM-DD"));
       setEventEndDate(moment(selectedEvent.end).format("YYYY-MM-DD"));
       setEventStartTime(moment(selectedEvent.start).format("HH:mm"));
@@ -206,6 +219,7 @@ const useCalendar = () => {
       setEventLocation(selectedEvent.location);
       setEventDetails(selectedEvent.details);
       setIsAllDay(selectedEvent.allDay);
+      setEventId(selectedEvent.id);
       setIsModalOpen(true);
       setIsEditMode(true); // Set to edit mode when editing an existing event
     }
@@ -226,6 +240,8 @@ const useCalendar = () => {
     errorMessage,
     mappedEvents,
     isEditMode,
+    eventId,
+    setEventId,
     setIsModalOpen,
     setEventTitle,
     setEventStartDate,
