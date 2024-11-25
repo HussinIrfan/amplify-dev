@@ -8,14 +8,11 @@ export default function BasicCalendar() {
     events,
     selectedEvent,
     isModalOpen,
+    mappedEvents,
     setIsModalOpen,
-    setSelectedEvent,
+    handleEventSelect,
+    handleCloseModalBasic,
   } = useCalendar(); // Only use selectedEvent and isModalOpen state
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedEvent(null); // Clear selected event when modal is closed
-  };
 
   useEffect(() => {
     if (!selectedEvent) {
@@ -31,8 +28,8 @@ export default function BasicCalendar() {
           agenda: true,
         }}
         toolbar={true}
-        events={events} // Pass the events fetched from the useCalendar hook
-        onSelectEvent={(event: any) => setSelectedEvent(event)} // Update selected event
+        events={mappedEvents} // Pass the events fetched from the useCalendar hook
+        onSelectEvent={handleEventSelect} // Update selected event
       />
 
       {/* Modal for viewing event details */}
@@ -40,12 +37,13 @@ export default function BasicCalendar() {
         <div className="divPopUp">
           <h3>Event Details</h3>
           <p><strong>Title:</strong> {selectedEvent.title}</p>
+          <p><strong>All Day Event:</strong> {selectedEvent.allDay ? "Yes" : "No"}</p>
           <p><strong>Start:</strong> {moment(selectedEvent.start).format("YYYY-MM-DD HH:mm")}</p>
           <p><strong>End:</strong> {moment(selectedEvent.end).format("YYYY-MM-DD HH:mm")}</p>
           <p><strong>Location:</strong> {selectedEvent.location}</p>
           <p><strong>Details:</strong> {selectedEvent.details}</p>
           <div className="divButton">
-            <button type="button" onClick={handleCloseModal} className="popUpCancelButton">
+            <button type="button" onClick={handleCloseModalBasic} className="popUpCancelButton">
               Close
             </button>
           </div>
@@ -64,7 +62,7 @@ export default function BasicCalendar() {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 999,
           }}
-          onClick={handleCloseModal}
+          onClick={handleCloseModalBasic}
         />
       )}
     </>
