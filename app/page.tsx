@@ -15,12 +15,12 @@ import ImageCarousel from "./ImageCarousel";
 import NewsletterPopup from "./news-letter/NewsletterPopup";
 import ContactInfoBox from "./components/ContactInfoBox";
 import ContactUs from "./components/ContactUs";
-
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
 export default function App() {
+
   
   return (
     <main>
