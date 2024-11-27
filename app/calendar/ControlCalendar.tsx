@@ -7,37 +7,121 @@ import type { Schema } from "@/amplify/data/resource"; // Path to the schema gen
 
 const DndDCalendar = withDragAndDrop(CalendarLocal);
 
-const ControlCalendar: React.FC = () => {
-  const {
-    isModalOpen,
-    isEditMode,
-    eventTitle,
-    eventStartDate,
-    eventEndDate,
-    eventStartTime,
-    eventEndTime,
-    eventLocation,
-    eventDetails,
-    allday,
-    errorMessage,
-    selectedEvent,
-    mappedEvents,
-    setEventTitle,
-    setEventStartDate,
-    setEventEndDate,
-    setEventStartTime,
-    setEventEndTime,
-    setEventLocation,
-    setEventDetails,
-    setIsAllDay,
-    handleSubmit,
-    handleEventSelect,
-    handleCloseModal,
-    handleAddEventClick,
-    handleEditEventClick, // New function to handle edit
-    handleDeleteEventClick,
-  } = useCalendar(); // Use the custom hook to get the calendar logic
+// Generate the Amplify client
+const client = generateClient<Schema>();
 
+const ControlCalendar = () => {
+  // State to hold events fetched from the database
+  const [events, setEvents] = useState<any[]>([]);
+  // State for managing the modal visibility and input value
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventTitle, setEventTitle] = useState("");
+  const [eventStartDate, setEventStartDate] = useState("");
+  const [eventEndDate, setEventEndDate] = useState("");
+  const [eventStartTime, setEventStartTime] = useState("");
+  const [eventEndTime, setEventEndTime] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
+  const [eventDetails, setEventDetails] = useState("");
+  const [isAllDay, setIsAllDay] = useState(false); // State for the All Day toggle
+
+  // Fetch events from the database using Amplify client
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const { data } = await client.models.Event.list(); // Using Amplify's Data client to fetch events
+        // Convert the fetched events into the format expected by react-big-calendar
+        const calendarEvents = data.map((event) => ({
+          start: moment(event.eventStartDate).toDate(), // Convert string date to Date object
+          end: moment(event.eventEndDate).toDate(), // Convert string date to Date object
+          title: event.eventTitle,
+          allDay: event.allday,
+        }));
+        setEvents(calendarEvents); // Update state with formatted events
+      } catch (error) {
+        console.error("Error fetching events: ", error);
+      }
+    };
+
+    fetchEvents();
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
+
+  // Handle button click to open modal
+  const handleAddEventClick = () => {
+    setIsModalOpen(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEventTitle(""); // Clear the input field when closing the modal
+    setEventStartDate(""); // Clear
+    setEventEndDate(""); // Clear
+    setEventStartTime(""); // Clear
+    setEventEndTime(""); // Clear
+    setEventLocation(""); // Clear
+    setEventDetails(""); // Clear
+    setIsAllDay(false); // Reset All Day toggle
+  };
+
+  // Handle input change
+  const handleEventTitleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEventTitle(e.target.value);
+  };
+
+  const handleEventStartDateChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEventStartDate(e.target.value); // Convert Date object to string date
+  };
+
+  const handleEventEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEventEndDate(e.target.value);
+  };
+
+  const handleEventStartTimeChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEventStartTime(e.target.value);
+  };
+
+  const handleEventEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEventEndTime(e.target.value);
+  };
+
+  const handleEventLocationChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEventLocation(e.target.value);
+  };
+
+  const handleEventDetails = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEventDetails(e.target.value);
+  };
+
+  // Handle All Day toggle change
+  const handleAllDayChange = () => {
+    setIsAllDay((prev) => !prev); // Toggle the All Day state
+  };
+
+  // Handle form submission (example)
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle the creation of the new event (could be API call here)
+    console.log("Event Created: ", eventTitle, "All Day: ", isAllDay);
+
+    // Close the modal and clear the input
+    setIsModalOpen(false);
+    setEventTitle("");
+    setEventStartDate("");
+    setEventEndDate("");
+    setEventStartTime("");
+    setEventEndTime("");
+    setEventLocation("");
+    setEventDetails("");
+    setIsAllDay(false);
+  };
 
   return (
     <>
@@ -161,125 +245,20 @@ const ControlCalendar: React.FC = () => {
         </div>
       )}
 
-      {/* Modal for viewing event details */}
-      {selectedEvent && !isEditMode && (
-        <div className="divPopUp">
-          <h3>Event Details</h3>
-          <p><strong>Title:</strong> {selectedEvent.title}</p>
-          <p><strong>All Day Event:</strong> {selectedEvent.allDay ? "Yes" : "No"}</p>
-          <p><strong>Start:</strong> {moment(selectedEvent.start).format("YYYY-MM-DD HH:mm")}</p>
-          <p><strong>End:</strong> {moment(selectedEvent.end).format("YYYY-MM-DD HH:mm")}</p>
-          <p><strong>Location:</strong> {selectedEvent.location}</p>
-          <p><strong>Details:</strong> {selectedEvent.details}</p>
-          <div className="divButton">
-            <button type="button" onClick={handleEditEventClick} className="popUpCancelButton">
-              Edit
-            </button>
-            <button type="button" onClick={handleDeleteEventClick} className="popUpCancelButton">
-              Delete
-            </button>
-            <button type="button" onClick={handleCloseModal} className="popUpCancelButton">
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Modal for editing an event */}
-      {isModalOpen && isEditMode && selectedEvent && (
-        <div className="divPopUp">
-          <h3>Edit Event</h3>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Event Title:</label>
-              <input
-                type="text"
-                value={eventTitle}
-                onChange={(e) => setEventTitle(e.target.value)}
-                placeholder="Event Title"
-                className="popUpInputBox"
-              />
-            </div>
-            <div className="allDayToggle">
-              <label>All Day</label>
-              <input
-                type="checkbox"
-                checked={allday}
-                onChange={() => setIsAllDay((prev) => !prev)}
-              />
-            </div>
-            <div className="popUpInputRow">
-              <div className="popUpInputColumn">
-                <label>Start Date:</label>
-                <input
-                  type="date"
-                  value={eventStartDate}
-                  onChange={(e) => setEventStartDate(e.target.value)}
-                  className="popUpInputBox"
-                />
-              </div>
-              <div className="popUpInputColumn">
-                <label>Start Time:</label>
-                <input
-                  type="time"
-                  value={eventStartTime}
-                  onChange={(e) => setEventStartTime(e.target.value)}
-                  className="popUpInputBox"
-                  disabled={allday}
-                />
-              </div>
-            </div>
-            <div className="popUpInputRow">
-              <div className="popUpInputColumn">
-                <label>End Date:</label>
-                <input
-                  type="date"
-                  value={eventEndDate}
-                  onChange={(e) => setEventEndDate(e.target.value)}
-                  className="popUpInputBox"
-                />
-              </div>
-              <div className="popUpInputColumn">
-                <label>End Time:</label>
-                <input
-                  type="time"
-                  value={eventEndTime}
-                  onChange={(e) => setEventEndTime(e.target.value)}
-                  className="popUpInputBox"
-                  disabled={allday}
-                />
-              </div>
-            </div>
-            <div>
-              <label>Location</label>
-              <input
-                type="text"
-                value={eventLocation}
-                onChange={(e) => setEventLocation(e.target.value)}
-                placeholder="Location"
-                className="popUpInputBox"
-              />
-            </div>
-            <div>
-              <label>Event Details</label>
-              <textarea
-                value={eventDetails}
-                onChange={(e) => setEventDetails(e.target.value)}
-                placeholder="Details"
-                className="popUpInputBox-Deatils"
-              />
-            </div>
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            <div className="divButton">
-              <button type="button" onClick={handleCloseModal} className="popUpCancelButton">
-                Cancel
-              </button>
-              <button type="submit" className="popUpSaveButton">
-                Save Event
-              </button>
-            </div>
-          </form>
-        </div>
+      {/* Optional: Add a backdrop for modal */}
+      {isModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 999,
+          }}
+          onClick={handleCloseModal}
+        />
       )}
     </>
   );
