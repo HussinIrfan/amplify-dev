@@ -29,6 +29,7 @@ const useCalendar = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [eventId, setEventId] = useState<string | null>(null);
+  const [rsvpEvents, setRsvpEvents] = useState(false);
 
   // Fetch events from the database
   useEffect(() => {
@@ -209,6 +210,7 @@ const fetchUpdatedEvents = async () => {
 
   const handleCloseModalBasic = () => {
     setIsModalOpen(false);
+    setRsvpEvents(false);
     setSelectedEvent(null); // Clear selected event when modal is closed
   };
 
@@ -231,6 +233,13 @@ const fetchUpdatedEvents = async () => {
       setIsEditMode(true); // Set to edit mode when editing an existing event
     }
   };
+
+  const handleRSVPEvent= () => {
+    if (selectedEvent){
+      setRsvpEvents(true);
+      setIsModalOpen(true);
+    }
+  }
 
   const handleDeleteEventClick = async () => {
     if (
@@ -265,6 +274,8 @@ const fetchUpdatedEvents = async () => {
     mappedEvents,
     isEditMode,
     eventId,
+    rsvpEvents,
+    setRsvpEvents,
     setEventId,
     setIsModalOpen,
     setEventTitle,
@@ -285,6 +296,7 @@ const fetchUpdatedEvents = async () => {
     handleCloseModalBasic,
     handleEditEventClick,
     handleDeleteEventClick,
+    handleRSVPEvent,
   };
 };
 

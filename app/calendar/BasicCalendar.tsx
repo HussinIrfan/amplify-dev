@@ -9,9 +9,11 @@ export default function BasicCalendar() {
     selectedEvent,
     isModalOpen,
     mappedEvents,
+    rsvpEvents,
     setIsModalOpen,
     handleEventSelect,
     handleCloseModalBasic,
+    handleRSVPEvent,
   } = useCalendar(); // Only use selectedEvent and isModalOpen state
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function BasicCalendar() {
       />
 
       {/* Modal for viewing event details */}
-      {selectedEvent && (
+      {selectedEvent && !rsvpEvents && (
         <div className="divPopUp">
           <h3>Event Details</h3>
           <p><strong>Title:</strong> {selectedEvent.title}</p>
@@ -43,6 +45,9 @@ export default function BasicCalendar() {
           <p><strong>Location:</strong> {selectedEvent.location}</p>
           <p><strong>Details:</strong> {selectedEvent.details}</p>
           <div className="divButton">
+            <button type="button" onClick={handleRSVPEvent} className="popUpRSVPButton">
+              RSVP
+            </button>
             <button type="button" onClick={handleCloseModalBasic} className="popUpCancelButton">
               Close
             </button>
@@ -50,20 +55,20 @@ export default function BasicCalendar() {
         </div>
       )}
 
-      {/* Modal background */}
-      {isModalOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 999,
-          }}
-          onClick={handleCloseModalBasic}
-        />
+      {/* Modal for RSVPing to an event */}
+      {selectedEvent && rsvpEvents && isModalOpen &&(
+        <div className="divPopUp">
+          <h3>RSVP to Event</h3>
+          <p>Are you sure you want to RSVP to this event?</p>
+          <div className="divButton">
+            <button type="button" onClick={handleRSVPEvent} className="popUpRSVPButton">
+              RSVP
+            </button>
+            <button type="button" onClick={handleCloseModalBasic} className="popUpCancelButton">
+              Cancel
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
