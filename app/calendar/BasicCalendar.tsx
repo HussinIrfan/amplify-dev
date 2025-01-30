@@ -15,11 +15,8 @@ export default function BasicCalendar() {
   return (
     <CalendarLocal
       events={events}
-      views={{
-        month: true,
-        agenda: true,
-      }}
-      toolbar={true}
+      view={"month"}
+      toolbar={false}
     />
   );
 }

@@ -1,42 +1,7 @@
-.background-image-div{
-    position: absolute;   
-    top: 0;
-    left: 0;
-    width: 100vw;     
-    height: 100vh;     
-    background-size: cover;   
-    background-position: center; 
-    z-index: -1; /* Place the div behind other content */
-}
-
 /* Existing styles */
 .calendar-container {
     height: 80vh;
     margin-bottom: 60px;
-}
-
-.calendar-h1{
-    text-align: center;
-    margin: 10px;
-    padding: 10px;
-    align-content: center;
-    background-color: #030000;
-    color: #e9e7e7;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-size: 32px;
-    
-}
-
-.calendar-div {
-    margin: 100px;
-    padding: 20px;
-    width: 80vw;
-    align-content: center;
-    background-color: #f2f2f2;
-    /* Light gray background for better visibility */
-    color: #333;
-    border-radius: 5px;
 }
 
 .rbc-day-bg:hover {
