@@ -1,4 +1,4 @@
-import { Navbar, Link } from "@nextui-org/react"; // Ensure you have this library installed
+import { Navbar, Link } from "@nextui-org/react"; 
 import styles from './page.module.css'; // Import your CSS module
 import Image from 'next/image'; // Import Image from next/image
 import navbarImage from './navbarAssets/navbar_image.jpg'; // Adjust the path according to your folder structure
@@ -14,7 +14,7 @@ export default function CustomNavbar() {
           objectFit="cover" // Maintains aspect ratio while covering the space
           className={styles.navbarImage} // Add this for styling
         />
-        <div className={styles.overlayText}>South Lake Tahoe FireFighter's Foundation</div> {/* Add overlay text here */}
+        <div className={styles.overlayText}>South Lake Tahoe FireFighter's Foundation</div>
       </div>
       <Navbar className={styles.navbar}>
         <div className={styles.navbarContent}>
@@ -30,9 +30,15 @@ export default function CustomNavbar() {
           <Link className={styles.navbarItem} href="#">
             Calendar
           </Link>
-          <Link className={styles.navbarItem} href="/donation.html"> {/* Link to donation page */}
-            Donation
-          </Link>
+
+          {/* Dropdown menu for Donation */}
+          <div className={styles.dropdown}>
+            <Link className={styles.navbarItem} href="#">Donation</Link>
+            <div className={styles.dropdownContent}>
+              <Link className={styles.navbarItem} href="/donation.html">Donate Now</Link>
+            </div>
+          </div>
+
           <Link className={styles.navbarItem} href="#">
             Store
           </Link>
