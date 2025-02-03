@@ -30,7 +30,7 @@ export default function CustomNavbar() {
           <Link className={styles.navbarItem} href="#">
             Calendar
           </Link>
-          <Link className={styles.navbarItem} href="#">
+          <Link className={styles.navbarItem} href="/donation.html"> {/* Link to donation page */}
             Donation
           </Link>
           <Link className={styles.navbarItem} href="#">
