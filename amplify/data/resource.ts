@@ -14,22 +14,42 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
-    //Calendar tables
+     //Calendar tables
 
-    Event: a
-    .model({
-      eventTitle: a.string(),
-      eventStartDate: a.date(),
-      eventEndDate: a.date(),
-      eventStartTime: a.time(),
-      eventEndTime: a.time(),
-      eventLocation: a.string(),
-      eventDetails: a.string(),
-      addentees: a.email(),
-      allday: a.boolean(),
-
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+     Event: a
+     .model({
+       eventTitle: a.string(),
+       eventStartDate: a.date(),
+       eventEndDate: a.date(),
+       eventStartTime: a.time(),
+       eventEndTime: a.time(),
+       eventLocation: a.string(),
+       eventDetails: a.string(),
+       allday: a.boolean(),
+       attendents: a.hasMany('EventAttentants', 'eventId'),
+ 
+     })
+     .authorization((allow) => [allow.publicApiKey()]),
+ 
+     Attendee: a
+     .model({
+       nameFirst: a.string(),
+       nameLast: a.string(),
+       phoneNumber: a.string(),
+       email: a.email(),
+       partySize: a.integer(),
+       events: a.hasMany('EventAttentants', 'attendeeId'),
+ 
+     }).authorization((allow) => [allow.publicApiKey()]),
+ 
+     EventAttentants: a
+     .model({
+       eventId: a.id().required(),
+       attendeeId: a.id().required(),
+       event: a.belongsTo('Event', 'eventId'),
+       attendee: a.belongsTo('Attendee', 'attendeeId'),
+ 
+     }).authorization((allow) => [allow.publicApiKey()]),
 
     aboutUs: a
     .model({
