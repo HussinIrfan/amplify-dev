@@ -25,7 +25,7 @@ export default function CalendarPage() {
             />
             </div>
         <div className="calendar-div">
-          <h2 className="calendar-h1">Calendar</h2>
+          <h2 className="calendar-h1">Event Calendar</h2>
           <div className="calendar-container">
             <BasicCalendar />
           </div>
