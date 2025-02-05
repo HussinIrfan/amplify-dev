@@ -75,6 +75,19 @@
   transform: scale(1.1); 
 }
 
+.fbLink {
+  position: absolute;
+  right: 4rem;
+}
+
+.fbLogo {
+  object-fit: contain; 
+}
+
+.fbLogo:hover {
+  transform: scale(1.1); 
+}
+
 /* Mobile Menu Styles */
 .mobileMenuButton {
   display: none; /* Hide by default */
