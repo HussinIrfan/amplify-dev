@@ -2,7 +2,7 @@ import { Navbar, Link } from "@nextui-org/react"; // Ensure you have this librar
 import styles from './page.module.css'; // Import your CSS module
 import Image from 'next/image'; // Import Image from next/image
 import navbarImage from './navbarAssets/navbar_image.jpg'; // Adjust the path according to your folder structure
-import logoImage from './navbarAssets/sltfflogo.png';
+import logoImage from './navbarAssets/sltffcharacter.png';
 import instaLogo from './navbarAssets/instaLogo.png';
 export default function CustomNavbar() {
   return (
