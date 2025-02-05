@@ -267,8 +267,8 @@
 
 .textContainer {
   position: absolute;
-  bottom: 10px; /* Adjust positioning */
-  left: 50%;
+  bottom: 0px; /* Adjust positioning */
+  left: 49%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -277,7 +277,7 @@
 }
 .overlayText {
   color: white; /* Text color */
-  font-size: 3rem; /* Adjust font size as needed */
+  font-size: 5rem; /* Adjust font size as needed */
   text-align: center; /* Center text */
   z-index: 10; /* Ensure it's above the image */
   white-space: nowrap; /* Prevents text wrapping */
