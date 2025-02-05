@@ -8,7 +8,7 @@
   left: 0; /* Align to the left */
   overflow: visible; /* Prevents content from overflowing */
   background-color: white; /* Background color */
-  z-index: 0; /* Ensures the navbar stays above other content */
+  z-index: 1000; /* Ensures the navbar stays above other content */
 }
 
 /* Ensure the image container has no margin or padding */
@@ -143,5 +143,6 @@
     color: white; /* Text color */
     font-size: 1.5rem; /* Font size */
     cursor: pointer; /* Pointer cursor on hover */
+    
   }
 }
