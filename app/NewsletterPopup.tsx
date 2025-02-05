@@ -71,7 +71,7 @@ const styles = {
   },
   cardHeader: {
     textAlign: "center" as const,
-    backgroundColor: "rgba(252, 229, 25, 0.89)",
+    backgroundColor: "rgba(242, 169, 0, 1)",
     color: "black",
     padding: "30px",
     height: "45px",
@@ -106,7 +106,7 @@ const styles = {
   button: {
     border: "none",
     outline: "none",
-    backgroundColor: "rgba(252, 229, 25, 0.89)",
+    backgroundColor: "rgba(242, 169, 0, 1)",
     color: "black",
     padding: "12px 20px",
     marginLeft: "10px",

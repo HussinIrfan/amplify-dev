@@ -8,10 +8,10 @@ import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import Link from "next/link";
 
-import CustomNavbar from "./CustomNavbar";
+import CustomNavbar from "./customNavbar/CustomNavbar";
 
-import HPheader from "./HPheader";
-import ImageCarousel from "./ImageCarousel";
+import HPheader from "./homepage/HPheader";
+import ImageCarousel from "./homepage/ImageCarousel";
 import NewsletterPopup from "./NewsletterPopup";
 import ContactInfoBox from "./components/ContactInfoBox";
 import ContactUs from "./components/ContactUs";
