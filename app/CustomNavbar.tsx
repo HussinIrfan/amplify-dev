@@ -3,7 +3,21 @@ import styles from './CustomNavbar.module.css';
 import Image from 'next/image';
 import navbarIMG from './navbarAssets/navbarBG.png';
 import instaLogo from './navbarAssets/instaLogo.png';
+import fbLogo from './navbarAssets/fbLogo.png';
+import { useState } from 'react';
+
 export default function CustomNavbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    console.log("Mobile menu toggled:", !isMobileMenuOpen); // Debugging
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -16,41 +30,59 @@ export default function CustomNavbar() {
           />
         </div>
 
-      <Navbar className={styles.navbar}>
-        <div className={styles.navbarContent}>
+        <Navbar className={styles.navbar}>
+          <div className={styles.navbarContent}>
+            {/* Hamburger Menu Button */}
+            <button className={styles.mobileMenuButton} onClick={toggleMobileMenu}>
+              ☰
+            </button>
 
-          <Link className={styles.navbarItem} href="#">
-            About Us
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Our Work
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            News
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Calendar
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Donation
-          </Link>
-          <Link className={styles.navbarItem} href="/admin">
-            Store
-          </Link>
+            {/* Navbar Links */}
+            <div className={`${styles.navbarLinks} ${isMobileMenuOpen ? styles.open : ''}`}>
+              <Link className={styles.navbarItem} href="/" onClick={closeMobileMenu}>
+                Home
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                About Us
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                Our Work
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                News
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                Calendar
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                Donation
+              </Link>
+              <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
+                Store
+              </Link>
+            </div>
 
-          <Link className={styles.instaLink} href = "https://instagram.com" target="_blank" rel="noopener noreferrer">
-          
-            <Image 
-              src={instaLogo} 
-              alt="Instagram" 
-              width={30} 
-              height={30}
-              className={styles.instaLogo} // Add styling class for further customization
-            />
-          
-          </Link>
-        </div>
-      </Navbar>
+            {/* Instagram Link */}
+            <Link className={styles.instaLink} href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <Image
+                src={instaLogo}
+                alt="Instagram"
+                width={30}
+                height={30}
+                className={styles.instaLogo}
+              />
+            </Link>
+            <Link className={styles.fbLink} href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <Image
+                src={fbLogo}
+                alt="Facebook"
+                width={30}
+                height={30}
+                className={styles.fbLogo}
+              />
+            </Link>
+          </div>
+        </Navbar>
       </div>
     </>
   );
