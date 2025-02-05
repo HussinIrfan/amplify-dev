@@ -1,37 +1,20 @@
-import { Navbar, Link } from "@nextui-org/react"; // Ensure you have this library installed
-import styles from './page.module.css'; // Import your CSS module
-import Image from 'next/image'; // Import Image from next/image
-import navbarImage from './navbarAssets/navbar_image.jpg'; // Adjust the path according to your folder structure
-import logoImage from './navbarAssets/firelogo.png';
+import { Navbar, Link } from "@nextui-org/react";
+import styles from './CustomNavbar.module.css';
+import Image from 'next/image';
+import navbarIMG from './navbarAssets/navbarBG.png';
 import instaLogo from './navbarAssets/instaLogo.png';
 export default function CustomNavbar() {
   return (
     <>
-    <div className = {styles.container}>
-      <div className={styles.imageContainer}>
-        
-        <Image 
-          src={navbarImage} 
-          alt="Navbar" 
-          layout="responsive" // Makes the image responsive
-          objectFit="cover" // Maintains aspect ratio while covering the space
-          className={styles.navbarImage} // Add this for styling
-        />
-      <div className={styles.textContainer}>
-        <Link href ="/" className={styles.logoLink}>
-            <Image
-              src ={logoImage}
-              alt = "Logo"
-              width={180}
-              height={160}
-            
-            
-            />
-        </Link>
-
-        <div className={styles.overlayText}>South Lake Tahoe FireFighter's Foundation</div> {/* Add overlay text here */}
-      </div>
-      </div>
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <Image
+            src={navbarIMG}
+            alt="Navbar"
+            layout="responsive"
+            objectFit="cover"
+          />
+        </div>
 
       <Navbar className={styles.navbar}>
         <div className={styles.navbarContent}>
