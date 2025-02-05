@@ -1,9 +1,7 @@
 import { Navbar, Link } from "@nextui-org/react";
 import styles from './CustomNavbar.module.css';
 import Image from 'next/image';
-import navbarImage from './navbarAssets/navbar_image.jpg';
-import navbarIMGTest from './navbarAssets/navbarIMGTest.png';
-import logoImage from './navbarAssets/firelogo.png';
+import navbarIMG from './navbarAssets/navbarBG.png';
 import instaLogo from './navbarAssets/instaLogo.png';
 import { useState } from 'react';
 
@@ -24,7 +22,7 @@ export default function CustomNavbar() {
       <div className={styles.container}>
         <div className={styles.imageContainer}>
           <Image
-            src={navbarIMGTest}
+            src={navbarIMG}
             alt="Navbar"
             layout="responsive"
             objectFit="cover"
