@@ -9,7 +9,6 @@ import firefighters3Image from "../homepageAssets/carousel3.jpeg";
 const images = [
   {
     src: firefighters1Image,
-    className: styles.imageOne, // Unique class for positioning
     title: "Support South Lake Tahoe Firefighters",
     description:
       "Your contribution helps provide vital equipment, training, and resources to keep our community safe and our firefighters ready for action.",
@@ -17,7 +16,6 @@ const images = [
   },
   {
     src: firefighters2Image,
-    className: styles.imageTwo, // Unique class for positioning
     title: "Firefighter Apparel and Gear",
     description:
       "Shop our official merchandise to support our firefighters. Proceeds fund critical programs and essential tools.",
@@ -25,7 +23,6 @@ const images = [
   },
   {
     src: firefighters3Image,
-    className: styles.imageThree, // Unique class for positioning
     title: "Stay Connected",
     description:
       "Join our newsletter to receive updates on firefighter stories, upcoming events, and how you can help protect our community.",
@@ -56,7 +53,7 @@ const ImageCarousel = () => {
           alt={images[currentIndex].title}
           layout="fill"
           objectFit="cover"
-          className={`${styles.carouselImage} ${images[currentIndex].className}`} // Apply custom class here
+          className={`${styles.carouselImage} ${images[currentIndex]}`} // Apply custom class here
         />
         <div className={styles.overlay}>
           <h2 className={styles.title}>{images[currentIndex].title}</h2>

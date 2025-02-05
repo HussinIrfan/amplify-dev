@@ -12,7 +12,7 @@ import CustomNavbar from "./customNavbar/CustomNavbar";
 
 import HPheader from "./homepage/HPheader";
 import ImageCarousel from "./homepage/ImageCarousel";
-import NewsletterPopup from "./NewsletterPopup";
+import NewsletterPopup from "./homepage/Newsletter";
 import ContactInfoBox from "./components/ContactInfoBox";
 import ContactUs from "./components/ContactUs";
 
