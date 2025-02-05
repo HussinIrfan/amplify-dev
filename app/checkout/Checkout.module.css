@@ -1,0 +1,87 @@
+.checkoutContainer {
+    padding: 2rem;
+    max-width: 1400px; /* Increased width */
+    margin: 0 auto;
+  }
+  
+  .heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  
+  .heading::after {
+    content: '';
+    display: block;
+    height: 5px;
+    width: 100px;
+    background-color: #fdd835; /* Yellow bar */
+    margin: 1.5rem auto 0;
+  }
+  
+  .gridContainer {
+    display: grid;
+    grid-template-columns: 3fr 2fr; /* Adjusted column widths */
+    gap: 2rem;
+  }
+  
+  .billingDetails,
+  .orderSummary {
+    background-color: #f2f2f2;
+    padding: 2rem; /* Increased padding for more space */
+    border-radius: 8px;
+  }
+  
+  .paymentSection {
+    margin-top: 1.5rem;
+    background-color: #f2f2f2;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .differentShippingAddress {
+    margin-top: 1.5rem;
+    background-color: #f2f2f2;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .sectionHeading {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.2rem;
+  }
+  
+  .form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .orderDetails p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .placeOrderButton {
+    width: 100%;
+    padding: 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
