@@ -37,6 +37,7 @@ export default function CustomNavbar() {
               ☰
             </button>
 
+
             {/* Navbar Links */}
             <div className={`${styles.navbarLinks} ${isMobileMenuOpen ? styles.open : ''}`}>
               <Link className={styles.navbarItem} href="/" onClick={closeMobileMenu}>

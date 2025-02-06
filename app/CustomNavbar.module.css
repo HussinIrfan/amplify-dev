@@ -2,7 +2,8 @@
 
 /* Navbar Container */
 .container {
-  width: 100%; /* Full width */
+  width: 100vw; /* Full width */
+  max-width: 100%; /* Ensures no extra width */
   top: 0; /* Align to the top */
   left: 0; /* Align to the left */
   overflow: visible; /* Prevents content from overflowing */
@@ -25,6 +26,7 @@
   padding: 0; /* No padding */
   margin: 0; /* No margin */
   width: 100%; /* Full width */
+  max-width: 100%; /* Ensures no extra width */
   position: relative; 
   z-index: 1000; /* Ensures the navbar stays above other content */
   top: 0; /* Align to the top */
@@ -35,6 +37,7 @@
   justify-content: center; /* Space out items evenly */
   align-items: center; /* Center items vertically */
   width: 100%; /* Full width */
+  max-width: 100%; /* Ensures no extra width */
   padding: 0 1rem; /* Add padding for better spacing */
   position: relative;
 }
@@ -115,6 +118,7 @@
     top: 100%; 
     left: 0; 
     width: 100%; 
+    max-width: 100%; /* Ensures no extra width */
     background-color: black; 
     padding: 1rem;
     transition: opacity 0.3s ease, transform 0.3s ease; 
