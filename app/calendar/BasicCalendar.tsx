@@ -23,6 +23,7 @@ export default function BasicCalendar() {
   }, [selectedEvent, setIsModalOpen]);
 
   return (
+
     <>
       <CalendarLocal
         views={{

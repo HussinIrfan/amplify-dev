@@ -48,7 +48,7 @@ export default function CustomNavbar() {
           <Link className={styles.navbarItem} href="#">
             News
           </Link>
-          <Link className={styles.navbarItem} href="#">
+          <Link className={styles.navbarItem} href="/calendar">
             Calendar
           </Link>
           <Link className={styles.navbarItem} href="#">
