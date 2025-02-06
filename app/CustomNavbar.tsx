@@ -1,73 +1,89 @@
-import { Navbar, Link } from "@nextui-org/react"; // Ensure you have this library installed
-import styles from './page.module.css'; // Import your CSS module
-import Image from 'next/image'; // Import Image from next/image
-import navbarImage from './navbarAssets/navbar_image.jpg'; // Adjust the path according to your folder structure
-import logoImage from './navbarAssets/firelogo.png';
+import { Navbar, Link } from "@nextui-org/react";
+import styles from './CustomNavbar.module.css';
+import Image from 'next/image';
+import navbarIMG from './navbarAssets/navbarBG.png';
 import instaLogo from './navbarAssets/instaLogo.png';
+import fbLogo from './navbarAssets/fbLogo.png';
+import { useState } from 'react';
+
 export default function CustomNavbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    console.log("Mobile menu toggled:", !isMobileMenuOpen); // Debugging
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
-    <div className = {styles.container}>
-      <div className={styles.imageContainer}>
-        
-        <Image 
-          src={navbarImage} 
-          alt="Navbar" 
-          layout="responsive" // Makes the image responsive
-          objectFit="cover" // Maintains aspect ratio while covering the space
-          className={styles.navbarImage} // Add this for styling
-        />
-      <div className={styles.textContainer}>
-        <Link href ="/" className={styles.logoLink}>
-            <Image
-              src ={logoImage}
-              alt = "Logo"
-              width={180}
-              height={160}
-            
-            
-            />
-        </Link>
-
-        <div className={styles.overlayText}>South Lake Tahoe FireFighter's Foundation</div> {/* Add overlay text here */}
-      </div>
-      </div>
-
-      <Navbar className={styles.navbar}>
-        <div className={styles.navbarContent}>
-
-          <Link className={styles.navbarItem} href="#">
-            About Us
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Our Work
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            News
-          </Link>
-          <Link className={styles.navbarItem} href="/calendar">
-            Calendar
-          </Link>
-          <Link className={styles.navbarItem} href="#">
-            Donation
-          </Link>
-          <Link className={styles.navbarItem} href="/admin">
-            Store
-          </Link>
-
-          <Link className={styles.instaLink} href = "https://instagram.com" target="_blank" rel="noopener noreferrer">
-          
-            <Image 
-              src={instaLogo} 
-              alt="Instagram" 
-              width={30} 
-              height={30}
-              className={styles.instaLogo} // Add styling class for further customization
-            />
-          
-          </Link>
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <Image
+            src={navbarIMG}
+            alt="Navbar"
+            layout="responsive"
+            objectFit="cover"
+          />
         </div>
-      </Navbar>
+
+        <Navbar className={styles.navbar}>
+          <div className={styles.navbarContent}>
+            {/* Hamburger Menu Button */}
+            <button className={styles.mobileMenuButton} onClick={toggleMobileMenu}>
+              ☰
+            </button>
+
+
+            {/* Navbar Links */}
+            <div className={`${styles.navbarLinks} ${isMobileMenuOpen ? styles.open : ''}`}>
+              <Link className={styles.navbarItem} href="/" onClick={closeMobileMenu}>
+                Home
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                About Us
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                Our Work
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                News
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                Calendar
+              </Link>
+              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+                Donation
+              </Link>
+              <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
+                Store
+              </Link>
+            </div>
+
+            {/* Instagram Link */}
+            <Link className={styles.instaLink} href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <Image
+                src={instaLogo}
+                alt="Instagram"
+                width={30}
+                height={30}
+                className={styles.instaLogo}
+              />
+            </Link>
+            <Link className={styles.fbLink} href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <Image
+                src={fbLogo}
+                alt="Facebook"
+                width={30}
+                height={30}
+                className={styles.fbLogo}
+              />
+            </Link>
+          </div>
+        </Navbar>
       </div>
     </>
   );
