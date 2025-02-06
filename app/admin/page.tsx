@@ -1,6 +1,6 @@
 "use client";
 
-import CustomNavbar from "../CustomNavbar";
+import CustomNavbar from "../customNavbar/CustomNavbar";
 import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "./admin.css";

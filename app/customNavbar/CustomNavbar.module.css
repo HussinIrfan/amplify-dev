@@ -1,0 +1,148 @@
+/* Navbar.module.css */
+
+/* Navbar Container */
+.container {
+  width: 100vw; /* Full width */
+  max-width: 100%; /* Ensures no extra width */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  overflow: visible; /* Prevents content from overflowing */
+  background-color: white; /* Background color */
+  z-index: 1000; /* Ensures the navbar stays above other content */
+}
+
+/* Ensure the image container has no margin or padding */
+.imageContainer {
+  display: block; 
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  line-height: 0; 
+}
+
+
+/* Navbar Styles */
+.navbar {
+  background-color: black; /* Navbar background color */
+  padding: 0; /* No padding */
+  margin: 0; /* No margin */
+  width: 100%; /* Full width */
+  max-width: 100%; /* Ensures no extra width */
+  position: relative; 
+  z-index: 1000; /* Ensures the navbar stays above other content */
+  top: 0; /* Align to the top */
+}
+
+.navbarContent {
+  display: flex; 
+  justify-content: center; /* Space out items evenly */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Full width */
+  max-width: 100%; /* Ensures no extra width */
+  padding: 0 1rem; /* Add padding for better spacing */
+  position: relative;
+}
+
+.navbarLinks {
+  display: flex; 
+  gap: 1rem; /* Space between links */
+  margin: 0 auto; /* Center the links */
+}
+
+.navbarItem {
+  color: white; 
+  text-decoration: none; 
+  padding: 0.5rem 1rem; 
+  transition: background-color 0.3s, transform 0.3s; /* Smooth hover effects */
+  font-size: 1rem; 
+  font-weight: bold; 
+}
+
+.navbarItem:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+  transform: scale(1.05); 
+}
+
+.instaLink {
+  position: absolute;
+  right: 1rem;
+}
+
+.instaLogo {
+  object-fit: contain; 
+}
+
+.instaLogo:hover {
+  transform: scale(1.1); 
+}
+
+.fbLink {
+  position: absolute;
+  right: 4rem;
+}
+
+.fbLogo {
+  object-fit: contain; 
+}
+
+.fbLogo:hover {
+  transform: scale(1.1); 
+}
+
+/* Mobile Menu Styles */
+.mobileMenuButton {
+  display: none; /* Hide by default */
+  background: none; 
+  border: none; 
+  color: white; 
+  font-size: 1.5rem; 
+  cursor: pointer; 
+}
+
+/*max width set to 825 because thats when insta button starts to overlap*/
+@media (max-width: 825px) {
+  .overlayText {
+    font-size: 1.5rem; 
+    white-space: wrap; 
+  }
+
+  .navbarItem {
+    padding: 0.5rem; 
+    text-align: center; 
+  }
+
+
+  .navbarLinks {
+    display: none; /* Hide by default on mobile */
+    flex-direction: column; 
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    width: 100%; 
+    max-width: 100%; /* Ensures no extra width */
+    background-color: black; 
+    padding: 1rem;
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+    opacity: 0; 
+    transform: translateY(-10px); 
+    z-index: 1000; 
+    height: calc(100vh - 100%); /* Cover remaining screen height */
+    overflow-y: auto; /* Enable scrolling if links overflow */
+  }
+
+  .navbarLinks.open {
+    display: flex; 
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hamburger Menu Button*/
+  .mobileMenuButton {
+    display: block; /* Show hamburger menu button */
+    background: none; /* No background */
+    border: none; /* No border */
+    color: white; /* Text color */
+    font-size: 1.5rem; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    
+  }
+}

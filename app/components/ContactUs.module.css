@@ -1,9 +1,11 @@
 /* app/components/ContactUs.module.css */
 .contactContainer {
-    max-width: 600px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
+    border-top: 5px solid #f0c040;
+    border-bottom: 5px solid #f0c040;
   }
   
   .contactInfo {
