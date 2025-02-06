@@ -32,10 +32,13 @@ export default function App() {
       <NewsletterPopup />
       <ContactUs/>
       
+      
       {/* Link to the login page */}
+      
       
       <Link href="/login">Go to Login Page</Link>
       <ContactInfoBox />
+     
      
 
       
