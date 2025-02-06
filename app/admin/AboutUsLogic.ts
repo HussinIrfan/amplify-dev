@@ -9,28 +9,27 @@ Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export function useAboutUsLogic() {
+  const { sanitizeInput } = Sanitize();
 
-    const { sanitizeInput} = Sanitize();
+  const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
+  const [editingEmps, setEditingEmps] = useState<
+    Map<string, Schema["aboutUs"]["type"]>
+  >(new Map());
 
-    const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
-    const [editingEmps, setEditingEmps] = useState<
-      Map<string, Schema["aboutUs"]["type"]>
-    >(new Map());
-
-    const [picture, setPicture] = useState("");
+  const [picture, setPicture] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-    // Function to list existing "About Us" entries
-    function listAboutUs() {
-        client.models.aboutUs.observeQuery().subscribe({
-          next: (data) => setEmp([...data.items]),
-          error: (err) => console.log(err),
-        });
-      }
+  // Function to list existing "About Us" entries
+  function listAboutUs() {
+    client.models.aboutUs.observeQuery().subscribe({
+      next: (data) => setEmp([...data.items]),
+      error: (err) => console.log(err),
+    });
+  }
 
-        // UseEffect to fetch initial data
+  // UseEffect to fetch initial data
   useEffect(() => {
     listAboutUs();
   }, []);
@@ -54,7 +53,7 @@ export function useAboutUsLogic() {
     } catch (error) {
       console.error("Error creating entry:", error);
     }
-  };
+  }
 
   // Submit handler for creating new About Us entry
   function handleAboutUsSubmit(event: React.FormEvent) {
@@ -64,10 +63,10 @@ export function useAboutUsLogic() {
     setName("");
     setTitle("");
     setDescription("");
-  };
+  }
 
-// Handle changes made in the editing form
-const handleEditChangeEmp = (key: string, field: string, value: string) => {
+  // Handle changes made in the editing form
+  const handleEditChangeEmp = (key: string, field: string, value: string) => {
     const sanitizedValue = sanitizeInput(value);
     setEditingEmps((prev) => {
       const emp = prev.get(key);
@@ -81,8 +80,8 @@ const handleEditChangeEmp = (key: string, field: string, value: string) => {
     });
   };
 
-// Handle saving all the edits to the database
-const handleSaveChangesEmp = async (empId: string) => {
+  // Handle saving all the edits to the database
+  const handleSaveChangesEmp = async (empId: string) => {
     if (window.confirm("Are you sure you want to save changes?")) {
       try {
         const updatedEmp = editingEmps.get(empId);
@@ -146,7 +145,7 @@ const handleSaveChangesEmp = async (empId: string) => {
     }
   };
 
-return{
+  return {
     emps,
     editingEmps,
     picture,
@@ -163,5 +162,5 @@ return{
     handleEditToggleEmp,
     handleCancelEditEmp,
     deleteEntry,
-}
+  };
 }
