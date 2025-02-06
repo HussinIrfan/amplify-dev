@@ -1,0 +1,93 @@
+/* NewsletterPopup.css */
+
+/* General Container Style */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40vh;
+    background-color: white;
+    background-size: cover;
+    margin: 0;
+  }
+  
+  /* Card Styles */
+  .card {
+    background-color: white;
+    max-width: 1850px;
+    border-radius: 20px;
+    border: 1px solid black;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Card Header Style */
+  .card-header {
+    text-align: center;
+    background-color: rgba(252, 229, 25, 0.89);
+    color: black;
+    padding: 30px;
+    height: 45px;
+    margin: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Header Text Style */
+  .header-text {
+    margin-top: 0;
+    font-size: 23px;
+    line-height: 1.5;
+  }
+  
+  /* Card Body Style */
+  .card-body {
+    padding: 20px;
+  }
+  
+  /* Input Container Style */
+  .input-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    flex-direction: row-reverse;
+  }
+  
+  /* Input Style */
+  .input {
+    padding: 10px 15px;
+    outline: none;
+    border: 1px solid grey;
+    font-family: inherit;
+  }
+  
+  /* Button Style */
+  .button {
+    border: none;
+    outline: none;
+    background-color: rgba(252, 229, 25, 0.89);
+    color: black;
+    padding: 12px 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    box-shadow: none;
+  }
+  
+  /* Button Hover Effect */
+  .button:hover {
+    box-shadow: 0 0 0 5px black;
+    transition: all 0.3s ease;
+  }
+  
+  /* Note Style */
+  .note {
+    text-align: center;
+  }
+  
