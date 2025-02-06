@@ -7,13 +7,69 @@ specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
-  Todo: a
+  Subscribers: a
     .model({
-      content: a.string(),
-      isDone: a.boolean(), // Add this field
+      email: a.email(),
+      //customer: a.belongsTo("User", "emailID"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
-});
+
+     //Calendar tables
+
+     Event: a
+     .model({
+       eventTitle: a.string(),
+       eventStartDate: a.date(),
+       eventEndDate: a.date(),
+       eventStartTime: a.time(),
+       eventEndTime: a.time(),
+       eventLocation: a.string(),
+       eventDetails: a.string(),
+       allday: a.boolean(),
+       attendents: a.hasMany('EventAttentants', 'eventId'),
+ 
+     })
+     .authorization((allow) => [allow.publicApiKey()]),
+ 
+     Attendee: a
+     .model({
+       nameFirst: a.string(),
+       nameLast: a.string(),
+       phoneNumber: a.string(),
+       email: a.email(),
+       partySize: a.integer(),
+       events: a.hasMany('EventAttentants', 'attendeeId'),
+ 
+     }).authorization((allow) => [allow.publicApiKey()]),
+ 
+     EventAttentants: a
+     .model({
+       eventId: a.id().required(),
+       attendeeId: a.id().required(),
+       event: a.belongsTo('Event', 'eventId'),
+       attendee: a.belongsTo('Attendee', 'attendeeId'),
+ 
+     }).authorization((allow) => [allow.publicApiKey()]),
+
+    aboutUs: a
+    .model({
+      picture: a.string(),
+      name: a.string(),
+      title: a.string(),
+      description: a.string(),
+
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+    ourWork: a
+    .model({
+      picture: a.string(),
+      business: a.string(),
+      description: a.string(),
+
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+  });
 
 export type Schema = ClientSchema<typeof schema>;
 
