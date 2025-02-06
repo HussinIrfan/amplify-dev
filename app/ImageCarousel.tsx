@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./ImageCarousel.module.css";
 import firefighters1Image from "./homepageAssets/firefighters1.jpg";
@@ -46,6 +46,16 @@ const ImageCarousel = () => {
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
+
+  // Automatically change the image every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className={styles.carouselContainer}>

@@ -51,6 +51,13 @@
     background-color: #63b5db;
 }
 
+.rbc-toolbar-label{
+    flex-grow: 20;
+    padding: 0 10px;
+    text-align: center;
+    font-size: larger;
+}
+
 .divButton {
     display: flex;
     justify-content: flex-end;
@@ -134,21 +141,35 @@
     margin-bottom: 10px;
 }
 
-/* Optional button styles for spacing */
-.popUpSaveButton,
-.popUpCancelButton {
+.popUpSaveButton {
+    background-color: #4CAF50;
+    color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
 }
 
-.popUpSaveButton {
-    background-color: #4CAF50;
-    color: white;
-}
-
 .popUpCancelButton {
     background-color: #ccc;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.popUpDeleteButton {
+    background-color: #d91313;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.popUpRSVPButton{
+    background-color: #f5c71a;
+    color: black;
+}
+
+.popUpRSVPButton:hover {
+    background-color: #997b03;
 }
 
 /* Style for the All Day toggle switch */
@@ -158,3 +179,16 @@
     gap: 10px;
     margin-bottom: 15px;
 }
+
+/* Modal background */
+.modalBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+  
