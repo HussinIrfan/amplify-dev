@@ -1,0 +1,10 @@
+.hp-header {
+    font-family: 'Jura', sans-serif; /* Font family */
+    font-size: 30px; /* Font size */
+    font-weight: bold; /* Font weight */
+    color: #000000; /* Text color */
+    text-align: center; /* Center align the text */
+    margin-top: 20px; /* Adjust as needed for equal spacing above */
+    margin-bottom: 40px; /* Adjust as needed for equal spacing below */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Drop shadow effect */
+  }

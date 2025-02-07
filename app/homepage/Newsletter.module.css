@@ -1,0 +1,110 @@
+/* Main container for centering the popup */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+  background-color: white;
+  background-size: cover;
+  margin: 40px 0; /* Added margin for top and bottom gap */
+}
+
+/* Card style */
+.card {
+  background-color: white;
+  width: 100%; /* Ensure it takes full width in mobile */
+  max-width: 600px; /* For mobile view */
+  border-radius: 20px;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+/* Desktop view (larger than 768px) */
+@media (min-width: 768px) {
+  .card {
+    max-width: 1200px; /* Increase width for larger screens */
+  }
+}
+
+/* Header style */
+.cardHeader {
+  text-align: center;
+  background-color: #f0c040;
+  color: black;
+  padding: 30px;
+  height: 45px;
+  margin: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerText {
+  margin-top: 0;
+  font-size: 23px;
+  line-height: 1.5;
+  
+}
+
+/* Body of the card */
+.cardBody {
+  padding: 20px;
+  text-align: center
+}
+
+/* Input and button container */
+.inputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Stacking email and button vertically */
+  margin-top: 20px;
+}
+
+/* Container for first name and last name fields */
+.nameFields {
+  display: flex;
+  justify-content: space-between; /* Spread fields apart */
+}
+
+/* Input field */
+.input {
+  padding: 10px 15px;
+  outline: none;
+  border: 1px solid grey;
+  font-family: inherit;
+  margin-bottom: 10px; /* Space between input fields */
+  width: 48%; /* Adjusted for side-by-side layout */
+}
+
+/* Email field now spans full width */
+.emailInput {
+  width: 100%; /* Full width minus padding for alignment */
+  margin-bottom: 10px;
+}
+
+/* Button style */
+.button {
+  border: none;
+  outline: none;
+  background-color: #f0c040;
+  color: black;
+  font-weight: bold;
+  padding: 12px 20px;
+  margin-top: 10px; /* Space from input fields */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+.button:hover {
+  background-color: #e0b030;
+}
+
+/* Note text */
+.note {
+  text-align: center;
+  margin-top: 10px;
+}
