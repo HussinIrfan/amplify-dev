@@ -15,6 +15,7 @@ import ImageCarousel from "./homepage/ImageCarousel";
 import NewsletterPopup from "./homepage/Newsletter";
 import ContactInfoBox from "./components/ContactInfoBox";
 import ContactUs from "./components/ContactUs";
+//TESTING ;MERGES
 
 Amplify.configure(outputs);
 
