@@ -1,14 +1,43 @@
 .product_page_wrapper {
     display: flex;
     flex-direction: column;
-    gap: 80px;
+    align-items: center;
+    gap: 70px; 
     padding: 2%;
 }
 
 .product_details {
-    padding-left: 15%;
     width: 100%;
-    padding: 32 px;
+    max-width: 1200px;
+    padding: 0 32px;
     display: flex;
-    gap: 64px;
+    gap: 16px; 
+    justify-content: center;
+    align-items: flex-start; 
+}
+
+/* Title Styling */
+.product_page_wrapper .title_page {
+    font-size: 50px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Keeps the gallery and product description sizes unchanged */
+.product_details > * {
+    flex: 1; 
+    max-width: 50%; 
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .product_details {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px; 
+    }
+
+    .product_details > * {
+        max-width: 100%;
+    }
 }
