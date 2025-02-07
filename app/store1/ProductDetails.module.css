@@ -25,13 +25,37 @@
 
 
 .product_details .description {
+    background-color: rgb(233, 233, 233);
     text-align: left;
     width: 100%;
     word-wrap: break-word; 
-    padding-right: 20px; 
-    padding-left: 20px; 
+    padding: 5px;
     overflow-wrap: break-word; 
 }
+
+.product_details .sizing_buttons {
+    display: flex; 
+    gap: 8px; 
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(233, 233, 233);
+    padding: 15px;
+}
+
+.product_details .size {
+    background-color: rgb(197, 197, 197);
+    color: black;
+    padding: 10px 16px;
+    border: none; 
+    border-radius: 0; 
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.product_details .size:hover {
+    background-color: rgb(200, 200, 200);
+}
+
 
 
 .product_details div {
@@ -144,7 +168,7 @@
     }
 
     .product_details .btn-wrapper {
-        width: 100%;
+        width: 40%;
         padding: 10px;
     }
 }
