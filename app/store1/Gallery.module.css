@@ -6,13 +6,13 @@
 }
 
 .main_image {
-    background: #050505;
     width: 100%;
     height: auto; 
     max-height: 500px; 
     aspect-ratio: 16 / 9; 
     object-fit: cover;
     margin: auto;
+    padding-bottom: 100px;
 }
 
 /* Responsive styles */
