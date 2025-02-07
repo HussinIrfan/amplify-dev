@@ -1,0 +1,21 @@
+Cited website:
+    https://dev.to/martinpersson/react-material-ui-create-a-dynamic-calendar-with-integrated-todos-6cm
+
+Dependencies needed for the calendar folder
+1. Material-UI components (@mui/material and @mui/icons-material) for the UI.
+    
+2. Emotion (@emotion/react and @emotion/styled) for additional styling capabilities.
+
+3. Date-fns (date-fns) for date manipulations.
+
+4. React Big Calendar (react-big-calendar) for the main calendar functionalities.
+
+5. React Colorful (react-colorful) for a color picker.
+
+Commands to install
+    MUI and Emotion
+        npm install @mui/material@5.14.6 @mui/icons-material@5.14.6 @emotion/react@11.11.1 @emotion/styled@11.11.0
+
+    Date manipulation, calendar functionality, and a color picker.
+        npm install date-fns@2.30.0 react-big-calendar@1.8.2 react-colorful@5.6.1 @mui/x-date-pickers@5.0.12 @types/react-big-calendar
+
