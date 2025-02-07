@@ -1,5 +1,5 @@
 //NOTE: REMOVE IMAGE STYLES 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./ImageCarousel.module.css";
 import firefighters1Image from "../homepageAssets/carousel1.jpeg";
