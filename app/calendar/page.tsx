@@ -1,6 +1,6 @@
 "use client";
 
-import CustomNavbar from "../CustomNavbar";
+import CustomNavbar from ".././customNavbar/CustomNavbar";
 import ContactInfoBox from "../components/ContactInfoBox";
 import Image from 'next/image';
 import "@aws-amplify/ui-react/styles.css";
