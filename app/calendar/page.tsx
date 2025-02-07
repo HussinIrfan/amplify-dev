@@ -7,7 +7,8 @@ import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "../admin/admin.css";
 import "./index.css";
-import BasicCalendar from "./BasicCalendar";
+//import BasicCalendar from "./BasicCalendar";
+import ClientCalendar from "./ClientCalendar";
 import sltFirePhoto from "./slt-fire-group.jpg";
 
 export default function CalendarPage() {
@@ -27,7 +28,7 @@ export default function CalendarPage() {
         <div className="calendar-div">
           <h2 className="calendar-h1">Event Calendar</h2>
           <div className="calendar-container">
-            <BasicCalendar />
+            <ClientCalendar />
           </div>
         </div>
         <ContactInfoBox />

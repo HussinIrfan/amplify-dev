@@ -34,6 +34,7 @@ export function useEmailListLogic() {
   // Handle email search functionality
   const handleSearchEmails = () => {
     listEmails(); // Trigger the listEmails function to apply search
+    setEmailSearchQuery("");
   };
 
   const handleEmailSubmit = async (event: React.FormEvent) => {
@@ -54,6 +55,7 @@ export function useEmailListLogic() {
       (email) => email.email === emailInputLower
     );
     if (existingEmails.length > 0) {
+      setEmailInput("");
       setEmailError("Email already subscribed.");
       return;
     }
