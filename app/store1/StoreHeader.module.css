@@ -6,9 +6,18 @@
     border-radius: 10px;
 }
 
+@media (max-width: 1024px) {
+    .yellow-bar {
+        width: 90%;
+        height: 20px;
+        border-radius: 8px;
+    }
+}
+
+
 @media (max-width: 768px) {
     .yellow-bar {
-        width: 70%;
+        width: 90%;
         height: 20px;
         border-radius: 8px;
     }
