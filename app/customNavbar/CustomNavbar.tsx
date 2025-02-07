@@ -1,4 +1,5 @@
-import { Navbar, Link } from "@nextui-org/react";
+import { Navbar } from "@nextui-org/react";
+import Link from 'next/link'; 
 import styles from './CustomNavbar.module.css';
 import Image from 'next/image';
 import navbarIMG from '../navbarAssets/navbarBG.png';
@@ -8,10 +9,15 @@ import { useState } from 'react';
 
 export default function CustomNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMobileMenu = () => {
-    console.log("Mobile menu toggled:", !isMobileMenuOpen); // Debugging
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    console.log('Dropdown Open:', !isDropdownOpen); 
   };
 
   const closeMobileMenu = () => {
@@ -32,12 +38,10 @@ export default function CustomNavbar() {
 
         <Navbar className={styles.navbar}>
           <div className={styles.navbarContent}>
-            {/* Hamburger Menu Button */}
             <button className={styles.mobileMenuButton} onClick={toggleMobileMenu}>
               ☰
             </button>
 
-            {/* Navbar Links */}
             <div className={`${styles.navbarLinks} ${isMobileMenuOpen ? styles.open : ''}`}>
               <Link className={styles.navbarItem} href="/" onClick={closeMobileMenu}>
                 Home
@@ -54,15 +58,21 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
                 Calendar
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
-                Donation
-              </Link>
+
+              <div className={styles.dropdown} onClick={toggleDropdown}>
+                <Link className={styles.navbarItem} href="#">Donation</Link>
+                {isDropdownOpen && (
+                  <div className={styles.dropdownContent}>
+                    <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>Donate Now</Link>
+                  </div>
+                )}
+              </div>
+
               <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
                 Store
               </Link>
             </div>
 
-            {/* Instagram Link */}
             <Link className={styles.instaLink} href="https://instagram.com" target="_blank" rel="noopener noreferrer">
               <Image
                 src={instaLogo}
