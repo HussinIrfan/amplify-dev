@@ -1,0 +1,115 @@
+.footer {
+    position: relative;
+    width: 100%;
+    height: auto; /* Adjust height as needed */
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0px;
+    white-space: nowrap;
+    margin-top: 20px; /* Adds space above the footer */
+}
+
+.imageContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Moves image behind content */
+}
+.imageContainer::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 1;
+}
+
+.leftContainer,
+.middleContainer,
+.rightContainer,
+.mediaContainer {
+    position: relative;
+    color: #f0c040;
+    padding: 10px;
+    flex-direction: column;
+}
+
+/* Left Section */
+.leftContainer {
+    flex: 1.5;
+}
+.leftContainer b{
+    display: block;
+    color: white;
+    margin: 5px 0;
+}
+
+/* Middle Section */
+.middleContainer {
+    flex: 1;
+
+    text-align: left; /* Override text centering */
+}
+
+.middleContainer a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 5px 0;
+}
+
+.middleContainer a:hover {
+    text-decoration: underline;
+}
+
+.mediaContainer {
+    flex: 1;
+    text-align: left; /* Override text centering */
+}
+
+.mediaContainer a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 5px 0;
+}
+.mediaContainer a:hover {
+    text-decoration: underline;
+}
+/* Right Section */
+.rightContainer {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+
+
+@media (max-width: 1070px) {
+    .footer {
+        flex-direction: column; /* Stack containers vertically */
+        align-items: center; /* Center content horizontally */
+        justify-content: flex-start; /* Align the containers to the top */
+        height: auto;
+    }
+
+    .leftContainer,
+    .middleContainer,
+    .mediaContainer {
+        flex: none; /* Ensure the containers take up only as much space as needed */
+        width: 100%; /* Make them full width */
+        text-align: center; /* Center text horizontally */
+        margin-bottom: 15px;
+    }
+
+    .rightContainer {
+        display: none; /* Remove the right container completely */
+    }
+
+}
