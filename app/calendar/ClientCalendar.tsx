@@ -12,6 +12,19 @@ const events: Event[] = [
     title: "Event 1",
     allDay: false,
   },
+
+  {
+    start: moment("2025-02-14T10:00:00").toDate(),
+    end: moment("2025-02-14T11:00:00").toDate(),
+    title: "Event 2",
+    allDay: false,
+  },
+  {
+    start: moment("2025-02-17T10:00:00").toDate(),
+    end: moment("2025-02-17T11:00:00").toDate(),
+    title: "Event 3",
+    allDay: false,
+  },
 ];
 
 export default function ClientCalendar() {
