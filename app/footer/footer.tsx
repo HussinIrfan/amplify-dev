@@ -48,8 +48,8 @@ const Footer = () => {
                     <Image
                         src={logo}
                         alt="Nonprofit Logo"
-                        width={300}
-                        height={250}
+                        width={250}
+                        height={200}
                         className={styles.logo}
                     />
                 </Link>
