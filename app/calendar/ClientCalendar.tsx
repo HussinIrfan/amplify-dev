@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import CalendarLocal from "./CalendarLocal";
 import moment from "moment";
 import RSVPEvent, { Event } from "./RSVPEventDetails"; // Import the EventModal component
+import { Event as RBCEvent } from "react-big-calendar";
+
 
 const events: Event[] = [
   {
@@ -31,8 +33,8 @@ export default function ClientCalendar() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   // Handle event selection
-  const handleEventSelect = (event: Event) => {
-    setSelectedEvent(event);
+  const handleEventSelect = (event: RBCEvent) => {
+    setSelectedEvent(event as Event);
   };
 
   const closeModal = () => {
