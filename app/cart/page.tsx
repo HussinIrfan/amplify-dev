@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import CartItem from '../components/CartItem';
+import CartItem from '../homepage/CartItem';
 import styles from './Cart.module.css';
 
 const CartPage = () => {
