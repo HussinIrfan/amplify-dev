@@ -43,23 +43,39 @@ const CartPage = () => {
         <CartItem key={item.id} item={item} />
       ))}
 
-      <button className={styles.updateButton}>Update</button>
+      <div className={styles.updateButtonContainer}>
+        <button className={styles.updateButton}>Update</button>
+      </div>
 
-      <div className={styles.cartSummary}>
-        <h2>Cart totals</h2>
-        <p>
-          <span>Subtotal</span> <span>${subtotal.toFixed(2)}</span>
-        </p>
-        <p>
-          <span>Shipping</span> <span>Rate $66.44</span>
-        </p>
-        <p>
-          <span>Tax</span> <span>${tax.toFixed(2)}</span>
-        </p>
-        <p>
-          <span>Total</span> <span>${total.toFixed(2)}</span>
-        </p>
-        <button className={styles.checkoutButton}>Proceed to checkout</button>
+      <div className={styles.cartSummaryContainer}>
+        <h2 className={styles.cartTotalsHeading}>Cart totals</h2>
+        <div className={styles.cartSummary}>
+          <p>
+            <span className={styles.leftColumn}>Subtotal</span>
+            <span className={styles.rightColumn}>${subtotal.toFixed(2)}</span>
+          </p>
+          <p>
+            <span className={styles.leftColumn}>Shipping</span>
+            <span className={styles.rightColumn}>Rate $66.44</span>
+          </p>
+          <p className={styles.secondaryText}>
+            <span className={styles.leftColumn}></span>
+            <span className={styles.rightColumn}>Ship to &lt;State&gt;</span>
+          </p>
+          <p className={styles.secondaryText}>
+            <span className={styles.leftColumn}></span>
+            <span className={styles.rightColumn}>Change address</span>
+          </p>
+          <p>
+            <span className={styles.leftColumn}>Tax</span>
+            <span className={styles.rightColumn}>${tax.toFixed(2)}</span>
+          </p>
+          <p>
+            <span className={styles.leftColumn}>Total</span>
+            <span className={styles.rightColumn}>${total.toFixed(2)}</span>
+          </p>
+          <button className={styles.checkoutButton}>Proceed to checkout</button>
+        </div>
       </div>
     </div>
   );

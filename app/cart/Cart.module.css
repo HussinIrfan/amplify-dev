@@ -1,59 +1,154 @@
+.cartContainer {
+  max-width: 1200px; /* Center the cart and limit the width */
+  margin: 0 auto; /* Center the cart horizontally */
+  padding: 2rem; /* Add padding around the cart */
+}
+
+.heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 3rem; /* Add space below the heading */
+  position: relative;
+}
+
+/* Yellow bar directly under the "Cart" heading */
+.heading::after {
+  content: '';
+  position: absolute;
+  bottom: -10px; /* Adjust distance below the heading */
+  left: 50%; /* Center the bar */
+  transform: translateX(-50%); /* Ensure it's perfectly centered */
+  width: 90%; /* Adjust the width of the yellow bar */
+  height: 8px; /* Thickness of the bar */
+  background-color: #fdd835; /* Yellow color */
+}
 
 .cartHeader {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr; /* Adjust column widths */
-    align-items: center;
-    text-align: center;
-    background-color: #f2f2f2;
-    padding: 0.75rem 1rem; /* Increased padding for better spacing */
-    border-bottom: 3px solid #fdd835; /* Yellow border */
-    font-weight: bold; /* Bold text for header */
-  }
-  
-  .cartHeader div {
-    padding-left: 1rem; /* Slight shift to the right */
-  }
-  
-  .cartItem {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr; /* Match header column proportions */
-    align-items: center;
-    text-align: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .cartItem div {
-    padding-left: 1rem; /* Align items with header */
-  }
-  
-  .cartImage {
-    max-width: 200; /* Adjust image size */
-    height: auto;
-    object-fit: cover;
-    margin-right: 10px;
-  }
-  
-  .updateButton {
-    margin: 1.5rem 0;
-    padding: 0.5rem 2rem;
-    background-color: #fdd835; /* Yellow */
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .updateButton:hover {
-    background-color: #e6b800; /* Darker yellow on hover */
-  }
-  
-  .cartSummary {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border: 1px solid #ddd;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-  }
-  
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr; /* Adjust column widths */
+  align-items: center;
+  text-align: center;
+  background-color: #f2f2f2; /* Light gray background */
+  padding: 1rem; /* Add padding inside the header */
+  font-weight: bold; /* Bold text for the header */
+  position: relative; /* To position the yellow bar */
+  margin-bottom: 1rem; /* Add spacing below the header */
+}
+
+
+.cartItem {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr; /* Match header column proportions */
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.cartImage {
+  max-width: 90px; /* Adjust image size */
+  height: auto;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.updateButton {
+  margin-left: auto; /* Align to the right */
+  padding: 0.5rem 2rem;
+  background-color: #fdd835; /* Yellow background */
+  color: black; /* Text color */
+  border: none;
+  border-radius: 20px; /* Rounded corners */
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.updateButtonContainer {
+  background-color: #f5f5f5; /* Light grey background */
+  padding: 1rem; /* Add padding around the button */
+  border-radius: 8px; /* Rounded corners */
+  margin: 1.5rem auto; /* Add margin and center horizontally */
+  max-width: 1000px; /* Set width */
+  height: 30px; /* Thickness of the bar */
+}
+
+
+.updateButton:hover {
+  background-color: #e6b800; /* Darker yellow on hover */
+}
+
+.cartSummaryContainer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.cartTotalsHeading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.cartSummary {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5; /* Light gray background */
+  border-radius: 8px;
+  max-width: 400px; /* Adjust width as needed */
+  margin-left: auto; /* Align to the right */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.cartSummary h2 {
+  grid-column: span 2; /* Make the heading span both columns */
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  text-align: right;
+  font-weight: bold;
+}
+
+
+.cartSummary p {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  grid-column: span 2; /* Ensure each row spans both columns */
+}
+
+.cartSummary .leftColumn {
+  text-align: left;
+}
+
+.cartSummary .rightColumn {
+  text-align: right;
+}
+
+.cartSummary .secondaryText {
+  color: #666; /* Light gray for secondary text */
+  font-size: 0.8rem;
+  margin-top: -0.5rem; /* Slightly reduce the spacing */
+}
+
+.checkoutButton {
+  grid-column: span 2; /* Make the button span both columns */
+  margin-top: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkoutButton:hover {
+  background-color: #333;
+}

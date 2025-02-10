@@ -14,8 +14,8 @@
   .heading::after {
     content: '';
     display: block;
-    height: 5px;
-    width: 100px;
+    height: 8px;
+    width: 90%;
     background-color: #fdd835; /* Yellow bar */
     margin: 1.5rem auto 0;
   }
