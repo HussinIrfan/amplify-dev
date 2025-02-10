@@ -1,7 +1,7 @@
 .background-image-div {
     position: absolute;
-    top: 0px;
-    left: 0;
+    top: 0;
+    left: 3px;
     width: 100vw;
     height: 100vh;
     background-size: cover;
@@ -244,7 +244,6 @@
         height: auto;
         background-size: contain;
         overflow: visible;
-        margin-top: -8%;
     }
 
     .calendar-position {
@@ -304,8 +303,7 @@
 @media (max-width: 480px) {
 
     .background-image-div {
-        padding-top: 16%;
-        padding-left: 5px;
+        padding-left: 10px;
         /* Adjust padding for extra-small screens */
         background-size: contain;
         /* Ensures no stretching and scales properly */
