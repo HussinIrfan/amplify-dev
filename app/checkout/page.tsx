@@ -2,10 +2,15 @@
 
 import React from 'react';
 import styles from './Checkout.module.css';
+import CustomNavbar from '../customNavbar/CustomNavbar';
+import Footer from '../footer/footer';
 
 const Checkout = () => {
   return (
     <div className={styles.checkoutContainer}>
+      {/* Header */}
+      <CustomNavbar />
+
       <h1 className={styles.heading}>Checkout</h1>
 
       <div className={styles.gridContainer}>
@@ -135,6 +140,8 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

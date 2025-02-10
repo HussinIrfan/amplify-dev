@@ -1,137 +1,154 @@
+/* Main container for the entire page */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content under the header */
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
 .cartContainer {
-  max-width: 1200px; /* Center the cart and limit the width */
-  margin: 0 auto; /* Center the cart horizontally */
-  padding: 2rem; /* Add padding around the cart */
-  min-height: calc(100vh - 150px); /* Ensure the content fills the viewport minus header/footer */
+  max-width: 1200px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Add space between content and footer */
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Align everything to the left initially */
+  gap: 2rem;
+  margin: 0 auto;
 }
 
-.cartContentWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  width: 100%; /* Allow content to stretch */
-  max-width: 800px; /* Limit the maximum width */
-  margin: 0 auto; /* Center the wrapper */
-}
-
+/* Header for the cart section */
 .heading {
   text-align: center;
   font-size: 2rem;
-  margin-bottom: 3rem; /* Add space below the heading */
+  margin-bottom: 2rem;
   position: relative;
 }
 
-/* Yellow bar directly under the "Cart" heading */
+/* Yellow bar below the heading */
 .heading::after {
   content: '';
   position: absolute;
-  bottom: -10px; /* Adjust distance below the heading */
-  left: 50%; /* Center the bar */
-  transform: translateX(-50%); /* Ensure it's perfectly centered */
-  width: 90%; /* Adjust the width of the yellow bar */
-  height: 8px; /* Thickness of the bar */
-  background-color: #fdd835; /* Yellow color */
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 8px;
+  background-color: #fdd835;
 }
 
+/* Cart header and item layout */
 .cartHeader {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr; /* Adjust column widths */
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
   text-align: center;
-  background-color: #f2f2f2; /* Light gray background */
-  padding: 1rem; /* Add padding inside the header */
-  font-weight: bold; /* Bold text for the header */
-  margin-bottom: 1rem; /* Add spacing below the header */
+  background-color: #f2f2f2;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .cartItem {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr; /* Match header column proportions */
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
-  text-align: center;
   padding: 1rem 0;
   border-bottom: 1px solid #ddd;
+  font-size: 1.6rem;
 }
 
-.cartImage {
-  max-width: 90px; /* Adjust image size */
-  height: auto;
-  object-fit: cover;
-  margin-right: 10px;
+/* Cart Summary Container */
+.cartSummaryContainer {
+  max-width: 400px;
+  width: 90%; /* Ensures it stretches properly */
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-left: auto;
 }
 
+/* Cart Summary Title */
+.cartSummaryContainer h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Each row of Cart Summary */
+.cartSummaryRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  align-items: center;
+}
+
+/* Left Column (Labels) */
+.cartLabel {
+  background-color: #ddd; /* Light grey background */
+  padding: 0.6rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Right Column (Values) */
+.cartValue {
+  padding: 1.2rem;
+  text-align: right;
+}
+
+/* Checkout Button - Positioned Below */
+.checkoutButtonContainer {
+  display: flex;
+  justify-content: center; 
+  width: 150%;
+  margin-top: 2rem;
+}
+
+/* Checkout Button */
+.checkoutButton {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.checkoutButton:hover {
+  background-color: #000;
+}
+
+/* Update Button */
 .updateButtonContainer {
-  background-color: #f5f5f5; /* Light grey background */
-  padding: 1rem; /* Add padding around the button */
-  border-radius: 8px; /* Rounded corners */
-  margin: 1.5rem auto; /* Add margin and center horizontally */
-  margin-top: 2rem; /* Add spacing above the button */
-  max-width: 1000px; /* Set width */
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 1.5rem auto;
 }
 
 .updateButton {
   padding: 0.5rem 2rem;
-  background-color: #fdd835; /* Yellow background */
-  color: black; /* Text color */
-  border: none;
-  border-radius: 20px; /* Rounded corners */
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  transition: background-color 0.3s ease; /* Smooth transition on hover */
-}
-
-.updateButton:hover {
-  background-color: #e6b800; /* Darker yellow on hover */
-}
-
-.cartSummaryContainer {
-  margin-top: 2rem;
-  text-align: center;
-  margin-bottom: 2rem; /* Add margin at the bottom for the footer */
-}
-
-.cartTotalsHeading {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.cartSummary {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  border: 1px solid #ddd;
-  background-color: #f5f5f5; /* Light gray background */
-  border-radius: 8px;
-  max-width: 400px; /* Adjust width as needed */
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns */
-  gap: 1rem;
-  font-size: 1.2rem;
-}
-
-.cartSummary p {
-  margin: 0.5rem 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.cartSummary .secondaryText {
-  color: #666; /* Light gray for secondary text */
-  font-size: 0.8rem;
-  margin-top: -0.5rem; /* Slightly reduce the spacing */
-}
-
-.checkoutButton {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  width: 100%;
-  background-color: black;
-  color: white;
+  background-color: #fdd835;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
@@ -139,6 +156,6 @@
   cursor: pointer;
 }
 
-.checkoutButton:hover {
-  background-color: #333;
+.updateButton:hover {
+  background-color: #e6b800;
 }

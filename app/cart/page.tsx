@@ -17,58 +17,78 @@ const CartPage = () => {
   const total = subtotal + tax;
 
   return (
-    <>
+    <div className={styles.pageContainer}>
+      {/* Header */}
       <CustomNavbar />
+
+      {/* Main Content */}
+      <main className={styles.mainContent}>
+
+          {/* Cart Container */}
       <div className={styles.cartContainer}>
-        <div className={styles.cartContentWrapper}>
-          <h1 className={styles.heading}>Cart</h1>
-          <div className={styles.cartHeader}>
-            <div>Product</div>
-            <div>Price</div>
-            <div>Quantity</div>
-            <div>Subtotal</div>
-          </div>
+          <div className={styles.cartItemsSection}>
+            <h1 className={styles.heading}>Cart</h1>
 
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
+            {/* Cart Items */}
+            <div className={styles.cartHeader}>
+              <div>Product</div>
+              <div>Price</div>
+              <div>Quantity</div>
+              <div>Subtotal</div>
+            </div>
 
-          <div className={styles.updateButtonContainer}>
-            <button className={styles.updateButton}>Update</button>
-          </div>
+            {cartItems.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
 
-          <div className={styles.cartSummaryContainer}>
-            <h2 className={styles.cartTotalsHeading}>Cart totals</h2>
-            <div className={styles.cartSummary}>
-              <p>
-                <span className={styles.leftColumn}>Subtotal</span>
-                <span className={styles.rightColumn}>${subtotal.toFixed(2)}</span>
-              </p>
-              <p>
-                <span className={styles.leftColumn}>Shipping</span>
-                <span className={styles.rightColumn}>Rate $66.44</span>
-              </p>
-              <p className={styles.secondaryText}>
-                <span className={styles.rightColumn}>Ship to <strong>Your State</strong></span>
-              </p>
-              <p className={styles.secondaryText}>
-                <span className={styles.rightColumn}>Change address</span>
-              </p>
-              <p>
-                <span className={styles.leftColumn}>Tax</span>
-                <span className={styles.rightColumn}>${tax.toFixed(2)}</span>
-              </p>
-              <p>
-                <span className={styles.leftColumn}>Total</span>
-                <span className={styles.rightColumn}>${total.toFixed(2)}</span>
-              </p>
-              <button className={styles.checkoutButton}>Proceed to checkout</button>
+            {/* Update Button */}
+            <div className={styles.updateButtonContainer}>
+              <button className={styles.updateButton}>Update</button>
             </div>
           </div>
+
+          {/* Cart Summary Section */}
+          <div className={styles.cartSummaryContainer}>
+            <h2>Cart totals</h2>
+
+            <div className={styles.cartSummaryRow}>
+              <span className={styles.cartLabel}>Subtotal</span>
+              <span className={styles.cartValue}>$66.44</span>
+            </div>
+
+            <div className={styles.cartSummaryRow}>
+              <span className={styles.cartLabel}>Shipping</span>
+              <span className={styles.cartValue}>$66.44</span>
+            </div>
+
+            {/* Move "Ship to" and "Change Address" to the Right Side */}
+              <div className={styles.cartSummaryRightRow}>
+                <span className={styles.cartValue}>Ship to &lt;State&gt;</span>
+              </div>
+              <div className={styles.cartSummaryRightRow}>
+                 <span className={styles.cartValue}>Change address</span>
+              </div>
+
+            <div className={styles.cartSummaryRow}>
+              <span className={styles.cartLabel}>Tax</span>
+              <span className={styles.cartValue}>$5.23</span>
+            </div>
+
+            <div className={styles.cartSummaryRow}>
+              <span className={styles.cartLabel}>Total</span>
+              <span className={styles.cartValue}>$72.38</span>
+            </div>
+            <button className={styles.checkoutButton}>Proceed to checkout</button>
+
+          </div>
         </div>
-      </div>
+
+       
+      </main>
+
+      {/* Footer */}
       <Footer />
-    </>
+    </div>
   );
 };
 
