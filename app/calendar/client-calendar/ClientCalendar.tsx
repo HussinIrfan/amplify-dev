@@ -1,7 +1,7 @@
 // ClientCalendar.tsx
 
 import React, { useState } from "react";
-import CalendarLocal from "./CalendarLocal";
+import CalendarLocal from "../CalendarLocal";
 import moment from "moment";
 import RSVPEvent, { Event } from "./RSVPEventDetails"; // Import the EventModal component
 

@@ -1,16 +1,15 @@
 "use client";
 
 import CustomNavbar from ".././customNavbar/CustomNavbar";
-import ContactInfoBox from "../components/ContactInfoBox";
+import ContactInfoBox from "../footer/footer";
 import Image from "next/image";
 //import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "../admin/admin.css";
 import "./index.css";
 //import BasicCalendar from "./BasicCalendar";
-import ClientCalendar from "./ClientCalendar";
+import ClientCalendar from "./client-calendar/ClientCalendar";
 import sltFirePhoto from "./slt-fire-group.jpg";
-import sltFirePhoto2 from "./fireacademy2023.jpeg";
 
 export default function CalendarPage() {
   return (

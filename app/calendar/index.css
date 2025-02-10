@@ -1,11 +1,11 @@
 .background-image-div {
     position: absolute;
-    top: 0;
+    top: 0px;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-size: cover;
-    background-position: center;
+    background-position: 200px center;
     z-index: -1;
     object-fit: cover;
     overflow: hidden;

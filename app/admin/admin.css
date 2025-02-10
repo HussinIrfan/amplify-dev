@@ -13,7 +13,7 @@
     padding: 20px;
     width: 80vw;
     align-content: center;
-    background-color: #f2f2f2;
+    background-color: #0000002b;
     /* Light gray background for better visibility */
     color: #333;
     border-radius: 5px;
@@ -192,7 +192,7 @@ form>div+div {
 .admin-about-us-table td {
     padding: 12px 15px;
     text-align: left;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     /* Light grey border */
 }
 
