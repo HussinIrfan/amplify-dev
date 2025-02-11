@@ -50,7 +50,7 @@ const ImageCarousel = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
-    }, 3000);
+    }, 6000);
     // Cleanup the interval on component unmount
     return () => clearInterval(interval);
   }, []);

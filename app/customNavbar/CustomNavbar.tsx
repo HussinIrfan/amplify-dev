@@ -1,8 +1,8 @@
 import { Navbar, Link } from "@nextui-org/react";
 import styles from './CustomNavbar.module.css';
 import Image from 'next/image';
-import navbarIMG from '../navbarAssets/test1.png';
-import navbarIMGSmall from '../navbarAssets/test1.png';
+import navbarIMG from '../navbarAssets/test2.png';
+import navbarIMGSmall from '../navbarAssets/test2.png';
 import instaLogo from '../navbarAssets/instaLogo.png';
 import fbLogo from '../navbarAssets/fbLogo.png';
 import { useState, useEffect } from 'react';

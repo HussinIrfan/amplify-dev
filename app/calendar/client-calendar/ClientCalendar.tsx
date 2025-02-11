@@ -11,6 +11,7 @@ const events: Event[] = [
     end: moment("2025-02-18T11:00:00").toDate(),
     title: "Event 1",
     allDay: false,
+    details: "test 1",
   },
 
   {
@@ -18,12 +19,14 @@ const events: Event[] = [
     end: moment("2025-02-14T11:00:00").toDate(),
     title: "Event 2",
     allDay: false,
+    details: "test 2",
   },
   {
     start: moment("2025-02-17T10:00:00").toDate(),
     end: moment("2025-02-17T11:00:00").toDate(),
     title: "Event 3",
     allDay: false,
+    details: "test 3",
   },
 ];
 

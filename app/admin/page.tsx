@@ -8,6 +8,7 @@ import "../calendar/index.css";
 import AboutUs from "./AboutUs";
 import EmailList from "./EmailList";
 import OurWork from "./OurWork";
+import Calendar from "../Calendar/admin-calendar/AdminCalendar";
 ///import BasicCalendar from "../calendar/BasicCalendar";
 //import ControlCalendar from "../calendar/ControlCalendar";
 
@@ -22,15 +23,7 @@ export default function AdminPage() {
         <AboutUs />
         <EmailList />
         <OurWork />
-        <div className="div">
-          <h2 className="admin-h2">Admin Calendar</h2>
-          <div className="calendar-container">
-          </div>
-          <h2 className="admin-h2"> Client Calendar</h2>
-          <div className="calendar-container">
-          </div>
-          <br />
-        </div>
+        <Calendar />
       </main>
     </>
   );
