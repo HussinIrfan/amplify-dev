@@ -3,6 +3,25 @@
     /* Center the content horizontally */
 }
 
+.admin-config {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+}
+
+.admin-config2 {
+    display: flex;           /* Set display to flex */
+    flex-direction: column;  /* Align children in a column (this is already there) */
+    justify-content: center; /* Center content vertically */
+    align-items: center;     /* Center content horizontally */
+    height: 100vh;           /* Make the container take full viewport height */
+    margin: 0;               /* Remove any margin */
+    padding: 0;              /* Remove any padding */
+}
+
 .admin-h1 {
     text-align: center;
     margin-bottom: 20px;
@@ -12,6 +31,8 @@
     margin: 20px;
     padding: 20px;
     width: 80vw;
+    max-width: 95%;
+    box-sizing: border-box;
     align-content: center;
     background-color: #bec0c541;
     /* Light gray background for better visibility */

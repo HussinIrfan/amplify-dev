@@ -1,15 +1,15 @@
 import react, { useState } from "react";
-import "./donations.css";
+import "./document.css";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 
-export default function Donations() {
+export default function adminDocuments() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
 
   return (
     <>
       <div className="div">
         <h2 className="admin-h2" onClick={toggleCollapse}>
-          Donations{" "}
+          Documents{" "}
           <span
             className={`dropdown-arrow ${
               isContentCollapsed ? "collapsed" : ""

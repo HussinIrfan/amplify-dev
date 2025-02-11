@@ -2,7 +2,7 @@ import react, { useState } from "react";
 import "./store.css";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 
-export default function Donations() {
+export default function Store() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
 
   return (
@@ -25,7 +25,13 @@ export default function Donations() {
           </span>
         </h2>
         {/* Collapsible Section */}
-        {isContentCollapsed && <></>}
+        <div
+          className={`collapsible-content ${
+            !isContentCollapsed ? "collapsed" : "expanded"
+          }`}
+        >
+          {isContentCollapsed && <></>}
+        </div>
       </div>
     </>
   );
