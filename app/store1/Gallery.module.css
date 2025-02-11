@@ -3,28 +3,31 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-
 }
 
 .main_image {
-    background: #050505;
-    width: 80%;
-    height: 500px;
-
-}
-
-.image_options {
-    width: 80%;
-    display: flex;
-    gap: 24px;
-    overflow-y: hidden;
-    justify-content: center;
-
-}
-
-.image_options .image {
     width: 100%;
-    height: 72px;
-    background: #050505;
+    height: auto; 
+    max-height: 500px; 
+    aspect-ratio: 16 / 9; 
+    object-fit: cover;
+    margin: auto;
+    padding-bottom: 100px;
+}
 
+/* Responsive styles */
+@media (max-width: 768px) {
+    .gallery {
+        width: 100%;
+    }
+
+    .main_image {
+        max-height: 300px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .main_image {
+        max-height: 200px; 
+    }
 }

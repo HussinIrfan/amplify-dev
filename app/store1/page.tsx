@@ -3,14 +3,21 @@
 import CustomNavbar from "../customNavbar/CustomNavbar";
 import ProductSection from "./ProductSection"
 import Footer from "../footer/footer";
+import styles from "./page.module.css"
 
 export default function AdminPage() {
   return (
     <>
-      <main className="main">
+      <main className={styles ["main"]}>
         <CustomNavbar />
-        <ProductSection />
-        <Footer />
+     
+        <div className={styles ["content"]}>
+          <ProductSection />
+        </div>
+
+        <div>
+          <Footer />
+        </div>
 
       </main>
     </>
