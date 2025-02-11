@@ -1,41 +1,41 @@
 "use client";
 
-import { useAboutUsLogic } from "./AboutUsLogic"; // Import the logic file
-import { useCollapse } from "../supportFunctions/ToggleCollase";
-import blankImage from "../global-images/blank-person.png";
+import { useOurWorkLogic } from "./OurWorkLogic"; // Import the logic file
+import { useCollapse } from "../../supportFunctions/ToggleCollase";
+import blankImage from "../../global-images/blank-person.png";
 import "@aws-amplify/ui-react/styles.css";
-import "../page.module.css";
-import "./admin.css";
+import "../../page.module.css";
+import "../admin.css";
 
-export default function AboutUs() {
+export default function OurWork() {
   const {
-    emps,
-    editingEmps,
+    ourWorks,
+    editingOurWorks,
     picture,
-    name,
-    title,
     description,
+    business,
     setPicture,
-    setName,
-    setTitle,
     setDescription,
-    handleAboutUsSubmit,
-    handleEditChangeEmp,
-    handleSaveChangesEmp,
-    handleEditToggleEmp,
-    handleCancelEditEmp,
-    deleteEntry,
-  } = useAboutUsLogic();
+    setBusiness,
+    handleEditChangeOurWork,
+    handleSaveChangesOurWork,
+    handleEditToggleOurWork,
+    handleCancelEditOurWork,
+    handleDeleteOurWork,
+    handleOurWorkSubmit,
+  } = useOurWorkLogic();
 
-  const { isContentCollapsed, toggleCollapse} = useCollapse();
+  const { isContentCollapsed, toggleCollapse } = useCollapse();
 
   return (
     <>
       <div className="div">
         <h2 className="admin-h2" onClick={toggleCollapse}>
-          About Us{" "}
+          Our Work{" "}
           <span
-            className={`dropdown-arrow ${isContentCollapsed ? ".collapsed" : ""}`}
+            className={`dropdown-arrow ${
+              isContentCollapsed ? "collapsed" : ""
+            }`}
             style={{
               display: "inline-block",
               marginLeft: "8px",
@@ -46,34 +46,36 @@ export default function AboutUs() {
             ▼
           </span>
         </h2>
-
         {/* Collapsible Section */}
         {isContentCollapsed && (
           <>
-            <br />
-            <h3 className="admin-h3">Team Members</h3>
+            <h3 className="admin-h3">Current Business / Organizations</h3>
             <table className="admin-about-us-table">
               <thead>
                 <tr>
-                  <th>Picture</th>
-                  <th>Name</th>
-                  <th>Title</th>
+                  <th>Select</th>
+                  <th>Business</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {emps.map((emp) => {
-                  const editingEmp = editingEmps.get(emp.id) || emp;
+                {ourWorks.map((ourWork) => {
+                  const editingourWork =
+                    editingOurWorks.get(ourWork.id) || ourWork;
                   return (
-                    <tr key={emp.id}>
+                    <tr key={ourWork.id}>
                       <td>
-                        {editingEmps.has(emp.id) ? (
+                        {editingOurWorks.has(ourWork.id) ? (
                           <input
                             type="text"
-                            value={editingEmp.picture || ""}
+                            value={editingourWork.picture || ""}
                             onChange={(e) =>
-                              handleEditChangeEmp(emp.id, "picture", e.target.value)
+                              handleEditChangeOurWork(
+                                ourWork.id,
+                                "picture",
+                                e.target.value
+                              )
                             }
                           />
                         ) : (
@@ -85,60 +87,69 @@ export default function AboutUs() {
                         )}
                       </td>
                       <td>
-                        {editingEmps.has(emp.id) ? (
+                        {editingOurWorks.has(ourWork.id) ? (
                           <input
                             type="text"
-                            value={editingEmp.name || ""}
+                            value={editingourWork.business || ""}
                             onChange={(e) =>
-                              handleEditChangeEmp(emp.id, "name", e.target.value)
+                              handleEditChangeOurWork(
+                                ourWork.id,
+                                "business",
+                                e.target.value
+                              )
                             }
                           />
                         ) : (
-                          emp.name
+                          ourWork.business
                         )}
                       </td>
                       <td>
-                        {editingEmps.has(emp.id) ? (
+                        {editingOurWorks.has(ourWork.id) ? (
                           <input
                             type="text"
-                            value={editingEmp.title || ""}
+                            value={editingourWork.description || ""}
                             onChange={(e) =>
-                              handleEditChangeEmp(emp.id, "title", e.target.value)
+                              handleEditChangeOurWork(
+                                ourWork.id,
+                                "description",
+                                e.target.value
+                              )
                             }
                           />
                         ) : (
-                          emp.title
+                          ourWork.description
                         )}
                       </td>
                       <td>
-                        {editingEmps.has(emp.id) ? (
-                          <input
-                            type="text"
-                            value={editingEmp.description || ""}
-                            onChange={(e) =>
-                              handleEditChangeEmp(emp.id, "description", e.target.value)
-                            }
-                          />
-                        ) : (
-                          emp.description
-                        )}
-                      </td>
-                      <td>
-                        {editingEmps.has(emp.id) ? (
+                        {editingOurWorks.has(ourWork.id) ? (
                           <>
-                            <button onClick={() => handleSaveChangesEmp(emp.id)}>
+                            <button
+                              onClick={() =>
+                                handleSaveChangesOurWork(ourWork.id)
+                              }
+                            >
                               Save Changes
                             </button>
-                            <button onClick={() => handleCancelEditEmp(emp.id)}>
+                            <button
+                              onClick={() =>
+                                handleCancelEditOurWork(ourWork.id)
+                              }
+                            >
                               Cancel
                             </button>
                           </>
                         ) : (
                           <>
-                            <button onClick={() => handleEditToggleEmp(emp.id)}>
+                            <button
+                              onClick={() =>
+                                handleEditToggleOurWork(ourWork.id)
+                              }
+                            >
                               Edit
                             </button>
-                            <button onClick={() => deleteEntry(emp.id)}>
+                            <button
+                              onClick={() => handleDeleteOurWork(ourWork.id)}
+                            >
                               Delete
                             </button>
                           </>
@@ -150,43 +161,32 @@ export default function AboutUs() {
               </tbody>
             </table>
             <br />
-            <form onSubmit={handleAboutUsSubmit} className="about-us-form">
-              <h3 className="admin-h3">Add Team Member</h3>
+            <form onSubmit={handleOurWorkSubmit} className="about-us-form">
+              <h3 className="admin-h3">Add Business</h3>
               <div className="form-group">
-                <label htmlFor="picture">Picture URL:</label>
+                <label htmlFor="pictures">Picture URL:</label>
                 <input
                   id="picture"
                   type="text"
                   value={picture}
                   onChange={(e) => setPicture(e.target.value)}
-                  placeholder="Enter picture URL"
+                  placeholder="Enter Picture URL"
                   className="form-input"
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="business">Business:</label>
                 <input
-                  id="name"
+                  id="business"
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter name"
+                  value={business}
+                  onChange={(e) => setBusiness(e.target.value)}
+                  placeholder="Enter in Business name"
                   className="form-input"
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="title">Title:</label>
-                <input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter title"
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="description">Description (Optional):</label>
+                <label htmlFor="description">Description:</label>
                 <input
                   id="description"
                   type="text"

@@ -5,10 +5,12 @@ import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "./admin.css";
 import "../calendar/index.css";
-import AboutUs from "./AboutUs";
-import EmailList from "./EmailList";
-import OurWork from "./OurWork";
+import AboutUs from "./aboutUs/AboutUs";
+import EmailList from "./emailList/EmailList";
+import OurWork from "./ourWork/OurWork";
 import Calendar from "../Calendar/admin-calendar/AdminCalendar";
+import Donations from "./donations/Donations";
+import Store from "./store/Store";
 ///import BasicCalendar from "../calendar/BasicCalendar";
 //import ControlCalendar from "../calendar/ControlCalendar";
 
@@ -24,6 +26,8 @@ export default function AdminPage() {
         <EmailList />
         <OurWork />
         <Calendar />
+        <Donations />
+        <Store />
       </main>
     </>
   );
