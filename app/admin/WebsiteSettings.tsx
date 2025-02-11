@@ -1,3 +1,5 @@
+"use client";
+
 import react, { useState } from "react";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 
