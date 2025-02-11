@@ -15,7 +15,7 @@ export default function AdminPage() {
           <ProductSection />
         </div>
 
-        <div className={styles ["contactInfo"]}>
+        <div>
           <Footer />
         </div>
 
