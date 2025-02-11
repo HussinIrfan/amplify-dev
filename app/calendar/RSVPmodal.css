@@ -1,0 +1,117 @@
+/* Modal Background (Darkens the area behind the modal) */
+.modalBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* RSVP Modal Container */
+.rsvp-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: auto; /* Default width for mobile */
+    height: auto;
+    max-width: 90%; /* Prevent overflow on small screens */
+    max-height: 80vh; /* Limit modal height */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    overflow-x: hidden;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+/* RSVP Modal Header */
+.rsvp-modal h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+/* RSVP Modal Content */
+.rsvp-modal p {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* RSVP Modal Buttons */
+.rsvp-modal button {
+    background-color: #f5c71a;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%; /* Full-width button */
+    font-size: 1.2em; /* Larger font for better readability on mobile */
+}
+
+/* Close Button Style */
+.rsvp-modal .close-btn {
+    background-color: #f44336;
+    color: black;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+/* RSVP button style */
+.rsvp-modal .rsvp-btn {
+    background-color: #f5c71a;
+    color: black;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+.rsvp-modal .close-btn:hover {
+    background-color: #822b25;
+    border-color: black;
+}
+
+.rsvp-modal .rsvp-btn:hover {
+    background-color: #997b03;
+    border-color: black;
+}
+
+.rsvp-modal button:hover {
+    opacity: 0.9;
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 600px) {
+    /* Reduce modal width further for small screens */
+    .rsvp-modal {
+        width: 90%;
+        padding: 15px;
+    }
+
+    /* Adjust font size for header and paragraph */
+    .rsvp-modal h2 {
+        font-size: 1.3em; /* Slightly smaller header font */
+    }
+
+    .rsvp-modal p {
+        font-size: 0.9em; /* Smaller paragraph font */
+    }
+
+    /* Adjust button size for mobile */
+    .rsvp-modal button {
+        padding: 10px 15px;
+        font-size: 1em; /* Reduce font size for smaller buttons */
+    }
+
+    /* Stack buttons vertically on mobile */
+    .rsvp-modal .rsvp-btn, .rsvp-modal .close-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

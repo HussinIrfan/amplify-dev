@@ -2,7 +2,7 @@
 
 import CustomNavbar from "../customNavbar/CustomNavbar";
 import ProductSection from "./ProductSection"
-import ContactInfoBox from "../components/ContactInfoBox";
+import Footer from "../footer/footer";
 import styles from "./page.module.css"
 
 export default function AdminPage() {
@@ -16,7 +16,7 @@ export default function AdminPage() {
         </div>
 
         <div className={styles ["contactInfo"]}>
-          <ContactInfoBox />
+          <Footer />
         </div>
 
       </main>

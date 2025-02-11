@@ -1,0 +1,161 @@
+/* Main container for the entire page */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content under the header */
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
+.cartContainer {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Align everything to the left initially */
+  gap: 2rem;
+  margin: 0 auto;
+}
+
+/* Header for the cart section */
+.heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* Yellow bar below the heading */
+.heading::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 8px;
+  background-color: #fdd835;
+}
+
+/* Cart header and item layout */
+.cartHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  text-align: center;
+  background-color: #f2f2f2;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.cartItem {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.6rem;
+}
+
+/* Cart Summary Container */
+.cartSummaryContainer {
+  max-width: 400px;
+  width: 90%; /* Ensures it stretches properly */
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-left: auto;
+}
+
+/* Cart Summary Title */
+.cartSummaryContainer h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Each row of Cart Summary */
+.cartSummaryRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  align-items: center;
+}
+
+/* Left Column (Labels) */
+.cartLabel {
+  background-color: #ddd; /* Light grey background */
+  padding: 0.6rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Right Column (Values) */
+.cartValue {
+  padding: 1.2rem;
+  text-align: right;
+}
+
+/* Checkout Button - Positioned Below */
+.checkoutButtonContainer {
+  display: flex;
+  justify-content: center; 
+  width: 150%;
+  margin-top: 2rem;
+}
+
+/* Checkout Button */
+.checkoutButton {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.checkoutButton:hover {
+  background-color: #000;
+}
+
+/* Update Button */
+.updateButtonContainer {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 1.5rem auto;
+}
+
+.updateButton {
+  padding: 0.5rem 2rem;
+  background-color: #fdd835;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.updateButton:hover {
+  background-color: #e6b800;
+}

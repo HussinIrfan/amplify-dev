@@ -45,16 +45,16 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
                 About Us
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+              <Link className={styles.navbarItem} href="/ourwork" onClick={closeMobileMenu}>
                 Our Work
               </Link>
               <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
                 News
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+              <Link className={styles.navbarItem} href="/calendar" onClick={closeMobileMenu}>
                 Calendar
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+              <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
               <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
