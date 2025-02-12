@@ -97,3 +97,36 @@
 .navButtonRight:hover {
   background: rgba(0, 0, 0, 0.8);
 }
+
+@media (max-width: 650px) {
+  .overlay {
+    position: absolute;
+    bottom: 30%; /* Same position for text overlay */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    width: 90%; /* Controls the width */
+  }
+
+
+  .navButtonLeft,
+  .navButtonRight {
+    top: auto;  /* Remove centering in the vertical axis */
+    bottom: 20px;  /* Position buttons 20px from the bottom */
+    transform: none;  /* Remove the vertical centering transform */
+  }
+  .navButtonLeft {
+    left: 50%;
+    transform: translateX(-50%) translateX(-60px);  /* Center + move left */
+  }
+
+  .navButtonRight {
+    left: 50%;
+    transform: translateX(-50%) translateX(60px);  /* Center + move right */
+  }
+}

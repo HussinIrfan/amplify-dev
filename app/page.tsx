@@ -6,16 +6,14 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
-import Link from "next/link";
 
 import CustomNavbar from "./customNavbar/CustomNavbar";
 
 import HPheader from "./homepage/HPheader";
 import ImageCarousel from "./homepage/ImageCarousel";
 import NewsletterPopup from "./homepage/Newsletter";
-import ContactInfoBox from "./components/ContactInfoBox";
-import ContactUs from "./components/ContactUs";
-
+import ContactUs from "./homepage/ContactUs";
+import Footer from "./footer/footer";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -31,17 +29,7 @@ export default function App() {
       <ImageCarousel />
       <NewsletterPopup />
       <ContactUs/>
-      
-      
-      {/* Link to the login page */}
-      
-      
-      <Link href="/login">Go to Login Page</Link>
-      <ContactInfoBox />
-     
-     
-
-      
+      <Footer/>
     </main>
   );
 }

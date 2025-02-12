@@ -3,6 +3,25 @@
     /* Center the content horizontally */
 }
 
+.admin-config {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+}
+
+.admin-config2 {
+    display: flex;           /* Set display to flex */
+    flex-direction: column;  /* Align children in a column (this is already there) */
+    justify-content: center; /* Center content vertically */
+    align-items: center;     /* Center content horizontally */
+    height: 100vh;           /* Make the container take full viewport height */
+    margin: 0;               /* Remove any margin */
+    padding: 0;              /* Remove any padding */
+}
+
 .admin-h1 {
     text-align: center;
     margin-bottom: 20px;
@@ -10,12 +29,14 @@
 
 .div {
     margin: 20px;
-    padding: 20px;
-    width: 80vw;
+    padding: 10px;
+    width: 85vw;
+    max-width: 95%;
+    box-sizing: border-box;
     align-content: center;
-    background-color: #f2f2f2;
+    background-color: #bec0c541;
     /* Light gray background for better visibility */
-    color: #333;
+    color: #000000;
     border-radius: 5px;
 }
 
@@ -74,6 +95,10 @@
 .admin-about-us-table th {
     background-color: #f4f4f4;
     /* Optional: Add a background color to headers */
+}
+
+.admin-about-us-table .email-th{
+    width: 20%;    
 }
 
 .admin-about-us-table td {
@@ -192,7 +217,7 @@ form>div+div {
 .admin-about-us-table td {
     padding: 12px 15px;
     text-align: left;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     /* Light grey border */
 }
 

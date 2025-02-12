@@ -45,6 +45,16 @@ const ImageCarousel = () => {
     );
   };
 
+
+  // Automatically change the image every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 6000);
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className={styles.carouselContainer}>
       <div className={styles.carousel}>
