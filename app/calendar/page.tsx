@@ -8,9 +8,8 @@ import "../page.module.css";
 import "../admin/admin.css";
 import "./index.css";
 //import BasicCalendar from "./BasicCalendar";
-import ClientCalendar from "./ClientCalendar";
+import ClientCalendar from "./client-calendar/ClientCalendar";
 import sltFirePhoto from "./slt-fire-group.jpg";
-import sltFirePhoto2 from "./fireacademy2023.jpeg";
 
 export default function CalendarPage() {
   return (

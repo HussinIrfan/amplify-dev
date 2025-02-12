@@ -10,6 +10,7 @@ export interface Event {
   end?: Date;
   title: string;
   allDay: boolean;
+  details: string;
 }
 
 interface EventModalProps {
@@ -38,6 +39,9 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose }) => {
         </p>
         <p>
           <strong>All Day:</strong> {event.allDay ? "Yes" : "No"}
+        </p>
+        <p>
+          <strong>Details:</strong> {event.details}
         </p>
 
         {/* RSVP Button to open RSVP form */}
