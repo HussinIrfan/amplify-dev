@@ -61,7 +61,7 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/" onClick={closeMobileMenu}>
                 Home
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+              <Link className={styles.navbarItem} href="/aboutus" onClick={closeMobileMenu}>
                 About Us
               </Link>
               <Link className={styles.navbarItem} href="/ourwork" onClick={closeMobileMenu}>

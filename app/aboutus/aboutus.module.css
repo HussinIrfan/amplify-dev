@@ -1,0 +1,111 @@
+.main {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .header {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .foundationImage,
+  .staffImage {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .foundationText {
+    max-width: 800px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  
+  .teamContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .teamMember {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 500px;
+  }
+  
+  .teamImage {
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .memberName {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .memberTitle {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+  
+  .memberDescription {
+    font-size: 1rem;
+    max-width: 400px;
+  }
+  
+  .stationContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .stationImage {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .stationText {
+    max-width: 800px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .teamContainer {
+      flex-direction: row;
+      justify-content: center;
+    }
+  
+    .stationContainer {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+  
+    .stationText {
+      max-width: 500px;
+      text-align: left;
+    }
+  }

@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import styles from "./donation.module.css";
+import CustomNavbar from "../customNavbar/CustomNavbar"; // Importing Navbar component
+import Footer from "../footer/footer"; // Importing Footer component
 
 const DonationPage: React.FC = () => {
   const [donationAmount, setDonationAmount] = useState<number | string>(0);
@@ -25,6 +27,8 @@ const DonationPage: React.FC = () => {
 
   return (
     <div className={styles.donationPage}>
+      <CustomNavbar /> {/* Add Navbar at the top */}
+
       {/* Hero Section */}
       <section className={styles.hero}>
         {/* The image is now handled by the CSS background-image */}
@@ -69,6 +73,8 @@ const DonationPage: React.FC = () => {
           {!showThankYou && <button onClick={handleDonation} className={styles.donateButton}>Donate</button>}
         </div>
       </section>
+
+      <Footer /> {/* Add Footer at the bottom */}
     </div>
   );
 };
