@@ -1,4 +1,4 @@
-w.gallery {
+.gallery {
     width: calc(50% - 64px);
     display: flex;
     flex-direction: column;

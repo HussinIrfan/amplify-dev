@@ -24,21 +24,9 @@ export default function AdminPage() {
         <div>
           <h1 className="admin-h1"> Admin Settings</h1>
         </div>
-        <AboutUs />
-        <EmailList />
-        <OurWork />
-        <div className="div">
-          <h2 className="admin-h2">Admin Calendar</h2>
-          <div className="calendar-container">
-            <ControlCalendar />
-          </div>
-          <h2 className="admin-h2"> Client Calendar</h2>
-          <div className="calendar-container">
-            <BasicCalendar />
-          </div>
-          <br />
-        </div>
-      </main>
+        <WebsiteSettings />
+        <Documents />
+    </div>
     </>
   );
 }
