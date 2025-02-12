@@ -29,8 +29,8 @@
 
 .div {
     margin: 20px;
-    padding: 20px;
-    width: 80vw;
+    padding: 10px;
+    width: 85vw;
     max-width: 95%;
     box-sizing: border-box;
     align-content: center;
@@ -95,6 +95,10 @@
 .admin-about-us-table th {
     background-color: #f4f4f4;
     /* Optional: Add a background color to headers */
+}
+
+.admin-about-us-table .email-th{
+    width: 20%;    
 }
 
 .admin-about-us-table td {

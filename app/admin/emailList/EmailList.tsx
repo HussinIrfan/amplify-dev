@@ -81,7 +81,7 @@ export default function EmailList() {
                   <table className="admin-about-us-table">
                     <thead>
                       <tr>
-                        <th>Select</th>
+                        <th className="email-th">Select</th>
                         <th>Email</th>
                         <th>Actions</th>
                       </tr>

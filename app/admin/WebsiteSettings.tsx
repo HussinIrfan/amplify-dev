@@ -7,7 +7,7 @@ import AboutUs from "./aboutUs/AboutUs";
 import OurWork from "./ourWork/OurWork";
 import Calendar from "../Calendar/admin-calendar/AdminCalendar";
 import Donations from "./donations/Donations";
-import StoreFront from "./store/Store";
+import StoreFront from "./storeAdmin/Store";
 import News from "./news/News";
 
 export default function Store() {
