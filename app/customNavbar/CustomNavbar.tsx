@@ -6,8 +6,12 @@ import navbarIMGSmall from '../navbarAssets/test2.png';
 import instaLogo from '../navbarAssets/instaLogo.png';
 import fbLogo from '../navbarAssets/fbLogo.png';
 import { useState, useEffect } from 'react';
+import useStore from "../admin/storeAdmin/StoreLogic";
 
 export default function CustomNavbar() {
+  //Admin store setting
+  const {storeOpen} = useStore();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -44,7 +48,7 @@ export default function CustomNavbar() {
             objectFit="cover"
           />
         </div>
-
+        
         <Navbar className={styles.navbar}>
           <div className={styles.navbarContent}>
             {/* Hamburger Menu Button */}
@@ -72,9 +76,11 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
+              {storeOpen && (
               <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
                 Store
               </Link>
+              )}
             </div>
 
             {/* Instagram Link */}
