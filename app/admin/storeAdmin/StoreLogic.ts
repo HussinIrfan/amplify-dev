@@ -19,9 +19,10 @@ export default function useStore() {
   };
 
  const handleCreateitem = async () => {
-  try{
+  /*try{
     const newRec = await client.models.isOpen.create({storeOpen: storeOpen,});
   }
+    */
  }
 
   return {
