@@ -7,7 +7,7 @@ import "./admin.css";
 import "../calendar/index.css";
 import AboutUs from "./aboutUs/AboutUs";
 import OurWork from "./ourWork/OurWork";
-import Calendar from "../Calendar/admin-calendar/AdminCalendar";
+import Calendar from "../calendar/admin-calendar/AdminCalendar";
 import Donations from "./donations/Donations";
 import Store from "./storeAdmin/Store";
 import News from "./news/News";
