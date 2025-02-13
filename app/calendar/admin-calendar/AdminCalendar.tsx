@@ -4,6 +4,7 @@ import moment from "moment";
 import EventDetails, { Event } from "./AdminEventDetails";
 import "./admin-calendar.css";
 import { useCollapse } from "../../supportFunctions/ToggleCollase";
+import { Event as RBCEvent } from "react-big-calendar";
 
 const events: Event[] = [
   {
@@ -39,8 +40,8 @@ export default function AdminCalendar() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
 
   // Handle event selection
-  const handleEventSelect = (event: Event) => {
-    setSelectedEvent(event);
+  const handleEventSelect = (event: RBCEvent) => {
+    setSelectedEvent(event as Event);
   };
 
   const closeModal = () => {
