@@ -7,7 +7,7 @@ html, body {
 
 body {
     margin: 0;
-    background: white; /* Changed background color to white */
+    background: rgb(170, 31, 46); /* Changed background color to white */
     display: flex;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     /* height: 100vw;     Removed for responsiveness */

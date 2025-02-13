@@ -6,16 +6,20 @@
     text-align: center;
     border-top: 5px solid #f0c040;
     border-bottom: 5px solid #f0c040;
+    background-color: rgb(170, 31, 46);
+    color: white;
   }
   
   .contactInfo {
     margin-bottom: 1.5rem;
+    color: white;
   }
   
   .contactForm {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    color: white;
   }
   
   .formRow {

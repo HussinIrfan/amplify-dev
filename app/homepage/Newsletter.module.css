@@ -4,9 +4,11 @@
   justify-content: center;
   align-items: center;
   min-height: 40vh;
-  background-color: white;
+  background-color: rgb(170, 31, 46);
   background-size: cover;
-  margin: 40px 0; /* Added margin for top and bottom gap */
+  margin-top: 10px;
+  margin-bottom: 20px ; /* Added margin for top and bottom gap */
+  width: 100%;
 }
 
 /* Card style */
@@ -22,7 +24,7 @@
 /* Desktop view (larger than 768px) */
 @media (min-width: 768px) {
   .card {
-    max-width: 1200px; /* Increase width for larger screens */
+    max-width: 95%; /* Increase width for larger screens */
   }
 }
 
