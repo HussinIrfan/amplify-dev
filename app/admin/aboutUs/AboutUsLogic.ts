@@ -5,21 +5,23 @@ import { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import { Sanitize } from "../../supportFunctions/SanitizeInput";
 
+
 Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export function useAboutUsLogic() {
   const { sanitizeInput } = Sanitize();
-
+  
   const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
   const [editingEmps, setEditingEmps] = useState<
-    Map<string, Schema["aboutUs"]["type"]>
+  Map<string, Schema["aboutUs"]["type"]>
   >(new Map());
-
+  
   const [picture, setPicture] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const uploadPath = "about-us-founders/${file.name}";
 
   // Function to list existing "About Us" entries
   function listAboutUs() {
@@ -162,5 +164,6 @@ export function useAboutUsLogic() {
     handleEditToggleEmp,
     handleCancelEditEmp,
     deleteEntry,
+    uploadPath,
   };
 }

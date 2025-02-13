@@ -2,10 +2,15 @@
 
 import { useAboutUsLogic } from "./AboutUsLogic"; // Import the logic file
 import { useCollapse } from "../../supportFunctions/ToggleCollase";
-import blankImage from "../../global-images/blank-person.png";
 import "@aws-amplify/ui-react/styles.css";
+import blank from "../../global-images/blank-person.png";
 import "../../page.module.css";
 import "../admin.css";
+
+import { FileUploader } from "@aws-amplify/ui-react-storage";
+import "@aws-amplify/ui-react/styles.css";
+import { StorageImage } from '@aws-amplify/ui-react-storage';
+import { image } from "@nextui-org/react";
 
 export default function AboutUs() {
   const {
@@ -15,6 +20,7 @@ export default function AboutUs() {
     name,
     title,
     description,
+    uploadPath,
     setPicture,
     setName,
     setTitle,
@@ -28,6 +34,7 @@ export default function AboutUs() {
   } = useAboutUsLogic();
 
   const { isContentCollapsed, toggleCollapse } = useCollapse();
+  const blankImage = blank;
 
   return (
     <>
@@ -75,26 +82,7 @@ export default function AboutUs() {
                     return (
                       <tr key={emp.id}>
                         <td>
-                          {editingEmps.has(emp.id) ? (
-                            <input
-                              type="text"
-                              value={editingEmp.picture || ""}
-                              onChange={(e) =>
-                                handleEditChangeEmp(
-                                  emp.id,
-                                  "picture",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          ) : (
-                            <img
-                              className="admin-aboutUs-image"
-                              src={blankImage.src}
-                              alt="About Us"
-                            />
-                          )}
-                        </td>
+                          <StorageImage alt={ blankImage} path="about-us-founders/wn8n5ti0x1f31-2795584082.jpg" />                        </td>
                         <td>
                           {editingEmps.has(emp.id) ? (
                             <input
@@ -182,14 +170,11 @@ export default function AboutUs() {
               <form onSubmit={handleAboutUsSubmit} className="about-us-form">
                 <h3 className="admin-h3">Add Team Member</h3>
                 <div className="form-group">
-                  <label htmlFor="picture">Picture URL:</label>
-                  <input
-                    id="picture"
-                    type="text"
-                    value={picture}
-                    onChange={(e) => setPicture(e.target.value)}
-                    placeholder="Enter picture URL"
-                    className="form-input"
+                  <FileUploader
+                    acceptedFileTypes={["image/*"]}
+                    path={uploadPath}
+                    maxFileCount={1}
+                    isResumable
                   />
                 </div>
                 <div className="form-group">
