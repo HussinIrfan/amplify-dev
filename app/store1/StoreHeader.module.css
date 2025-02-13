@@ -1,0 +1,32 @@
+.yellow-bar {
+    width: 49%;
+    height: 25px;
+    background-color: rgba(252, 229, 25, 0.89);
+    margin: 8px auto 0 auto;
+    border-radius: 10px;
+}
+
+@media (max-width: 1024px) {
+    .yellow-bar {
+        width: 90%;
+        height: 20px;
+        border-radius: 8px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .yellow-bar {
+        width: 90%;
+        height: 20px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .yellow-bar {
+        width: 90%;
+        height: 15px;
+        border-radius: 5px;
+    }
+}
