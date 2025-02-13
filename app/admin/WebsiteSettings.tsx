@@ -5,7 +5,9 @@ import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 
 import AboutUs from "./aboutUs/AboutUs";
 import OurWork from "./ourWork/OurWork";
-import AdminCalendar from "../calendar/admin-calendar/AdminCalendar";
+
+import Calendar from "../calendar/admin-calendar/AdminCalendar";
+
 import Donations from "./donations/Donations";
 import StoreFront from "./storeAdmin/Store";
 import News from "./news/News";
@@ -38,7 +40,7 @@ export default function Store() {
             <AboutUs />
             <OurWork />
             <News />
-            <AdminCalendar />
+            <Calendar />
             <Donations />
             <StoreFront />
           </>
