@@ -117,9 +117,10 @@
 
 .about-us-form {
     display: grid;
+    align-items: center;
     gap: 1rem;
     /* Space between form elements */
-    max-width: 500px;
+    max-width: 600px;
     /* Limit form width */
     margin: 0 auto;
     /* Center the form */
@@ -131,6 +132,8 @@
     /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     /* Subtle shadow for better visibility */
+    width: 100%; /* Ensure the form width is responsive */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
 .add-email-form {
@@ -151,9 +154,11 @@
     /* Subtle shadow for better visibility */
 }
 
-.form-group {
+.form-group{
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    overflow-x: hidden;  
 }
 
 .form-group label {

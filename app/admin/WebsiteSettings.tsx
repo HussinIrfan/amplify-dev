@@ -9,7 +9,7 @@ import OurWork from "./ourWork/OurWork";
 import Calendar from "../calendar/admin-calendar/AdminCalendar";
 
 import Donations from "./donations/Donations";
-import StoreFront from "./storeAdmin/Store";
+
 import News from "./news/News";
 
 export default function Store() {
@@ -42,7 +42,6 @@ export default function Store() {
             <News />
             <Calendar />
             <Donations />
-            <StoreFront />
           </>
         )}
       </div>

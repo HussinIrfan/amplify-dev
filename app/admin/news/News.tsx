@@ -1,7 +1,7 @@
 import react, { useState } from "react";
 import "./news.css";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
-import EmailList from "../emailList/EmailList";
+
 
 export default function News() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
@@ -10,7 +10,7 @@ export default function News() {
     <>
       <div className="div">
         <h2 className="admin-h2" onClick={toggleCollapse}>
-          News / Email List{" "}
+          News{" "}
           <span
             className={`dropdown-arrow ${
               isContentCollapsed ? "collapsed" : ""
@@ -33,7 +33,7 @@ export default function News() {
         >
           {isContentCollapsed && (
             <>
-              <EmailList />
+              
             </>
           )}
         </div>

@@ -1,3 +1,4 @@
+
 import { Amplify } from "aws-amplify";
 import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
@@ -21,7 +22,7 @@ export function useAboutUsLogic() {
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const uploadPath = "about-us-founders/${file.name}";
+  const uploadPath = "about-us-founders/";  //S3 Bucket Location
 
   // Function to list existing "About Us" entries
   function listAboutUs() {
@@ -60,11 +61,11 @@ export function useAboutUsLogic() {
   // Submit handler for creating new About Us entry
   function handleAboutUsSubmit(event: React.FormEvent) {
     event.preventDefault();
-    createAboutUsEntry(picture, name, title, description);
-    setPicture("");
-    setName("");
-    setTitle("");
-    setDescription("");
+    createAboutUsEntry(picture, name, title, description)
+      setPicture("");
+      setName("");
+      setTitle("");
+      setDescription("");
   }
 
   // Handle changes made in the editing form

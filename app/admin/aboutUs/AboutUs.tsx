@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from 'react';
 import { useAboutUsLogic } from "./AboutUsLogic"; // Import the logic file
 import { useCollapse } from "../../supportFunctions/ToggleCollase";
 import "@aws-amplify/ui-react/styles.css";
@@ -35,6 +36,7 @@ export default function AboutUs() {
 
   const { isContentCollapsed, toggleCollapse } = useCollapse();
   const blankImage = blank;
+  const ref = React.useRef(null); // reset File Uploader
 
   return (
     <>
@@ -82,7 +84,8 @@ export default function AboutUs() {
                     return (
                       <tr key={emp.id}>
                         <td>
-                          <StorageImage alt={ blankImage} path="about-us-founders/wn8n5ti0x1f31-2795584082.jpg" />                        </td>
+                          <StorageImage alt="No Image" path={emp.picture} />
+                        </td>
                         <td>
                           {editingEmps.has(emp.id) ? (
                             <input
@@ -175,6 +178,8 @@ export default function AboutUs() {
                     path={uploadPath}
                     maxFileCount={1}
                     isResumable
+                    ref={ref}
+                    onUploadSuccess={(file) => setPicture(file.key)}
                   />
                 </div>
                 <div className="form-group">
@@ -210,7 +215,7 @@ export default function AboutUs() {
                     className="form-input"
                   />
                 </div>
-                <button type="submit" className="button">
+                <button type="submit" className="button" onClick={() => ref.current.clearFiles()}>
                   Create Entry
                 </button>
               </form>
