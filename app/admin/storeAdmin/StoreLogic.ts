@@ -11,13 +11,14 @@ const client = generateClient<Schema>();
 export default function useStore() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null); // Allow null since storeOpen can be nullable
+  const tableID = "1";
 
   // Fetch store open state from the database on initial load
   useEffect(() => {
     const fetchStoreStatus = async () => {
       try {
         // Fetch the entry with id "1"
-        const response = await client.models.isOpen.get({ id: "1" });
+        const response = await client.models.isOpen.get({ id: tableID });
         if (response.data) {
           // Safely extract storeOpen, considering the nullable type
           setStoreOpen(response.data.storeOpen ?? true); // Default to true if null or undefined
@@ -37,7 +38,7 @@ export default function useStore() {
     try {
       // Update the store status in the database
       await client.models.isOpen.update({
-        id: "1", // Pass the object with the 'id' property
+        id: tableID, // Pass the object with the 'id' property
         storeOpen: newStatus
       });
       console.log("Store status updated to:", newStatus);
