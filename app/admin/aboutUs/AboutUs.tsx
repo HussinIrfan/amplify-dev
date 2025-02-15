@@ -177,7 +177,7 @@ export default function AboutUs() {
                     maxFileCount={1}
                     isResumable
                     ref={ref}
-                    onUploadSuccess={(file) => setPicture(file.key)}
+                    onUploadSuccess={(file) => setPicture(file.key || "")} // Assign file name or emtpy string if none
                   />
                 </div>
                 <div className="form-group">
@@ -213,7 +213,7 @@ export default function AboutUs() {
                     className="form-input"
                   />
                 </div>
-                <button type="submit" className="button" onClick={() => ref.current.clearFiles()}>
+                <button type="submit" className="button" onClick={() => (ref.current as any).clearFiles()}>
                   Create Entry
                 </button>
               </form>

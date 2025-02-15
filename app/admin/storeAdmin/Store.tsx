@@ -1,10 +1,19 @@
 // Store.tsx
+"use client";
+
 import React from "react";
 import "./store.css";
 import useStore from "./StoreLogic"; // Import the logic
 
 export default function Store() {
-  const { isContentCollapsed, toggleCollapse, storeOpen, toggleStoreStatus } = useStore();
+
+  //Store Logic Function
+  const {
+    isContentCollapsed,
+    storeOpen,
+    toggleCollapse,
+    toggleStoreStatus,
+  } = useStore();
 
   return (
     <>

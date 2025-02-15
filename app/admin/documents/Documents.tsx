@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import react, { useState } from "react";
 import "./document.css";
+import { useDocumentsLogic } from "./DocumentsLogic";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import { FileUploader } from "@aws-amplify/ui-react-storage";
 import "@aws-amplify/ui-react/styles.css";
@@ -10,6 +13,11 @@ export default function adminDocuments() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
   const uploadPath = "Documents/";
   const ref = React.useRef(null); // reset File Uploader
+
+  //Documents Logic functions
+  const {
+
+  } = useDocumentsLogic();
 
   return (
     <>
@@ -38,8 +46,9 @@ export default function adminDocuments() {
         >
           {isContentCollapsed && (
             <>
-              <div className="form-group">
+              <div className="form-group-document">
                 <FileUploader
+                // Only accept document type files
                   acceptedFileTypes={[
                     "application/msword",
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -47,16 +56,15 @@ export default function adminDocuments() {
                     "application/pdf",
                   ]}
                   path={uploadPath}
-                  maxFileCount={10}
+                  maxFileCount={2}
                   autoUpload={false}
                   isResumable
                   ref={ref}
-                  onUploadSuccess={() => ref.current.clearFiles()}
+                  onUploadSuccess={() => (ref.current as any).clearFiles()}
                 />
               </div>
             </>
           )}
-          ;
         </div>
       </div>
     </>
