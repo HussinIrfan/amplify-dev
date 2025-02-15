@@ -16,6 +16,7 @@ export function useOurWorkLogic() {
   const [description, setDescription] = useState("");
   const [business, setBusiness] = useState("");
   const { sanitizeInput } = Sanitize();
+  const uploadPath = "ourWork/";  //S3 Bucket Location
 
   // Function to list existing "About Us" entries
   function listOurWork() {
@@ -146,6 +147,7 @@ export function useOurWorkLogic() {
     picture,
     description,
     business,
+    uploadPath,
     setPicture,
     setDescription,
     setBusiness,

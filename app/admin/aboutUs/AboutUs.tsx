@@ -7,11 +7,9 @@ import "@aws-amplify/ui-react/styles.css";
 import blank from "../../global-images/blank-person.png";
 import "../../page.module.css";
 import "../admin.css";
-
 import { FileUploader } from "@aws-amplify/ui-react-storage";
 import "@aws-amplify/ui-react/styles.css";
 import { StorageImage } from '@aws-amplify/ui-react-storage';
-import { image } from "@nextui-org/react";
 
 export default function AboutUs() {
   const {
@@ -84,7 +82,7 @@ export default function AboutUs() {
                     return (
                       <tr key={emp.id}>
                         <td>
-                          <StorageImage alt="No Image" path={emp.picture} />
+                          <StorageImage alt="No Image" path={emp.picture || "No Image"} />
                         </td>
                         <td>
                           {editingEmps.has(emp.id) ? (

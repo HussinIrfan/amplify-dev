@@ -1,9 +1,15 @@
+import * as React from "react";
 import react, { useState } from "react";
 import "./document.css";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
+import { FileUploader } from "@aws-amplify/ui-react-storage";
+import "@aws-amplify/ui-react/styles.css";
+import { StorageImage } from "@aws-amplify/ui-react-storage";
 
 export default function adminDocuments() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
+  const uploadPath = "Documents/";
+  const ref = React.useRef(null); // reset File Uploader
 
   return (
     <>
@@ -30,7 +36,27 @@ export default function adminDocuments() {
             !isContentCollapsed ? "collapsed" : "expanded"
           }`}
         >
-          {isContentCollapsed && <></>}
+          {isContentCollapsed && (
+            <>
+              <div className="form-group">
+                <FileUploader
+                  acceptedFileTypes={[
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "text/plain",
+                    "application/pdf",
+                  ]}
+                  path={uploadPath}
+                  maxFileCount={10}
+                  autoUpload={false}
+                  isResumable
+                  ref={ref}
+                  onUploadSuccess={() => ref.current.clearFiles()}
+                />
+              </div>
+            </>
+          )}
+          ;
         </div>
       </div>
     </>
