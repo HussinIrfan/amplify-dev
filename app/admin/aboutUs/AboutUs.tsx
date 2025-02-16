@@ -175,6 +175,7 @@ export default function AboutUs() {
                     acceptedFileTypes={["image/*"]}
                     path={uploadPath}
                     maxFileCount={1}
+                    autoUpload={false}
                     isResumable
                     ref={ref}
                     onUploadSuccess={(file) => setPicture(file.key || "")} // Assign file name or emtpy string if none

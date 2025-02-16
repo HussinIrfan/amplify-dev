@@ -1,28 +1,27 @@
-
 import { Amplify } from "aws-amplify";
 import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
 import { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import { Sanitize } from "../../supportFunctions/SanitizeInput";
-
+import { remove } from "aws-amplify/storage";
 
 Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export function useAboutUsLogic() {
   const { sanitizeInput } = Sanitize();
-  
+
   const [emps, setEmp] = useState<Array<Schema["aboutUs"]["type"]>>([]);
   const [editingEmps, setEditingEmps] = useState<
-  Map<string, Schema["aboutUs"]["type"]>
+    Map<string, Schema["aboutUs"]["type"]>
   >(new Map());
-  
+
   const [picture, setPicture] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const uploadPath = "about-us-founders/";  //S3 Bucket Location
+  const uploadPath = "about-us-founders/"; //S3 Bucket Location
 
   // Function to list existing "About Us" entries
   function listAboutUs() {
@@ -61,11 +60,11 @@ export function useAboutUsLogic() {
   // Submit handler for creating new About Us entry
   function handleAboutUsSubmit(event: React.FormEvent) {
     event.preventDefault();
-    createAboutUsEntry(picture, name, title, description)
-      setPicture("");
-      setName("");
-      setTitle("");
-      setDescription("");
+    createAboutUsEntry(picture, name, title, description);
+    setPicture("");
+    setName("");
+    setTitle("");
+    setDescription("");
   }
 
   // Handle changes made in the editing form
@@ -95,6 +94,7 @@ export function useAboutUsLogic() {
           // Close the edit box after saving changes
           setEditingEmps((prev) => {
             const newEditingEmps = new Map(prev);
+
             newEditingEmps.delete(empId); // Remove the employee from the editing state
             return newEditingEmps;
           });
@@ -134,6 +134,25 @@ export function useAboutUsLogic() {
   const deleteEntry = async (empId: string) => {
     if (window.confirm("Are you sure you want to delete this entry?")) {
       try {
+        const empToDelete = emps.find((emp) => emp.id === empId); //find emp to delete using strict compare
+
+        if (!empToDelete) {
+          console.log("Unable to find emp");
+          return;
+        }
+
+        //remove S3 image Object
+        if (empToDelete.picture) {
+          try {
+            await remove({
+              path: empToDelete.picture,
+              // add bucket path specification if needed here
+            });
+          } catch (error) {
+            console.log(`Error deleting S3 bucket Object ${empId}`);
+          }
+        }
+
         const result = await client.models.aboutUs.delete({ id: empId });
 
         if (result) {
