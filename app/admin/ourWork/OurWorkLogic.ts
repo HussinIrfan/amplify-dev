@@ -107,10 +107,11 @@ export function useOurWorkLogic() {
 
         if (!busToDelete) {
           console.log("Unable to find business");
+          return;
         }
 
         //remove S3 image object
-        if (busToDelete) {
+        if (busToDelete.picture) {
           try {
             await remove({
               path: busToDelete.picture,

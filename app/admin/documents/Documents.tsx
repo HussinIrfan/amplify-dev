@@ -16,7 +16,14 @@ export default function adminDocuments() {
 
   //Documents Logic functions
   const {
-
+    documents,
+    uploadDoc501c3,
+    uploadDoc990,
+    setDoc990,
+    setDoc501c3,
+    setDocuments,
+    updateDoc990,
+    updateDoc501c3,
   } = useDocumentsLogic();
 
   return (
@@ -47,8 +54,9 @@ export default function adminDocuments() {
           {isContentCollapsed && (
             <>
               <div className="form-group-document">
+                <p>Upload Here</p>
                 <FileUploader
-                // Only accept document type files
+                  // Only accept document type files
                   acceptedFileTypes={[
                     "application/msword",
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -60,7 +68,32 @@ export default function adminDocuments() {
                   autoUpload={false}
                   isResumable
                   ref={ref}
-                  onUploadSuccess={() => (ref.current as any).clearFiles()}
+                  onUploadSuccess={(file) => {
+                    updateDoc501c3(file.key || "");
+                    (ref.current as any).clearFiles();
+                  }}
+                />
+              </div>
+              <br />
+              <p>Testing area</p>
+              <div className="form-group-document">
+                <FileUploader
+                  // Only accept document type files
+                  acceptedFileTypes={[
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "text/plain",
+                    "application/pdf",
+                  ]}
+                  path={uploadPath}
+                  maxFileCount={2}
+                  autoUpload={false}
+                  isResumable
+                  ref={ref}
+                  onUploadSuccess={(file) => {
+                    updateDoc990(file.key || "");
+                    (ref.current as any).clearFiles();
+                  }}
                 />
               </div>
             </>
