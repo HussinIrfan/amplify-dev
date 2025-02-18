@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.8.0",
-    "@aws-amplify/backend-cli": "^1.2.6",
+    "@aws-amplify/backend-cli": "^0.9.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-big-calendar": "^1.16.1",
@@ -48,8 +48,8 @@
     "aws-cdk": "^2.177.0",
     "aws-cdk-lib": "^2.178.2",
     "constructs": "^10.3.0",
-    "esbuild": "^0.23.1",
-    "tsx": "^4.19.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^3.12.10",
     "typescript": "^5.6.2"
   }
 }

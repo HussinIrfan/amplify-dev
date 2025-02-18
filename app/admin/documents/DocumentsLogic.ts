@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import { Sanitize } from "../../supportFunctions/SanitizeInput";
+import { remove } from 'aws-amplify/storage';
 
 Amplify.configure(outputs);
 
@@ -35,9 +36,18 @@ export function useDocumentsLogic() {
 
   const updateDoc990 = async (doc: string) => {
     try {
+      
+      const response = await client.models.documents.get({id: DocId});
+
+      // Only remove the file if doc990 exists
+      if (response.data?.doc990) {
+        await remove({
+          path: response.data.doc990, // Ensure this is a valid string
+        });
+      }
+
       const result = await client.models.documents.update({
         id: DocId,
-        doc501c3: uploadDoc501c3,
         doc990: doc,
       });
       return result;
@@ -47,10 +57,19 @@ export function useDocumentsLogic() {
   };
   const updateDoc501c3 = async (doc: string) => {
     try {
+
+      const response = await client.models.documents.get({id: DocId});
+
+      // Only remove the file if doc990 exists
+      if (response.data?.doc501c3) {
+        await remove({
+          path: response.data.doc501c3, // Ensure this is a valid string
+        });
+      }
+
       const result = await client.models.documents.update({
         id: DocId,
         doc501c3: doc,
-        doc990: uploadDoc990,
       });
       return result;
     } catch (err) {
