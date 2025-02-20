@@ -74,6 +74,27 @@ const schema = a.schema({
 
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+
+    Product: a
+    .model({
+      name: a.string().required(),
+      description: a.string(),
+      basePrice: a.float().required(),
+      imageUrl: a.string().required(),
+      slug: a.string().required(),
+      variants: a.hasMany("ProductVariant", "productId"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  ProductVariant: a
+    .model({
+      productId: a.id().required(),
+      size: a.string(),
+      quantity: a.integer().required(),
+      product: a.belongsTo("Product", "productId"),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
   });
 
 export type Schema = ClientSchema<typeof schema>;
