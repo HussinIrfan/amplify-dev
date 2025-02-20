@@ -5,8 +5,9 @@ const schema = a.schema({
     .model({
       name: a.string().required(),
       description: a.string(),
-      price: a.float().required(),
+      basePrice: a.float().required(),
       imageUrl: a.string(),
+      slug: a.string(),
       variants: a.hasMany("ProductVariant", "productId"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
