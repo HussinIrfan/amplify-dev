@@ -3,7 +3,7 @@
 import CustomNavbar from "../customNavbar/CustomNavbar";
 import ProductSection from "./ProductSection"
 import Footer from "../footer/footer";
-import styles from "./page.module.css"
+import styles from "./assets/page.module.css"
 
 export default function AdminPage() {
   return (

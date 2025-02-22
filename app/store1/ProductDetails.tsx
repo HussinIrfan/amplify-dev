@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ProductDetails.module.css";
+import styles from "./assets/ProductDetails.module.css";
 
 interface ProductDetailsProps {
     id: string;
