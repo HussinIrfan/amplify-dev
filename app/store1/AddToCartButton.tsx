@@ -1,10 +1,14 @@
 import React from "react";
-import "./assets/AddToCartButton.css"; // Ensure the correct path
+import Image from 'next/image'; 
+import "./assets/AddToCartButton.css"; 
+import cartIcon from "./assets/cart.png"; 
+
 
 const AddToCartButton: React.FC = () => {
   return (
     <button className="add-to-cart-btn">
-      Add to Cart
+        <Image src={cartIcon} alt="Cart" className="cart-icon" />
+        Add to Cart
     </button>
   );
 };
