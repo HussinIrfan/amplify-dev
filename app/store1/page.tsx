@@ -7,7 +7,7 @@ import styles from "./page.module.css"
 
 export default function AdminPage() {
   return (
-    <>
+    <div>
       <main className={styles ["main"]}>
         <CustomNavbar />
      
@@ -20,6 +20,6 @@ export default function AdminPage() {
         </div>
 
       </main>
-    </>
+    </div>
   );
 }
