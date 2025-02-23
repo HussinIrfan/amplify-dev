@@ -8,7 +8,6 @@ const AddToCartButton: React.FC = () => {
   return (
     <button className="add-to-cart-btn">
         <Image src={cartIcon} alt="Cart" className="cart-icon" />
-        Add to Cart
     </button>
   );
 };
