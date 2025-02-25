@@ -1,0 +1,122 @@
+/* Featured Page Container */
+.featured-page {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Yellow Bar */
+  .yellow-bar {
+    width: 860px;
+    height: 14px;
+    background-color: #ffc400; /* Yellow color */
+    margin: 10px auto 20px; /* Center the bar and add spacing */
+  }
+  
+  /* Product Grid */
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  /* Product Card */
+  .product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px; /* Fixed width for each card */
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Product Image */
+  .product-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Product Name */
+  .product-name {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  /* Product Description */
+  .product-description {
+    font-size: 1em;
+    color: #666;
+    margin: 10px 0;
+  }
+  
+  /* Product Price */
+  .product-price {
+    font-size: 1.2em;
+    color: #000;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  /* Size Buttons */
+  .size-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .size-button {
+    padding: 8px 12px;
+    background-color: #FFD700; /* Yellow color */
+    color: #0024d7;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .size-button:hover {
+    background-color: #e62e00; /* Darker yellow on hover */
+  }
+  
+  /* Add to Cart Button */
+  .add-to-cart {
+    width: 70%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+ 
+.product-description {
+    font-size: 1em;
+    color: #666;
+    margin: 10px 0;
+    padding: 12px; /* Add padding inside the box */
+    background-color: #f0f0f0; /* Light grey background */
+    border-radius: 8px; /* Rounded corners */
+  } 
+  .add-to-cart:hover {
+    background-color: #0056b3;
+  }
+  .placeholder-message {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #666;
+  }

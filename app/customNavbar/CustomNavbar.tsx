@@ -1,3 +1,5 @@
+"use client";
+
 import { Navbar, Link } from "@nextui-org/react";
 import styles from './CustomNavbar.module.css';
 import Image from 'next/image';
@@ -77,7 +79,7 @@ export default function CustomNavbar() {
                 Donation
               </Link>
               {storeOpen && (
-              <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
+              <Link className={styles.navbarItem} href="/featured" onClick={closeMobileMenu}>
                 Store
               </Link>
               )}
