@@ -37,7 +37,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             name,
             price,
             size: selectedSize,
-            quantity: 0, // Default quantity to 1
+            quantity: 1, // Defaults quantity to 1
             imageUrl
         };
 
@@ -52,13 +52,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         } else {
             // Otherwise, add a new item
             cartItems.push(newItem);
+            
         }
 
         // Save updated cart back to localStorage
         localStorage.setItem("cart", JSON.stringify(cartItems));
 
+        const value = localStorage.getItem(cartItems);
+        console.log(cartItems, value);
+
         // Redirect to the cart page
-        window.location.href = "/cart";
+        // window.location.href = "/cart";
     };
 
     return (
