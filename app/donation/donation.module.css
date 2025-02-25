@@ -2,15 +2,15 @@
 .hero {
     position: relative;
     width: 1900px;
-    height: 100vh; /* Section takes up the full viewport height */
+    height: 100vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('/donation.jpg'); /* Set image as background */
-    background-size: cover; /* Ensures the image fills the space without distorting */
-    background-position: center; /* Ensures the image is centered */
-    z-index: -1; /* Keeps the background behind the content */
+    background-image: url('/donation.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
 }
 
 /* Donation Section */
@@ -33,23 +33,27 @@
 }
 
 .donationSection h1 {
-    font-size: 48px; /* Increased size */
-    font-weight: bolder; /* Increased boldness */
+    font-size: 48px;
+    font-weight: bolder;
     margin-bottom: 20px;
     color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 5px black; /* Added black outline using text-shadow */
+    margin-top: 2cm; /* Added 2cm margin to move the text down */
 }
 
 .donationTitle h2 {
-    font-size: 36px; /* Increased size */
+    font-size: 36px;
     margin-bottom: 20px;
-    color: white; /* Changed color to white */
-    font-weight: bolder; /* Made it bolder */
+    color: white;
+    font-weight: bolder;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 5px black; /* Added black outline using text-shadow */
 }
 
 .donationTitle {
     color: white;
-    font-weight: bolder; /* Increased boldness */
-    font-size: 36px; /* Increased size */
+    font-weight: bolder;
+    font-size: 36px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 5px black; /* Added black outline using text-shadow */
 }
 
 .donationOptions {
@@ -65,7 +69,7 @@
     padding: 10px 20px;
     font-size: 18px;
     background-color: #d3d3d3;
-    color: white;
+    color: black;
     border: none;
     cursor: pointer;
     border-radius: 5px;
@@ -79,15 +83,15 @@
 .donationInput {
     padding: 10px;
     font-size: 18px;
-    margin-top: 20px; /* Space between buttons and input field */
+    margin-top: 20px;
     border: 1px solid #ccc;
-    width: 200px; /* Adjust width */
+    width: 200px;
     text-align: center;
     background-color: #d3d3d3;
     border-radius: 5px;
-    display: block; /* Ensure it's displayed as block element for correct placement */
-    margin-left: auto; /* Center the input */
-    margin-right: auto; /* Center the input */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Donate button styling */

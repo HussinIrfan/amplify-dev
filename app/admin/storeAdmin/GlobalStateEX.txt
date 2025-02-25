@@ -1,0 +1,15 @@
+// OtherComponent.tsx
+import React from "react";
+import { useStore } from "@/context/StoreContext"; // Import the useStore hook
+
+const OtherComponent: React.FC = () => {
+  const { storeOpen } = useStore(); // Access the global storeOpen state
+
+  return (
+    <div>
+      <h3>The store is currently {storeOpen ? "Open" : "Closed"}</h3>
+    </div>
+  );
+};
+
+export default OtherComponent;

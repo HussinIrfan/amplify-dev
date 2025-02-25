@@ -13,30 +13,26 @@ const NewsletterPopup = () => {
           <div className={styles.cardHeader}>
             <h2 className={styles.headerText}>Keep up with our organization</h2>
           </div>
+          <form action="http://sendy.sltfirefoundation.org/subscribe" method="POST" acceptCharset="utf-8">
           <div className={styles.cardBody}>
             <p>Subscribe and receive monthly newsletters.</p>
             <div className={styles.inputContainer}>
-              <div className={styles.nameFields}>
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  className={styles.input}
-                />
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  className={styles.input}
-                />
-              </div>
               <input
                 type="email"
+                name ="email" //Sendy required field
                 placeholder="Email Address"
                 className={`${styles.input} ${styles.emailInput}`} // Use emailInput class here
+                required 
               />
+
+              {/* Hidden fields required by Sendy */}
+              <input type="hidden" name="list" value="JqlRJUDG7v4763iVTyZT8TaQ" />
+              <input type="hidden" name="subform" value="yes" />
               <button className={styles.button}>Subscribe</button>
             </div>
             <p className={styles.note}>No spam, unsubscribe at any time</p>
           </div>
+          </form>
         </div>
       </div>
     </>

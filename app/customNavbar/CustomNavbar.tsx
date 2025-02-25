@@ -1,13 +1,19 @@
 import { Navbar, Link } from "@nextui-org/react";
 import styles from './CustomNavbar.module.css';
 import Image from 'next/image';
-import navbarIMG from '../navbarAssets/navbarBG.png';
+import navbarIMG from '../navbarAssets/test2.png';
+import navbarIMGSmall from '../navbarAssets/test2.png';
 import instaLogo from '../navbarAssets/instaLogo.png';
 import fbLogo from '../navbarAssets/fbLogo.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useStore from "../admin/storeAdmin/StoreLogic";
 
 export default function CustomNavbar() {
+  //Admin store setting
+  const {storeOpen} = useStore();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const toggleMobileMenu = () => {
     console.log("Mobile menu toggled:", !isMobileMenuOpen); // Debugging
@@ -18,18 +24,31 @@ export default function CustomNavbar() {
     setIsMobileMenuOpen(false);
   };
 
+    
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 1070);
+    };
+  
+    // Initial check
+    handleResize();
+  
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
           <Image
-            src={navbarIMG}
+            src={isSmallScreen ? navbarIMGSmall : navbarIMG}
             alt="Navbar"
             layout="responsive"
             objectFit="cover"
           />
         </div>
-
+        
         <Navbar className={styles.navbar}>
           <div className={styles.navbarContent}>
             {/* Hamburger Menu Button */}
@@ -42,7 +61,7 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/" onClick={closeMobileMenu}>
                 Home
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
+              <Link className={styles.navbarItem} href="/aboutus" onClick={closeMobileMenu}>
                 About Us
               </Link>
               <Link className={styles.navbarItem} href="/ourwork" onClick={closeMobileMenu}>
@@ -57,9 +76,11 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
+              {storeOpen && (
               <Link className={styles.navbarItem} href="/admin" onClick={closeMobileMenu}>
                 Store
               </Link>
+              )}
             </div>
 
             {/* Instagram Link */}
