@@ -63,9 +63,9 @@ const schema = a.schema({
 
     ourWork: a
     .model({
-      picture: a.string(),
-      business: a.string(),
-      description: a.string(),
+      picture: a.string().required(),
+      business: a.string().required(),
+      description: a.string().required(),
 
     })
     .authorization((allow) => [allow.publicApiKey()]),
