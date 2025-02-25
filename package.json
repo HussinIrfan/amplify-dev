@@ -13,6 +13,7 @@
     "@aws-amplify/auth": "^6.7.0",
     "@aws-amplify/datastore": "^5.0.61",
     "@aws-amplify/ui-react": "^6.1.13",
+    "@aws-sdk/client-ses": "^3.750.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.6",
