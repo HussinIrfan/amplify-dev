@@ -1,38 +1,160 @@
-/* Calendar Container */
-.calendar-container {
-    height: 80vh;
-    /* Adjust the container height */
-    margin-bottom: 0px;
-    position: relative;
-    overflow: hidden;
-    padding: 10px;
-    /* Added padding for mobile devices */
-}
-
 .calendar-internal {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 100%;
+    height: 100%; 
     z-index: 9999;
     scroll-behavior: auto;
 }
 
+.centered-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-60%, 0%);
+  max-width: 450px;
+  width: 90%;
+  min-width: 300px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 15px;
+}
+
+
+.add-event-form-modal {
+  width: 90%;
+  position: absolute;
+  max-width: 450px;
+  min-width: 300px;
+  margin-top: -325px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scale: 75%;
+}
+
+/* Prevent background scrolling when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px; /* Prevents the modal from touching screen edges */
+}
+
+/* Title Input */
+.input-title {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Date-Time Containers */
+.date-time-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.time-picker{
+  scale: 130%;
+  padding-top: 10px;
+  padding-right: 40px;;
+}
+
+.input-date, .input-time {
+    width: 48%; /* Each takes up almost half the width */
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Location Input */
+.input-location {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Event Details Textarea */
+.input-details {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 100px; /* Default height */
+}
+
+/* All Day Checkbox */
+label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input[type="checkbox"] {
+    margin-left: 10px;
+}
+
+/* Buttons */
+button {
+    padding: 12px 20px;
+    font-size: 1.2em;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #000000;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
 /* Modal Background (Darkens the area behind the modal) */
 .modalBackground {
-    position: fixed;
+    position: absolute; /* Adjusted to 'absolute' */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
-}
-
-/* Admin Modal Container */
-.admin-modal {
+    display: block;
+  }
+  
+  /* Admin Modal Container */
+  .admin-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -50,116 +172,80 @@
     overflow-x: hidden;
     box-sizing: border-box;
     border: 1px solid black;
-}
-
-/* Admin Modal Header */
-.admin-modal h2 {
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 1.5em;
-}
-
-/* Admin Modal Content */
-.admin-modal p {
-    font-size: 1em;
-    margin-bottom: 10px;
-}
-
+  }
+  
 /* Admin Modal Buttons Wrapper (Grid Layout) */
 .admin-modal-buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Creates 2 equal-width columns */
-    gap: 10px; /* Adds space between buttons */
-    justify-items: center; /* Centers the buttons in each grid cell */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates 2 equal-width columns */
+  gap: 10px; /* Adds space between buttons */
+  justify-items: center; /* Centers the buttons in each grid cell */
 }
 
-/* Admin Modal Button */
-.admin-modal button {
-    background-color: #f5c71a;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1.2em; /* Larger font for better readability on mobile */
-    width: 100%; /* Makes the button fill the grid cell */
-    box-sizing: border-box; /* Ensures padding is included in width calculation */
+/* Add Event Button */
+.add-event-button {
+  width: 100%; /* Full width of its container */
+  display: block; /* Ensures it behaves as a block element */
+  box-sizing: border-box; /* Ensures padding does not cause overflow */
+  margin-top: 10px;
 }
 
-/* Ensure buttons do not exceed their container width */
-.admin-modal .delete-btn {
+/* Ensure buttons take full width of their grid cells */
+.admin-modal .admin-btn, .admin-modal .delete-btn {
+  width: 100%; /* Make buttons fill the width of their grid cells */
+}
+
+ .admin-cal-btn {
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+  border: 1px solid #000000;
+  font-weight: bold;
+  width: 100%;
+  font-size: 1.2em;
+ }
+  
+  /* Ensure buttons do not exceed their container width */
+  .admin-modal .delete-btn {
     background-color: #000000;
     color: rgb(255, 255, 255);
     border: 1px solid black;
     font-weight: bold;
-}
-
-/* Admin Button Style */
-.admin-modal .admin-btn {
+  }
+  
+  /* Admin Button Style */
+  .admin-modal .admin-btn {
     background-color: #000000;
     color: rgb(255, 255, 255);
     border: 1px solid black;
     font-weight: bold;
-}
-
-/* Hover Effects */
-.admin-modal .delete-btn:hover {
+  }
+  
+  /* Hover Effects */
+  .admin-modal .delete-btn:hover {
     background-color: #ee1c1c;
     border-color: black;
     color: black;
     font-weight: bold;
     border: 1px solid black;
-}
-
-.admin-modal .admin-btn:hover {
+  }
+  
+  .admin-modal .admin-btn:hover {
     background-color: #2a3e5e;
     border-color: black;
-}
-
-.admin-modal button:hover {
+  }
+  
+  .admin-modal button:hover {
     opacity: 0.9;
-}
-
-.admin-cal-btn {
-    background-color: #000000;
-    color: rgb(255, 255, 255);
-    border: 1px solid black;
-    font-weight: bold;
-    width: 100%; /* Full-width button */
-    font-size: 1.2em; /* Larger font for better readability on mobile */
-}
-
-.admin-cal-btn:hover {
-    background-color: #2a3e5e;
-    border-color: black;
-}
+  }
 
 /* Adjust for smaller screens */
 @media (max-width: 600px) {
-    /* Reduce modal width further for small screens */
-    .admin-modal {
-        width: 90%;
-        padding: 15px;
+    .date-time-container {
+        flex-direction: column; /* Stack date and time vertically on small screens */
     }
 
-    /* Adjust font size for header and paragraph */
-    .admin-modal h2 {
-        font-size: 1.3em; /* Slightly smaller header font */
-    }
-
-    .admin-modal p {
-        font-size: 0.9em; /* Smaller paragraph font */
-    }
-
-    /* Adjust button size for mobile */
-    .admin-modal button {
-        padding: 10px 15px;
-        font-size: 1em; /* Reduce font size for smaller buttons */
-    }
-
-    /* Stack buttons vertically on mobile */
-    .admin-modal-buttons {
-        grid-template-columns: 1fr; /* Stack buttons in a single column on mobile */
-        gap: 5px; /* Reduce gap between buttons */
+    .input-date, .input-time {
+        width: 100%; /* Make inputs full width on smaller screens */
+        margin-bottom: 10px;
     }
 }

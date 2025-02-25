@@ -54,7 +54,7 @@ export default function adminDocuments() {
           {isContentCollapsed && (
             <>
               <div className="form-group-document">
-                <p>Upload Here</p>
+                <p>Upload 501(c)3 Here</p>
                 <FileUploader
                   // Only accept document type files
                   acceptedFileTypes={[
@@ -64,7 +64,7 @@ export default function adminDocuments() {
                     "application/pdf",
                   ]}
                   path={uploadPath}
-                  maxFileCount={2}
+                  maxFileCount={1}
                   autoUpload={false}
                   isResumable
                   ref={ref}
@@ -75,7 +75,7 @@ export default function adminDocuments() {
                 />
               </div>
               <br />
-              <p>Testing area</p>
+              <p>Upload 990 Here</p>
               <div className="form-group-document">
                 <FileUploader
                   // Only accept document type files
@@ -86,7 +86,7 @@ export default function adminDocuments() {
                     "application/pdf",
                   ]}
                   path={uploadPath}
-                  maxFileCount={2}
+                  maxFileCount={1}
                   autoUpload={false}
                   isResumable
                   ref={ref}

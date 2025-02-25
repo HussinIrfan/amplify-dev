@@ -33,11 +33,11 @@ export function useDocumentsLogic() {
     fetchDocStatus();
   }, []);
 
+  //TODO: remove old file before updating new files
   const updateDoc990 = async (doc: string) => {
     try {
       const result = await client.models.documents.update({
         id: DocId,
-        doc501c3: uploadDoc501c3,
         doc990: doc,
       });
       return result;
@@ -50,7 +50,6 @@ export function useDocumentsLogic() {
       const result = await client.models.documents.update({
         id: DocId,
         doc501c3: doc,
-        doc990: uploadDoc990,
       });
       return result;
     } catch (err) {
