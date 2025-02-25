@@ -6,9 +6,11 @@ import cartIcon from "./assets/cart.png";
 
 const AddToCartButton: React.FC = () => {
   return (
-    <button className="add-to-cart-btn">
-        <Image src={cartIcon} alt="Cart" className="cart-icon" />
-    </button>
+    <div className="cart_button_container">
+      <button className="add_to_cart_btn">
+          <Image src={cartIcon} alt="Cart" className="cart_icon" />
+      </button>
+    </div>
   );
 };
 

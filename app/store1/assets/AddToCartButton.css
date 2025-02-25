@@ -1,11 +1,11 @@
-winget up.cart-button-container {
+.cart_button_container {
   display: flex;
-  justify-content: flex-end; 
-  width: 100%;
-  padding: 20px;
+  justify-content: flex-end;
+  width: 90%;
+  padding: 10px;
 }
 
-.add-to-cart-btn {
+.add_to_cart_btn {
   width: 40px;
   height: 40px;
   background-color: #ffffff;
@@ -20,18 +20,18 @@ winget up.cart-button-container {
   transition: background 0.3s ease;
 }
 
-.cart-icon {
+.cart_icon {
   width: 40px;
   height: 30px;
   align-items: center;
   justify-content: center;
 }
 
-.add-to-cart-btn:hover {
+.add_to_cart_btn:hover {
   background-color: #767779;
 }
 
-.add-to-cart-btn:disabled {
+.add_to_cart_btn:disabled {
   background-color: gray;
   cursor: not-allowed;
 }
