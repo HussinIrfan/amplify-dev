@@ -2,17 +2,27 @@
 
 import CustomNavbar from "../customNavbar/CustomNavbar";
 import ProductSection from "./ProductSection"
-import ContactInfoBox from "../components/ContactInfoBox";
+import Footer from "../footer/footer";
+import styles from "./assets/page.module.css"
+import AddToCartButton from "./AddToCartButton";
 
 export default function AdminPage() {
   return (
-    <>
-      <main className="main">
+    <div>
+      <main className={styles ["main"]}>
         <CustomNavbar />
-        <ProductSection />
-        <ContactInfoBox />
+
+        <AddToCartButton />
+     
+        <div className={styles ["content"]}>
+          <ProductSection />
+        </div>
+
+        <div>
+          <Footer />
+        </div>
 
       </main>
-    </>
+    </div>
   );
 }
