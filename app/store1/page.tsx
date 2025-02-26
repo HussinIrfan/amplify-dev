@@ -3,13 +3,16 @@
 import CustomNavbar from "../customNavbar/CustomNavbar";
 import ProductSection from "./ProductSection"
 import Footer from "../footer/footer";
-import styles from "./page.module.css"
+import styles from "./assets/page.module.css"
+import AddToCartButton from "./AddToCartButton";
 
 export default function AdminPage() {
   return (
-    <>
+    <div>
       <main className={styles ["main"]}>
         <CustomNavbar />
+
+        <AddToCartButton />
      
         <div className={styles ["content"]}>
           <ProductSection />
@@ -20,6 +23,6 @@ export default function AdminPage() {
         </div>
 
       </main>
-    </>
+    </div>
   );
 }

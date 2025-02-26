@@ -1,21 +1,89 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Checkout.module.css';
 import CustomNavbar from '../customNavbar/CustomNavbar';
 import Footer from '../footer/footer';
 
+const PAYPAL_CLIENT_ID = 'AZVlUKD1V6oT6Ym_JWGNGZYW17n-uUdOjiYVTLWtKc6dWfTaI_cnFh0tXzFWDOAhP37OHuRhhLB6Cns7';
+
+declare global {
+  interface Window {
+    paypal: any;
+  }
+}
+
 const Checkout = () => {
+  useEffect(() => {
+    const loadPayPalScript = () => {
+      if (!document.querySelector('#paypal-sdk')) {
+        const script = document.createElement('script');
+        script.id = 'paypal-sdk';
+        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+        script.async = true;
+        script.onload = renderPayPalButtons;
+        document.body.appendChild(script);
+      } else {
+        renderPayPalButtons();
+      }
+    };
+
+    const renderPayPalButtons = () => {
+      if (window.paypal) {
+        window.paypal
+          .Buttons({
+            style: {
+              shape: 'rect',
+              layout: 'vertical',
+              color: 'gold',
+              label: 'paypal',
+            },
+            createOrder: async () => {
+              const response = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  cart: [{ id: '123', quantity: 1 }],
+                }),
+              });
+              const orderData = await response.json();
+              return orderData.id;
+            },
+            onApprove: async (data: { orderID: string }) => {
+              const response = await fetch(`/api/orders/${data.orderID}/capture`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+              });
+
+              const orderData = await response.json();
+              if (orderData?.purchase_units) {
+                alert(`Payment successful! Transaction ID: ${orderData.id}`);
+              } else {
+                alert('Payment failed.');
+              }
+            },
+            onError: (err: unknown) => {
+              console.error('PayPal Checkout Error:', err);
+              alert('There was an error processing your payment.');
+            },
+          })
+          .render('#paypal-button-container');
+      } else {
+        console.error('PayPal SDK failed to load.');
+      }
+    };
+
+    loadPayPalScript();
+  }, []);
+
   return (
     <div className={styles.checkoutContainer}>
-      {/* Header */}
       <CustomNavbar />
-
       <h1 className={styles.heading}>Checkout</h1>
 
       <div className={styles.gridContainer}>
-        {/* Left Section: Billing Details and Shipping Address */}
         <div>
+          {/* Billing Details */}
           <div className={styles.billingDetails}>
             <h2 className={styles.sectionHeading}>Billing Details</h2>
             <form>
@@ -90,57 +158,22 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* Right Section: Order Summary and Payment */}
         <div>
+          {/* Order Summary */}
           <div className={styles.orderSummary}>
             <h2 className={styles.sectionHeading}>Your Order</h2>
             <div className={styles.orderDetails}>
-              <p>
-                <span>Item Desc</span>
-                <span>Cost of Item</span>
-              </p>
-              <p>
-                <span>Item Desc</span>
-                <span>Cost of Item</span>
-              </p>
-              <p>
-                <span>Subtotal</span>
-                <span>$85.23</span>
-              </p>
-              <p>
-                <span>Shipping</span>
-                <span>$5.23</span>
-              </p>
-              <p>
-                <span>Tax</span>
-                <span>$5.23</span>
-              </p>
-              <p>
-                <span>Total</span>
-                <span>$72.38</span>
-              </p>
+              <p><span>Subtotal</span><span>$85.23</span></p>
+              <p><span>Shipping</span><span>$5.23</span></p>
+              <p><span>Tax</span><span>$5.23</span></p>
+              <p><span>Total</span><span>$95.69</span></p>
             </div>
-          </div>
 
-          <div className={styles.paymentSection}>
-            <h2 className={styles.sectionHeading}>Payment</h2>
-            <form>
-              <label>Card Number*</label>
-              <input type="text" className={styles.inputField} placeholder="Card Number" />
-
-              <label>Expiration*</label>
-              <input type="text" className={styles.inputField} placeholder="MM/YY" />
-
-              <label>CVC*</label>
-              <input type="text" className={styles.inputField} placeholder="CVC" />
-            </form>
-
-            {/* Place Order Button */}
-            <button className={styles.placeOrderButton}>Place Order</button>
+            <div id="paypal-button-container" style={{ marginTop: '20px' }}></div>
           </div>
         </div>
       </div>
-      {/* Footer */}
+
       <Footer />
     </div>
   );

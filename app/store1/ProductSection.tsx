@@ -1,10 +1,9 @@
 import React from "react";
-import styles from "./ProductSection.module.css";
+import styles from "./assets/ProductSection.module.css";
 import Gallery from "./Gallery";
 import ProductDetails from "./ProductDetails";
 import StoreHeader from "./StoreHeader";
 import { title } from "process";
-// import firefighters1Image from "./assets/t_shirt.png";
 
 const ProductImage = () => {
     
