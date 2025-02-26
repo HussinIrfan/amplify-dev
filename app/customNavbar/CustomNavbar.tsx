@@ -78,7 +78,6 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
-              {storeOpen && (
               <Link className={styles.navbarItem} href="/featured" onClick={closeMobileMenu}>
                 Store
               </Link>
