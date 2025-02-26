@@ -7,6 +7,7 @@ import type { Schema } from "@/amplify/data/resource"; // Path to the schema gen
 //import { Sanitize } from "../supportFunctions/SanitizeInput";
 //import { PhoneSanitize } from "../supportFunctions/SanitizePhoneNum";
 import _ from "lodash"; // for binary seachability
+import useAdminCalendar from "./AdminCalendarLogic";
 
 
 
@@ -17,6 +18,11 @@ const client = generateClient<Schema>();
 const dateTimeFormat = "YYYY-MM-DD HH:mm";
 
 const useAddEvent = () => {
+
+    const {
+        isAddEventModalOpen,
+        setIsAddEventModalOpen, 
+    } = useAdminCalendar();
 
       const [eventTitle, setEventTitle] = useState("");
       const [eventStartDate, setEventStartDate] = useState("");
@@ -31,11 +37,11 @@ const useAddEvent = () => {
       const [eventDetails, setEventDetails] = useState("");
       const [allday, setIsAllDay] = useState(false);
       const [errorMessage, setErrorMessage] = useState("");
-      const [isModalOpen, setIsModalOpen] = useState(true);
 
       const closeAddEventModal = () => {
-          setIsModalOpen(false);
-        };
+        setIsAddEventModalOpen(false);
+        console.log(isAddEventModalOpen);
+    };
       
         const handleSubmit = async (e: React.FormEvent) => {
           e.preventDefault();
@@ -88,7 +94,6 @@ return {
     eventDetails,
     allday, 
     errorMessage,
-    isModalOpen, 
     setEventTitle,
     setEventStartDate,
     setEventStartMin,
@@ -102,10 +107,8 @@ return {
     setEventDetails,
     setIsAllDay,
     setErrorMessage,
-    setIsModalOpen,
     handleSubmit,
     closeAddEventModal,
-
 };
 };
 export default useAddEvent;

@@ -111,6 +111,7 @@ const useAdminCalendar = () => {
     setNewEvent,
     isContentCollapsed,
     toggleCollapse,
+    setIsAddEventModalOpen,
   };
 };
 

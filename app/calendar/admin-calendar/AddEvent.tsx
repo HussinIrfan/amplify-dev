@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import useAddEvent from "./AddEventLogic";
+import useAdminCalendar from "./AdminCalendarLogic";
 
 const AddEvent: React.FC = () => {
   const {
@@ -17,7 +18,6 @@ const AddEvent: React.FC = () => {
     eventDetails,
     allday, 
     errorMessage,
-    isModalOpen, 
     setEventTitle,
     setEventStartDate,
     setEventStartMin,
@@ -31,13 +31,16 @@ const AddEvent: React.FC = () => {
     setEventDetails,
     setIsAllDay,
     setErrorMessage,
-    setIsModalOpen,
     handleSubmit,
     closeAddEventModal,
 
   } = useAddEvent();
 
-  if (!isModalOpen) return null;
+  const {
+    isAddEventModalOpen
+  } = useAdminCalendar();
+
+  if (isAddEventModalOpen) return null;
 
   return (
     <div className="modalBackground">

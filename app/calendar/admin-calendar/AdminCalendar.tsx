@@ -26,6 +26,7 @@ export default function AdminCalendar() {
     setNewEvent,
     isContentCollapsed,
     toggleCollapse,
+    setIsAddEventModalOpen,
   } = useAdminCalendar();
 
   const handleInputChange = (e) => {
@@ -77,13 +78,15 @@ export default function AdminCalendar() {
                   <AddEventModal
                     newEvent={newEvent}
                     setNewEvent={setNewEvent}
-                    closeAddEventModal={closeAddEventModalAdmin}
                     handleInputChange={handleInputChange}
                     handleSubmit={handleSubmit}
                   />
                 )}
               </div>
-              <button className="add-event-button" onClick={openAddEventModal}>
+              <button className="add-event-button" onClick={() => {
+               setIsAddEventModalOpen((prev) => !prev);
+               console.log("Modal state after click:", isAddEventModalOpen);
+              }}>
                 Add Event
               </button>
             </>

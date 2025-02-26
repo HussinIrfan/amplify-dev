@@ -2,14 +2,10 @@
 
 import react, { useState } from "react";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
-
 import AboutUs from "./aboutUs/AboutUs";
 import OurWork from "./ourWork/OurWork";
-
-import Calendar from "../calendar/admin-calendar/AdminCalendar";
-
+import Calendar from "../calendar/admin2/ControlCalendar";
 import Donations from "./donations/Donations";
-
 import News from "./news/News";
 
 export default function Store() {
