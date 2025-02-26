@@ -13,3 +13,21 @@ const OtherComponent: React.FC = () => {
 };
 
 export default OtherComponent;
+
+
+// Example of how to create a new entry:
+
+  async function createEntry() {
+    try {
+      const entry = await client.models.isOpen.create({
+        aboutUS: true,
+        ourWork: true,
+        news: true,
+        calendar: true,
+        donations: true,
+        storeOpen: true,
+      });
+    } catch (err) {
+      console.error("Error creating entry", err);
+    }
+  }

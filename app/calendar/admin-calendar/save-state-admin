@@ -1,0 +1,102 @@
+import { useState } from "react";
+import Calendar from "../CalendarLocal";
+import moment from "moment";
+import { Event as RBCEvent } from "react-big-calendar";
+import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
+import AdminEventDetails, { Event } from "./AdminEventDetails";
+
+const events: Event[] = [
+  {
+    start: moment("2025-02-18T10:00:00").toDate(),
+    end: moment("2025-02-18T11:00:00").toDate(),
+    title: "Event 1",
+    allDay: false,
+    details: "test 1",
+  },
+
+  {
+    start: moment("2025-02-14T10:00:00").toDate(),
+    end: moment("2025-02-14T11:00:00").toDate(),
+    title: "Event 2",
+    allDay: false,
+    details: "test 2",
+  },
+  {
+    start: moment("2025-02-17T10:00:00").toDate(),
+    end: moment("2025-02-17T11:00:00").toDate(),
+    title: "Event 3",
+    allDay: false,
+    details: "test 3",
+  },
+];
+
+export default function AdminCalendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  // Handle event selection
+  const handleEventSelect = (event: RBCEvent) => {
+    setSelectedEvent(event as Event);
+  };
+
+  const handleNavigate = (newDate: Date) => {
+    setCurrentDate(newDate);
+  };
+
+  const { isContentCollapsed, toggleCollapse } = useCollapse();
+
+  const closeModal = () => {
+    setSelectedEvent(null);
+  };
+
+  return (
+    <>
+      <div className="div">
+        <h2 className="admin-h2" onClick={toggleCollapse}>
+          Admin Calendar{" "}
+          <span
+            className={`dropdown-arrow ${
+              isContentCollapsed ? ".collapsed" : ""
+            }`}
+            style={{
+              display: "inline-block",
+              marginLeft: "8px",
+              transition: "transform 0.3s",
+              transform: isContentCollapsed ? "rotate(0deg)" : "rotate(-90deg)",
+            }}
+          >
+            ▼
+          </span>
+        </h2>
+
+        {/* Collapsible Section */}
+        <div
+          className={`collapsible-content ${
+            !isContentCollapsed ? "collapsed" : "expanded"
+          }`}
+        >
+          {isContentCollapsed && (
+            <>
+              <div className="calendar-container">
+                <Calendar
+                  events={events}
+                  onSelectEvent={handleEventSelect}
+                  toolbar={true}
+                  date={currentDate}
+                  onNavigate={handleNavigate} // Adds manual navigation handler
+                />
+                {/* Modal to display event details */}
+        {selectedEvent && (
+          <div className="calendar-internal"
+          >
+            <AdminEventDetails event={selectedEvent} onClose={closeModal} />
+          </div>
+        )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

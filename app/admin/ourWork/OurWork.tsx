@@ -1,11 +1,15 @@
 "use client";
 
+import * as React from "react";
 import { useOurWorkLogic } from "./OurWorkLogic"; // Import the logic file
 import { useCollapse } from "../../supportFunctions/ToggleCollase";
 import blankImage from "../../global-images/blank-person.png";
 import "@aws-amplify/ui-react/styles.css";
 import "../../page.module.css";
 import "../admin.css";
+import { FileUploader } from "@aws-amplify/ui-react-storage";
+import "@aws-amplify/ui-react/styles.css";
+import { StorageImage } from "@aws-amplify/ui-react-storage";
 
 export default function OurWork() {
   const {
@@ -14,6 +18,7 @@ export default function OurWork() {
     picture,
     description,
     business,
+    uploadPath,
     setPicture,
     setDescription,
     setBusiness,
@@ -26,6 +31,7 @@ export default function OurWork() {
   } = useOurWorkLogic();
 
   const { isContentCollapsed, toggleCollapse } = useCollapse();
+  const ref = React.useRef(null); // reset File Uploader
 
   return (
     <>
@@ -71,25 +77,7 @@ export default function OurWork() {
                     return (
                       <tr key={ourWork.id}>
                         <td>
-                          {editingOurWorks.has(ourWork.id) ? (
-                            <input
-                              type="text"
-                              value={editingourWork.picture || ""}
-                              onChange={(e) =>
-                                handleEditChangeOurWork(
-                                  ourWork.id,
-                                  "picture",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          ) : (
-                            <img
-                              className="admin-aboutUs-image"
-                              src={blankImage.src}
-                              alt="About Us"
-                            />
-                          )}
+                            <StorageImage alt="No Image" path={ourWork.picture || "No Image"} />
                         </td>
                         <td>
                           {editingOurWorks.has(ourWork.id) ? (
@@ -169,14 +157,13 @@ export default function OurWork() {
               <form onSubmit={handleOurWorkSubmit} className="about-us-form">
                 <h3 className="admin-h3">Add Business</h3>
                 <div className="form-group">
-                  <label htmlFor="pictures">Picture URL:</label>
-                  <input
-                    id="picture"
-                    type="text"
-                    value={picture}
-                    onChange={(e) => setPicture(e.target.value)}
-                    placeholder="Enter Picture URL"
-                    className="form-input"
+                  <FileUploader
+                    acceptedFileTypes={["image/*"]}
+                    path={uploadPath}
+                    maxFileCount={1}
+                    isResumable
+                    ref={ref}
+                    onUploadSuccess={(file) => setPicture(file.key || "")} // Assign file name or emtpy string if none)}
                   />
                 </div>
                 <div className="form-group">
@@ -201,7 +188,8 @@ export default function OurWork() {
                     className="form-input"
                   />
                 </div>
-                <button type="submit" className="button">
+                <button type="submit" className="button" onClick={() => (ref.current as any).clearFiles()}
+                >
                   Create Entry
                 </button>
               </form>
