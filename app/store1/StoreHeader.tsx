@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./StoreHeader.module.css"
+import styles from "./assets/StoreHeader.module.css"
 
 interface StoreHeaderProps {
     title: string;

@@ -47,6 +47,16 @@ export default function useStore() {
     }
   };
 
+<<<<<<< HEAD
+=======
+ const handleCreateitem = async () => {
+  /*try{
+    const newRec = await client.models.isOpen.create({storeOpen: storeOpen,});
+  }
+    */
+ }
+
+>>>>>>> 21e67f6817e51a30e6138faf3c9542685b1903eb
   return {
     isContentCollapsed,
     toggleCollapse,

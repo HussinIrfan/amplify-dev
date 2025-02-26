@@ -9,12 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-amplify/api": "^6.1.4",
-    "@aws-amplify/auth": "^6.7.0",
+    "@aws-amplify/api": "^6.3.1",
+    "@aws-amplify/auth": "^6.11.1",
     "@aws-amplify/datastore": "^5.0.61",
     "@aws-amplify/storage": "^6.7.10",
     "@aws-amplify/ui-react": "^6.1.13",
+<<<<<<< HEAD
     "@aws-amplify/ui-react-storage": "^3.7.2",
+=======
+    "@aws-sdk/client-ses": "^3.750.0",
+>>>>>>> 21e67f6817e51a30e6138faf3c9542685b1903eb
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.6",

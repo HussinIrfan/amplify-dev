@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import Calendar from "../CalendarLocal";
 import { Event as RBCEvent, Views } from "react-big-calendar";
@@ -5,6 +6,43 @@ import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import AdminEventDetails, { Event } from "./AdminEventDetails";
 import AddEventModal from "./AddEvent";
 import useAdminCalendar from "./AdminCalendarLogic";
+=======
+import React, { useState } from "react";
+import CalendarLocal from "../CalendarLocal";
+import moment from "moment";
+import EventDetails, { Event } from "./AdminEventDetails";
+import "./admin-calendar.css";
+import { useCollapse } from "../../supportFunctions/ToggleCollase";
+import { Event as RBCEvent } from "react-big-calendar";
+
+const events: Event[] = [
+  {
+    start: moment("2025-02-18T10:00:00").toDate(),
+    end: moment("2025-02-18T11:00:00").toDate(),
+    title: "Event 1",
+    allDay: false,
+    details: "test 1",
+    RSVP: 1,
+  },
+
+  {
+    start: moment("2025-02-14T10:00:00").toDate(),
+    end: moment("2025-02-14T11:00:00").toDate(),
+    title: "Event 2",
+    allDay: false,
+    details: "test 2",
+    RSVP: 2,
+  },
+  {
+    start: moment("2025-02-17T10:00:00").toDate(),
+    end: moment("2025-02-17T11:00:00").toDate(),
+    title: "Event 3",
+    allDay: false,
+    details: "test 3",
+    RSVP: 3,
+  },
+];
+>>>>>>> 21e67f6817e51a30e6138faf3c9542685b1903eb
 
 export default function AdminCalendar() {
   const {
@@ -29,12 +67,24 @@ export default function AdminCalendar() {
     setIsAddEventModalOpen,
   } = useAdminCalendar();
 
+<<<<<<< HEAD
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewEvent((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+=======
+  const { isContentCollapsed, toggleCollapse } = useCollapse();
+
+  // Handle event selection
+  const handleEventSelect = (event: RBCEvent) => {
+    setSelectedEvent(event as Event);
+  };
+
+  const closeModal = () => {
+    setSelectedEvent(null);
+>>>>>>> 21e67f6817e51a30e6138faf3c9542685b1903eb
   };
 
   return (

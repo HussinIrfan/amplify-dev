@@ -1,0 +1,37 @@
+.cart_button_container {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  padding: 10px;
+}
+
+.add_to_cart_btn {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.cart_icon {
+  width: 50px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.add_to_cart_btn:hover {
+  background-color: #767779;
+}
+
+.add_to_cart_btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}

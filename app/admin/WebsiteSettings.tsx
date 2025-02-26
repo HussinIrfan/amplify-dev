@@ -4,7 +4,13 @@ import react, { useState } from "react";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import AboutUs from "./aboutUs/AboutUs";
 import OurWork from "./ourWork/OurWork";
+<<<<<<< HEAD
 import Calendar from "../calendar/admin2/ControlCalendar";
+=======
+
+import Calendar from "../calendar/admin-calendar/AdminCalendar";
+
+>>>>>>> 21e67f6817e51a30e6138faf3c9542685b1903eb
 import Donations from "./donations/Donations";
 import News from "./news/News";
 
