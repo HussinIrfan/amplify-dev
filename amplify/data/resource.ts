@@ -66,6 +66,28 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
+  // (About Us) Fire Stations Table
+  FireStation: a
+    .model({
+      stationName: a.string().required(),     // Fire station name
+      address: a.string().required(),        // Address of fire station
+      phone: a.string(),                      // Contact number
+      image: a.string(),                      // Image URL for fire station
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  // (About Us) Honors Table (Firefighter of the Month/Year)
+  Honor: a
+    .model({
+      title: a.string().required(),          // Honor title (e.g., "Firefighter of the Year")
+      description: a.string(),               // Description of the award
+      recipientName: a.string().required(),  // Name of firefighter honored
+      dateAwarded: a.date().required(),      // Date of honor
+      recipientImage: a.string(),            // Image of honored firefighter
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+
     ourWork: a
     .model({
       picture: a.string(),
