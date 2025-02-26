@@ -2,14 +2,25 @@
 import React from 'react';
 import styles from './CartItem.module.css';
 
-const CartItem = ({ item }: { item: { name: string; price: number; quantity: number; image: string; size: string } }) => {
+interface CartItemProps {
+  item: {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+    image?: string;
+    size?: string;
+  };
+}
+
+const CartItem: React.FC<CartItemProps> = ({ item }) => {
   return (
     <div className={styles.cartItem}>
       <div>
-        <img src={item.image} alt={item.name} className={styles.cartImage} />
+        {item.image && <img src={item.image} alt={item.name} className={styles.cartImage} />}
         <div className={styles.cartDetails}>
           <p className={styles.itemDescription}>{item.name}</p>
-          <p>Size: {item.size}</p>
+          {item.size && <p>Size: {item.size}</p>}
           <p>Quantity: {item.quantity}</p>
         </div>
       </div>
