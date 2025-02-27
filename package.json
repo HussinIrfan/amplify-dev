@@ -22,6 +22,7 @@
     "@mui/material": "^5.14.6",
     "@mui/x-date-pickers": "^5.0.12",
     "@nextui-org/react": "^2.4.8",
+    "@parcel/watcher": "^2.5.1",
     "@schedule-x/drag-and-drop": "^2.6.0",
     "@schedule-x/event-modal": "^2.6.0",
     "@schedule-x/events-service": "^2.6.0",
