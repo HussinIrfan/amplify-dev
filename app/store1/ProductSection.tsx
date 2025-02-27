@@ -18,12 +18,16 @@ const ProductImage = () => {
                 <Gallery />
                 <ProductDetails 
                     id={"ouiqw89925"} 
+                    name = "test"
                     price={25}
                     description="Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                                     Reiciendis repellendus alias vitae ut neque natus reprehenderit laboriosam asperiores, 
                                     voluptates dicta quas veritatis commodi voluptatibus vel aspernatur itaque minima tempora. 
                                     Eligendi? You will love it!"
-                    quantity={30}/>
+                    quantity={30}
+                    imageUrl = "test"
+                />
+                    
             </section>
         </div>
     )
