@@ -40,7 +40,7 @@ export interface Attendee {
 const useCalendar = () => {
  const { isContentCollapsed, toggleCollapse } = useCollapse();
  const [currentDate, setCurrentDate] = useState(new Date());
- const [view, setView] = useState<Views>(Views.MONTH);
+ const [view, setView] = useState<typeof Views[keyof typeof Views]>(Views.MONTH);
 
   const [events, setEvents] = useState<Event[]>([]); // Store events fetched from the database
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
@@ -570,7 +570,7 @@ const useCalendar = () => {
 
     // Handle changing the calendar view
     const handleViewChange = (newView: string) => {
-      setView(newView as Views); // Explicitly cast newView as Views
+      setView(newView as typeof Views[keyof typeof Views]); // Proper casting
     };
 
   return {
