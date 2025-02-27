@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const { firstName, lastName, email, phone, subject, message } = await req.json();
 
     const params = {
-      Destination: { ToAddresses: ["hussinirfan2@gmail.com"] },
+      Destination: { ToAddresses: ["support@sltfirefoundation.org"] },
       Message: {
         Body: {
           Text: { Data: `First Name: ${firstName}\nLast Name: ${lastName}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`, },

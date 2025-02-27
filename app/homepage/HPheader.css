@@ -1,10 +1,14 @@
 .hp-header {
-    font-family: 'Jura', sans-serif; /* Font family */
-    font-size: 30px; /* Font size */
-    font-weight: bold; /* Font weight */
-    color: #000000; /* Text color */
-    text-align: center; /* Center align the text */
-    margin-top: 20px; /* Adjust as needed for equal spacing above */
-    margin-bottom: 40px; /* Adjust as needed for equal spacing below */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Drop shadow effect */
-  }
+  font-family: 'Jura', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+  margin: 20px auto 40px auto;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 90%; /* Constrain width */
+  display: block; /* Ensure proper wrapping */
+}
