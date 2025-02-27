@@ -2,7 +2,7 @@ import { useState } from "react";
 import Calendar from "../CalendarLocal";
 import { Event as RBCEvent, Views } from "react-big-calendar";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
-import AdminEventDetails, { Event } from "./AdminEventDetails";
+import AdminEventDetails from "./AdminEventDetails";
 import AddEventModal from "./AddEvent";
 import useAdminCalendar from "./AdminCalendarLogic";
 
@@ -84,8 +84,8 @@ export default function AdminCalendar() {
                 )}
               </div>
               <button className="add-event-button" onClick={() => {
-               setIsAddEventModalOpen((prev) => !prev);
-               console.log("Modal state after click:", isAddEventModalOpen);
+                setIsAddEventModalOpen((prev) => !prev);
+                console.log("Modal state after click:", isAddEventModalOpen);
               }}>
                 Add Event
               </button>

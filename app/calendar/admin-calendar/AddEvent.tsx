@@ -2,38 +2,66 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import useAddEvent from "./AddEventLogic";
 import useAdminCalendar from "./AdminCalendarLogic";
 
-const AddEvent: React.FC = () => {
-  const {
+// Define the expected prop types
+interface AddEventProps {
+  newEvent: {
+    eventTitle: string;
+    eventStartDate: string;
+    eventEndDate: string;
+    eventStartTime: string;
+    eventEndTime: string;
+    eventLocation: string;
+    eventDetails: string;
+    allday: boolean;
+  };
+  setNewEvent: React.Dispatch<React.SetStateAction<{
+    eventTitle: string;
+    eventStartDate: string;
+    eventEndDate: string;
+    eventStartTime: string;
+    eventEndTime: string;
+    eventLocation: string;
+    eventDetails: string;
+    allday: boolean;
+  }>>;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+}
 
+const AddEvent: React.FC<AddEventProps> = ({
+  newEvent,
+  setNewEvent,
+  handleInputChange,
+  handleSubmit,
+}) => {
+  const {
     eventTitle,
     eventStartDate,
     eventStartMin,
     eventStartHour,
-    eventStartPeriod, 
-    eventEndDate, 
-    eventEndHour, 
-    eventEndMin, 
+    eventStartPeriod,
+    eventEndDate,
+    eventEndHour,
+    eventEndMin,
     eventEndPeriod,
     eventLocation,
     eventDetails,
-    allday, 
+    allday,
     errorMessage,
     setEventTitle,
     setEventStartDate,
     setEventStartMin,
     setEventStartHour,
-    setEventStartPeriod, 
+    setEventStartPeriod,
     setEventEndDate,
     setEventEndHour,
     setEventEndMin,
-    setEventEndPeriod, 
+    setEventEndPeriod,
     setEventLocation,
     setEventDetails,
     setIsAllDay,
     setErrorMessage,
-    handleSubmit,
     closeAddEventModal,
-
   } = useAddEvent();
 
   const {
@@ -165,9 +193,9 @@ const AddEvent: React.FC = () => {
               onChange={(e) => setEventDetails(e.target.value)}
               className="input-title"
             />
-            
+
             <div className="all-day-container">
-            <label>All Day</label>
+              <label>All Day</label>
               <input
                 type="checkbox"
                 id="allDayToggle"   
