@@ -29,7 +29,7 @@ export default function AdminCalendar() {
     setIsAddEventModalOpen,
   } = useAdminCalendar();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewEvent((prevState) => ({
       ...prevState,
