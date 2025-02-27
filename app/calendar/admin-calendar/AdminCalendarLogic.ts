@@ -39,10 +39,16 @@ export const events: Event[] = [
   },
 ];
 
+// Define a custom type for calendar views
+type ViewType = 'month' | 'week' | 'day'; // or any other specific views
+
 const useAdminCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [view, setView] = useState<Views>(Views.MONTH);
+  
+  // Set the view state with the custom ViewType type
+  const [view, setView] = useState<ViewType>('month'); // Default to 'month'
+
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
     eventTitle: "",
@@ -65,8 +71,8 @@ const useAdminCalendar = () => {
   };
 
   // Handle changing the calendar view
-  const handleViewChange = (newView: string) => {
-    setView(newView as Views); // Explicitly cast newView as Views
+  const handleViewChange = (newView: ViewType) => {
+    setView(newView); // Set the view to one of the defined 'ViewType' values
   };
 
   // Handle form submission
