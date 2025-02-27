@@ -64,7 +64,7 @@ export default function AdminCalendar() {
                   onSelectEvent={handleEventSelect}
                   date={currentDate}
                   onNavigate={handleNavigate}
-                  onView={handleViewChange}
+                  onView={handleViewChange as (view: typeof Views[keyof typeof Views]) => void} 
                   view={view}
                 />
 
