@@ -27,9 +27,6 @@ const ContactUs = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setResponseMessage('');
-    console.log('AWS Region:', process.env.KEY_AWS_REGION);
-    console.log('AWS Access Key ID:', process.env.KEY_AWS_ACCESS_KEY_ID);
-    console.log('AWS Secret Access Key:', process.env.KEY_AWS_SECRET_ACCESS_KEY);
     // Send form data to API
     try {
       const res = await fetch('/api/contact', {
