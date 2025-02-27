@@ -12,6 +12,10 @@ const ses = new SESClient({
 
 export async function POST(req: NextRequest) {
   try {
+    // Log the environment variables to check if they're set correctly
+    console.log('AWS Region:', process.env.KEY_AWS_REGION);
+    console.log('AWS Access Key ID:', process.env.KEY_AWS_ACCESS_KEY_ID);
+    console.log('AWS Secret Access Key:', process.env.KEY_AWS_SECRET_ACCESS_KEY);
     const { firstName, lastName, email, phone, subject, message } = await req.json();
 
     const params = {
