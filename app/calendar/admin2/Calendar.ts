@@ -65,8 +65,10 @@ const useCalendar = () => {
   const [rsvpPhone, setRsvpPhone] = useState("");
   const [rsvpAttendeeCount, setRsvpAttendeeCount] = useState(defaultPartySize);
 
+  const [attendees, setAttendees] = useState<Array<Schema["Attendee"]["type"]>>([]);
   const [listAttendees, setListAttendees] = useState(false);
   const [attendeesList, setAttendeesList] = useState<Attendee[]>([]);
+  const [selectedAttendees, setSelectedAttendees] = useState<Set<string>>(new Set());
   const [isAttendeesModalOpen, setIsAttendeesModalOpen] = useState(false);
   const [attendeeSearchQuery, setAttendeesSearchQuery] = useState("");
   const [selectedAttendeeSearchOptions, setAttendeesSearchOptions] =
@@ -107,8 +109,20 @@ const useCalendar = () => {
         console.error("Error fetching events: ", error);
       }
     };
+    listedAttendees();
     fetchEvents();
   }, []);
+
+  function listedAttendees() {
+    const query = attendeeSearchQuery
+    ? { filter: {email: {eq: attendeeSearchQuery}}}
+    : {};
+
+    client.models.Attendee.observeQuery(query).subscribe({
+      next: (data) => setAttendees([...data.items]),
+      error: (err) => console.error(err),
+    });
+  }
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -327,6 +341,7 @@ const useCalendar = () => {
       window.confirm("Are you sure you want to delete this event")
     ) {
       try {
+        await deleteAttendeesForEventId(selectedEvent.id);
         await client.models.Event.delete({ id: selectedEvent.id });
         handleCloseModal();
         const updatedEvents = await fetchUpdatedEvents();
@@ -337,13 +352,121 @@ const useCalendar = () => {
       }
     }
   };
+  const deleteAttendeesForEventId = async (eventId: string) => {
+    try {
+      // Fetch all EventAttentants entries for the given eventId
+      const { data: eventAttendants } = await client.models.EventAttentants.list({
+        filter: { eventId: { eq: eventId } },
+      });
+  
+      if (!eventAttendants || eventAttendants.length === 0) {
+        console.log("No attendees found for this event.");
+        return;
+      }
+  
+      // Extract attendeeIds from the eventAttendants data
+      const attendeeIds = eventAttendants.map((relation) => relation.attendeeId);
+  
+      // Fetch the corresponding attendees
+      const { data: attendees } = await client.models.Attendee.list({
+        filter: { or: attendeeIds.map((id) => ({ id: { eq: id } })) },
+      });
+  
+      if (!attendees || attendees.length === 0) {
+        console.log("No attendees found.");
+        return;
+      }
+  
+      // Deleting the attendees from the Attendee model
+      for (const attendee of attendees) {
+        await client.models.Attendee.delete({ id: attendee.id });
+        console.log(`Deleted attendee with ID ${attendee.id}`);
+      }
+  
+      // Optionally, you can delete the EventAttentants relationships as well
+      for (const eventAttendant of eventAttendants) {
+        await client.models.EventAttentants.delete({ id: eventAttendant.id });
+        console.log(`Deleted EventAttendant with ID ${eventAttendant.id}`);
+      }
+  
+      console.log(`All attendees for event ${eventId} have been deleted.`);
+    } catch (error) {
+      console.error(`Error deleting attendees:${error}`);
+    }
+  };
+
+  const deleteEventAttendeeId = async (attendeeId: string) => {
+    try{
+      const { data: eventAttendants } = await client.models.EventAttentants.list({
+        filter: { attendeeId: { eq: attendeeId }},
+      });
+
+      if ( !eventAttendants || eventAttendants.length === 0){
+        console.log("No attendees found for this event");
+        return;
+      }
+
+      for (const eventAttendant of eventAttendants) {
+        await client.models.EventAttentants.delete({id: eventAttendant.id})
+      }
+
+    } catch(e){
+      console.error(`Error deleting attendees Join:${e}`);
+    }
+  };
+
+  const handleAttendeeCheckboxChange = (attendeeId: string) => {
+    setSelectedAttendees((prevSelected) => {
+      const newSelected = new Set(prevSelected);
+      if(newSelected.has(attendeeId)){
+        newSelected.delete(attendeeId);
+      } else {
+        newSelected.add(attendeeId);
+      }
+      return newSelected;
+    });
+
+  };
+  
+const handleBulkDeleteAttendees = async () => {
+
+  if (selectedAttendees.size === 0){
+    alert("No emails selected for deletion.");
+      return;
+  }
+  
+  if (
+    window.confirm("Are you sure you want to delete the selected Attendees?")
+  ){
+    try {
+      const attendeesToDelete = attendees.filter((attendee) => 
+        selectedAttendees.has(attendee.id)
+      
+    );
+        
+        for (const attendee of attendeesToDelete) {
+          
+          await client.models.Attendee.delete({ id: attendee.id });
+          deleteEventAttendeeId(attendee.id);
+        console.log(`Deleted attendee with ID ${attendee.id}`);
+      }
+      listedAttendees();
+      setSelectedAttendees(new Set());
+    } catch (e) {
+      console.error("Error deleting Attendees:", e);
+    }
+  }
+
+};
+
+
 
   const handleRSVPEventClick = () => {
     setIsAttendeesModalOpen(false);
     setIsRSVPModalOpen(true);
   };
 
-  const handleRSVPSubmit = async (e: React.FormEvent) => {
+  const handleAdminSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (rsvpFName === "" || rsvpLName === "") {
@@ -434,9 +557,114 @@ const useCalendar = () => {
 
       const attendee = attendeeResult?.data; // Ensure the data exists
       if (attendee) {
-        if (selectedEvent?.id) {
+        if (selectedEvent.id) {
           await client.models.EventAttentants.create({
             eventId: selectedEvent.id, // Event ID from selected event
+            attendeeId: attendee.id, // Link attendee by email (or use attendee.id)
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error RSVP to event: ", error);
+    }
+
+    setIsRSVPModalOpen(false);
+    resetRSVPFormFields();
+  };
+  const handleRSVPSubmit = async (e: React.FormEvent, formEventId: string) => {
+    e.preventDefault();
+
+    if (rsvpFName === "" || rsvpLName === "") {
+      setErrorMessage(" * First name and last name are required.");
+      return;
+    }
+
+    //sanitize inuts
+    setRsvpFName(sanitizeInput(rsvpFName));
+    setRsvpLName(sanitizeInput(rsvpLName));
+    setRsvpEmail(sanitizeInput(rsvpEmail).toLowerCase());
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(rsvpEmail)) {
+      setErrorMessage(` * Invalid email ex. sltfire@gmail.com`);
+      return;
+    }
+
+    // Validate phone format
+    const sanitizedNum = sanitizePhone(rsvpPhone);
+
+    if (sanitizedNum === null) {
+      setErrorMessage(" * Invalid phone format ex. 555-555-555.");
+      return;
+    }
+
+    setRsvpPhone(sanitizedNum);
+
+    try {
+      // Fetch event-attendee relationships for the specific event
+      const { data: eventAttendants } =
+        await client.models.EventAttentants.list({
+          filter: { eventId: { eq: formEventId } },
+        });
+
+      if (eventAttendants && eventAttendants.length > 0) {
+        // Extract attendee IDs from the relationships
+        const attendeeIds = eventAttendants.map(
+          (relation) => relation.attendeeId
+        );
+        // Create an 'or' condition for all attendee IDs
+        const filterCondition = attendeeIds.map((id) => ({ id: { eq: id } }));
+
+        // Fetch attendee details based on IDs using 'or' conditions
+        console.log(attendeeIds);
+        const { data: attendees } = await client.models.Attendee.list({
+          filter: { or: filterCondition },
+        });
+
+        const checkRsvpList = attendees.map((attendee) => ({
+          id: attendee.id, // Ensure no null values
+          nameFirst: attendee.nameFirst || "", // Ensure no null values
+          nameLast: attendee.nameLast || "",
+          phoneNumber: attendee.phoneNumber || "",
+          email: attendee.email || "",
+          partySize: attendee.partySize || defaultPartySize,
+        }));
+
+        //sort by Rsvp list by email address
+        const sortedRsvpList = checkRsvpList.sort((a, b) => {
+          if (a.email < b.email) return -1;
+          if (a.email > b.email) return 1;
+          return 0;
+        });
+
+        const index = _.sortedIndexOf(
+          sortedRsvpList.map((attendee) => attendee.email),
+          rsvpEmail //search for a matching email address
+        );
+
+        if (index !== -1) {
+          // Email has been found
+          setErrorMessage(
+            "This Email has already been used to RSVP to this Event"
+          );
+          return;
+        }
+      }
+
+      const attendeeResult = await client.models.Attendee.create({
+        nameFirst: rsvpFName,
+        nameLast: rsvpLName,
+        phoneNumber: rsvpPhone,
+        email: rsvpEmail,
+        partySize: rsvpAttendeeCount,
+      });
+
+      const attendee = attendeeResult?.data; // Ensure the data exists
+      if (attendee) {
+        if (formEventId) {
+          await client.models.EventAttentants.create({
+            eventId: formEventId, // Event ID from selected event
             attendeeId: attendee.id, // Link attendee by email (or use attendee.id)
           });
         }
@@ -574,6 +802,7 @@ const useCalendar = () => {
     };
 
   return {
+    attendees,
     events,
     view,
     currentDate,
@@ -604,8 +833,11 @@ const useCalendar = () => {
     attendeeSearchQuery,
     selectedAttendeeSearchOptions,
     partySizeTotal,
+    selectedAttendees,
+    setSelectedAttendees,
     setView,
     setPartySizeTotal,
+    setAttendees, 
     setAttendeesSearchOptions,
     setAttendeesSearchQuery,
     setIsAttendeesModalOpen,
@@ -644,6 +876,9 @@ const useCalendar = () => {
     handleListAttendeesClick,
     handleNavigate,
     handleViewChange,
+    handleAttendeeCheckboxChange,
+    handleBulkDeleteAttendees,
+    handleAdminSubmit,
     toggleCollapse,
   };
 };
