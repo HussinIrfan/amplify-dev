@@ -239,11 +239,11 @@ const ControlCalendar: React.FC = () => {
                     </p>
                     <p>
                       <strong className="strong-title">Start:</strong>{" "}
-                      {moment(selectedEvent.start).format("YYYY-MM-DD HH:mm")}
+                      {moment(selectedEvent.start).format("YYYY-MM-DD hh:mm A")}
                     </p>
                     <p>
                       <strong className="strong-title">End:</strong>{" "}
-                      {moment(selectedEvent.end).format("YYYY-MM-DD HH:mm")}
+                      {moment(selectedEvent.end).format("YYYY-MM-DD hh:mm A")}
                     </p>
                     <p>
                       <strong className="strong-title">Location:</strong>{" "}
