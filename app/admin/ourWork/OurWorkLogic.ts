@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import { Sanitize } from "../../supportFunctions/SanitizeInput";
+import { remove } from "aws-amplify/storage";
 
 Amplify.configure(outputs);
 const client = generateClient<Schema>();
@@ -11,11 +12,13 @@ const client = generateClient<Schema>();
 export function useOurWorkLogic() {
   const [ourWorks, setOurWork] = useState<Array<Schema["ourWork"]["type"]>>([]);
   const [editingOurWorks, setEditingOurWorks] = useState<
-    Map<string, Schema["ourWork"]["type"]>>(new Map());
+    Map<string, Schema["ourWork"]["type"]>
+  >(new Map());
   const [picture, setPicture] = useState("");
   const [description, setDescription] = useState("");
   const [business, setBusiness] = useState("");
   const { sanitizeInput } = Sanitize();
+  const uploadPath = "ourWork/"; //S3 Bucket Location
 
   // Function to list existing "About Us" entries
   function listOurWork() {
@@ -98,6 +101,27 @@ export function useOurWorkLogic() {
   const handleDeleteOurWork = async (ourWorkId: string) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
+        const busToDelete = ourWorks.find(
+          (ourWork) => ourWork.id === ourWorkId
+        );
+
+        if (!busToDelete) {
+          console.log("Unable to find business");
+          return;
+        }
+
+        //remove S3 image object
+        if (busToDelete.picture) {
+          try {
+            await remove({
+              path: busToDelete.picture,
+              // add bucket path specification if needed here
+            });
+          } catch (error) {
+            console.log(`Error deleting S3 bucket Object ${busToDelete}`);
+          }
+        }
+
         const result = await client.models.ourWork.delete({ id: ourWorkId });
 
         if (result) {
@@ -146,6 +170,7 @@ export function useOurWorkLogic() {
     picture,
     description,
     business,
+    uploadPath,
     setPicture,
     setDescription,
     setBusiness,

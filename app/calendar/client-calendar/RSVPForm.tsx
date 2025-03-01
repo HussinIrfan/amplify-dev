@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import "./RSVPForm.css"; // Import any CSS specific to this form if needed
 import "./RSVPmodal.css";
 
+import useCalendar from "../admin2/Calendar";
+
 interface RSVPFormProps {
   onClose: () => void;
   onSubmit: (formData: RSVPFormData) => void;
+  eventId: string;
 }
 
 export interface RSVPFormData {
@@ -15,7 +18,36 @@ export interface RSVPFormData {
   partySize: number;
 }
 
-const RSVPForm: React.FC<RSVPFormProps> = ({ onClose, onSubmit }) => {
+const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
+
+  const {
+    events,
+    selectedEvent,
+    isModalOpen,
+    isRSVPModalOpen,
+    mappedEvents,
+    rsvpFName,
+    rsvpLName,
+    rsvpEmail,
+    rsvpPhone,
+    rsvpAttendeeCount,
+    errorMessage,
+    setErrorMessage,
+    setIsModalOpen,
+    setIsRSVPModalOpen,
+    setRsvpFName,
+    setRsvpLName,
+    setRsvpEmail,
+    setRsvpPhone,
+    setRsvpAttendeeCount,
+    handleCloseRSVP,
+    handleRSVPSubmit,
+    handleEventSelect,
+    handleCloseModalBasic,
+    handleRSVPEventClick,
+  } = useCalendar(); // Only use selectedEvent and isModalOpen state
+
+
   const [formData, setFormData] = useState<RSVPFormData>({
     firstName: "",
     lastName: "",
@@ -54,48 +86,45 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ onClose, onSubmit }) => {
           First Name:
           <input
             type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
+            value={rsvpFName}
+            onChange={(e) => setRsvpFName(e.target.value)}
             required
           />
         </label>
         <label>
           Last Name:
           <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
+             type="text"
+             value={rsvpLName}
+             onChange={(e) => setRsvpLName(e.target.value)}
             required
           />
         </label>
         <label>
           Email:
           <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
+            type="text"
+            value={rsvpEmail}
+            onChange={(e) => setRsvpEmail(e.target.value)}
             required
           />
         </label>
         <label>
           Phone:
           <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
+             type="tel"
+             value={rsvpPhone}
+             placeholder="555-555-5555"
+             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+             onChange={(e) => setRsvpPhone(e.target.value)}
             required
           />
         </label>
         <label>
           Party Size:
           <select
-            name="partySize"
-            value={formData.partySize}
-            onChange={handlePartySizeChange}
+            value={rsvpAttendeeCount}
+            onChange={(e) => setRsvpAttendeeCount(Number(e.target.value))}
             required
           >
             {/* Party size options from 1 to 10 */}
@@ -106,7 +135,10 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ onClose, onSubmit }) => {
             ))}
           </select>
         </label>
-        <button className="submit-button" type="submit">
+        {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
+        <button className="submit-button" type="submit" onClick={handleRSVPSubmit}>
           Submit RSVP
         </button>
         <button className="cancel-button" type="button" onClick={onClose}>

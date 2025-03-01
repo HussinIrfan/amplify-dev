@@ -16,26 +16,45 @@
     padding: 20px;
 }
 
-
 .calendar-container {
-    height: 60vh;
-    /* Adjust the container height */
-    margin-bottom: 60px;
-    position: relative;
+    position: relative; /* Ensures absolute positioning inside works */
+    height: 80vh;
+    margin-bottom: 10px;
     overflow: hidden;
     padding: 10px;
-    /* Added padding for mobile devices */
+}
+.calendar-container-admin {
+    position: relative; /* Ensures absolute positioning inside works */
+    height: 80vh;
+    margin-bottom: 10px;
+    overflow: hidden;
+    padding: 10px;
+    padding-bottom: 50px;
+    background: #dbeaea;
 }
 
 .calendar-internal {
-    position: absolute;
+    position: fixed; /* Ensures it appears on top of everything */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    scroll-behavior: auto;
+    width: 90%; /* Adjust as needed */
+    height: 90%; /* Adjust as needed */
+    background: white; /* Ensures visibility */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional styling */
+    z-index: 200; /* Ensures it is above everything */
+    overflow: auto;
+}
+.calendar-internal-RSVP {
+    position: absolute; /* Ensures it appears on top of everything */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional styling */
+    z-index: 200; /* Ensures it is above everything */
+    overflow: auto;
 }
 
 .calendar-h1 {
@@ -47,15 +66,12 @@
     border-radius: 5px;
     margin-bottom: 20px;
     font-size: 2rem;
-    /* Adjusted for better mobile readability */
 }
 
 .calendar-div {
     margin: 100px;
-    /* Reduced margin for mobile */
     padding: 20px;
     width: 60%;
-    /* Ensures it uses full width on mobile */
     background-color: #f2f2f2;
     color: #333;
     border-radius: 5px;
@@ -86,29 +102,56 @@
     padding: 0 10px;
     text-align: center;
     font-size: 1.2rem;
-    /* Adjusted for readability */
+}
+
+.add-event-button {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 10px;
 }
 
 .divButton {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.divButton2 {
     display: flex;
     justify-content: flex-end;
     padding: 10px;
+    margin-top: 1px;
 }
 
-.divPopUp {
-    position: fixed;
-    top: 50%;
+.divPopUp,
+.divTablePopUp {
+    position: absolute; /* Ensures it stays within the parent */
+    top: 10%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%); /* Centers the modal */
     background-color: white;
     padding: 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 200;
     width: 90%;
-    /* Ensure the popup is responsive */
-    max-width: 400px;
-    /* Set max width for better mobile experience */
+    max-width: 600px;
+    box-sizing: border-box;
+    max-height: 70vh; /* Ensure it doesn't exceed parent */
+    overflow-y: auto; /* Enables scrolling inside the modal */
 }
+
+.divPopUp .logo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 180px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+
 
 .popUpInputBox,
 .popUpInputBox-Deatils {
@@ -116,52 +159,40 @@
     padding: 10px;
     margin-bottom: 10px;
     font-size: 1rem;
-    /* Adjust font size for mobile */
-}
-
-.popUpInputBox-Deatils {
-    height: 150px;
-    resize: vertical;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow: auto;
-    line-height: 1.5;
-}
-
-.popUpCancelButton,
-.popUpSaveButton,
-.popUpDeleteButton {
-    padding: 10px 20px;
-    width: 100%;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    /* Adjust font size */
 }
 
 .popUpSaveButton {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.popUpCancelButton {
-    background-color: #ccc;
+    padding: 5px 10px;
+    background: #4CAF50;
+    color: rgb(0, 0, 0);
+    border: 1px solid #000;
+    font-weight: bold;
 }
 
 .popUpDeleteButton {
-    background-color: #d91313;
+    background-color: #ff0800;
+    border: 1px solid #000;
+    color: #000000;
+    font-weight: bold;
+}
+
+.popUpCancelButton {
+    padding: 10px 20px;
+    background-color: #babbbb;
+    border: 1px solid #000;
+    cursor: pointer;
+    color: #000000;
+    font-weight: bold;
+    border-radius: 5px;
 }
 
 .popUpRSVPButton {
-    background-color: #f5c71a;
+    background-color: #f0c040;
     color: black;
+    font-weight: bold;
+    border: 1px solid #000;
 }
 
-.popUpRSVPButton:hover {
-    background-color: #997b03;
-}
-
-/* Style for the All Day toggle switch */
 .allDayToggle {
     display: flex;
     align-items: center;
@@ -169,227 +200,41 @@
     margin-bottom: 15px;
 }
 
-/* Modal background */
-.modalBackground {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+.bold-hr {
+    border: 3px solid black;
 }
 
-/* RSVP Modal Container */
-.rsvp-modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 300px;
-    max-width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
+.error-message {
+    color: rgb(210, 13, 13);
+    font-size: 18px;
+    margin-top: 8px;
+    font-weight: bold;
 }
 
-.rsvp-modal h2 {
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 1.5em;
-}
-
-.rsvp-modal p {
-    font-size: 1em;
-    margin-bottom: 10px;
-}
-
-.rsvp-modal button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-    width: 100%;
-    font-size: 1em;
-}
-
-.rsvp-modal .close-btn {
-    background-color: #f44336;
-}
-
-.rsvp-modal .rsvp-btn {
-    background-color: #f5c71a;
-    color: black;
-}
-
-.rsvp-modal .rsvp-btn:hover {
-    background-color: #997b03;
-}
-
-.rsvp-modal button:hover {
-    opacity: 0.9;
-}
-
-/* Adjustments for smaller screens */
-@media (max-width: 768px) {
-
-    .background-image-div {
-        height: auto;
-        background-size: contain;
-        overflow: visible;
+@media screen and (max-width: 768px) {
+    .h3-title {
+        font-size: 16px;
     }
-
-    .calendar-position {
-        padding-top: 30px;
-        /* Reduce padding on smaller screens */
+    .strong-title{
+        font-size: 14px;
     }
-
-    .calendar-container {
-        margin-top: -10px;
+    .p-mobile{
+        font-size: 14px;
     }
-
-    .calendar-h1 {
-        font-size: 1.5rem;
-        /* Slightly smaller font for mobile */
-    }
-
-    .calendar-div {
-        margin: 10px;
-        /* Reduce margins for smaller screens */
+    .divPopUp {
         padding: 15px;
-        /* Adjust padding */
+        width: 90%;
+        max-width: 500px;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-height: 80vh;
+        overflow-y: auto;
     }
-
-    .rsvp-modal {
-        width: 80%;
+    .divTablePopUp {
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh;
         padding: 15px;
-    }
-
-    .popUpInputBox,
-    .popUpInputBox-Deatils {
-        font-size: 0.9rem;
-        /* Slightly smaller font */
-    }
-
-
-    .rbc-toolbar-label {
-        font-size: 1rem;
-    }
-
-    .rbc-btn-group {
-        scale: 90%;
-    }
-
-    .popUpSaveButton,
-    .popUpCancelButton,
-    .popUpDeleteButton {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-    }
-
-    .divButton {
-        padding: 5px;
-        /* Reduced padding */
-    }
-}
-
-@media (max-width: 480px) {
-
-    .background-image-div {
-        padding-left: 10px;
-        /* Adjust padding for extra-small screens */
-        background-size: contain;
-        /* Ensures no stretching and scales properly */
-        height: auto;
-    }
-
-    .calendar-h1 {
-        font-size: 1.25rem;
-        /* Even smaller font size */
-    }
-
-    .calendar-div {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .rsvp-modal {
-        width: 95%;
-        padding: 10px;
-    }
-
-    .popUpInputBox,
-    .popUpInputBox-Deatils {
-        font-size: 0.9rem;
-    }
-
-    .rbc-toolbar {
-        margin-top: -5%;
-    }
-
-    .rbc-toolbar-label {
-        font-size: 0.7rem;
-        scale: 80%;
-    }
-
-    .rbc-btn-group {
-        scale: 70%;
-    }
-
-    .rbc-agenda-view {
-        font-size: 0.85rem;
-        width: 100vw;
-        overflow-x: hidden;
-    }
-    
-    
-    .rbc-agenda-content {
-        max-height: 400px; /* Set a maximum height to enable scrolling */
-        overflow-y: auto;  /* Enable vertical scrolling */
-        overflow-x: hidden;
-      }
-
-    .rbc-agenda-event-cell {
-        color: black;
-        box-shadow: 0px 4px 0px;
-
-    }
-
-    .rbc-agenda-table {
-        display: block;
-        width: 100vw;
-        table-layout: fixed;
-    }
-
-    .rbc-agenda-table th,
-    .rbc-agenda-table td {
-        display: block;
-        width: 100vw;
-        text-align: left;
-        overflow-x: hidden;
-    }
-
-    .rbc-agenda-table th {
-        background-color: #ddd;
-        padding: 15px 10px;
-    }
-
-    .rbc-agenda-table td {
-        padding: 10px;
-        border-top: 1px solid #ddd;
-    }
-
-
-    .popUpSaveButton,
-    .popUpCancelButton,
-    .popUpDeleteButton {
-        font-size: 0.8rem;
     }
 }

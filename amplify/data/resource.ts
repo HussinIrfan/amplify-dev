@@ -1,15 +1,20 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any user authenticated via an API key can "create", "read",
-"update", and "delete" any "Todo" records.
-=========================================================================*/
 const schema = a.schema({
   isOpen: a
   .model({
+    aboutUS: a.boolean(),
+    ourWork: a.boolean(),
+    news: a.boolean(),
+    calendar: a.boolean(),
+    donations: a.boolean(),
     storeOpen: a.boolean(),
+  }).authorization((allow) => [allow.publicApiKey()]),
+
+  documents: a
+  .model({
+    doc501c3: a.string(),
+    doc990: a.string(),
   }).authorization((allow) => [allow.publicApiKey()]),
 
   Subscribers: a
@@ -66,6 +71,28 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
+  // (About Us) Fire Stations Table
+  FireStation: a
+    .model({
+      stationName: a.string().required(),     // Fire station name
+      address: a.string().required(),        // Address of fire station
+      phone: a.string(),                      // Contact number
+      image: a.string(),                      // Image URL for fire station
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  // (About Us) Honors Table (Firefighter of the Month/Year)
+  Honor: a
+    .model({
+      title: a.string().required(),          // Honor title (e.g., "Firefighter of the Year")
+      description: a.string(),               // Description of the award
+      recipientName: a.string().required(),  // Name of firefighter honored
+      dateAwarded: a.date().required(),      // Date of honor
+      recipientImage: a.string(),            // Image of honored firefighter
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+
     ourWork: a
     .model({
       picture: a.string(),
@@ -108,32 +135,3 @@ export const data = defineData({
     },
   },
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>

@@ -6,6 +6,7 @@ import RSVPForm, { RSVPFormData } from "./RSVPForm"; // Import the new RSVPForm 
 import "./RSVPmodal.css";
 
 export interface Event {
+  id: string;
   start?: Date;
   end?: Date;
   title: string;
@@ -16,6 +17,8 @@ export interface Event {
 interface EventModalProps {
   event: Event;
   onClose: () => void;
+  eventId: string;
+  
 }
 
 const EventModal: React.FC<EventModalProps> = ({ event, onClose }) => {
@@ -53,7 +56,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose }) => {
     </div>
         {/* Show RSVP form when button is clicked */}
         {showRSVPForm && (
-          <RSVPForm onClose={() => setShowRSVPForm(false)} onSubmit={handleRSVPSubmit} />
+          <RSVPForm  eventId={event.id} onClose={() => setShowRSVPForm(false)} onSubmit={handleRSVPSubmit} />
         )}
       </div>
   );

@@ -5,35 +5,39 @@ import CalendarLocal from "../CalendarLocal";
 import moment from "moment";
 import RSVPEvent, { Event } from "./RSVPEventDetails"; // Import the EventModal component
 import { Event as RBCEvent } from "react-big-calendar";
+import useCalendar from "../admin2/Calendar";
 
-
-const events: Event[] = [
-  {
-    start: moment("2025-02-18T10:00:00").toDate(),
-    end: moment("2025-02-18T11:00:00").toDate(),
-    title: "Event 1",
-    allDay: false,
-    details: "test 1",
-  },
-
-  {
-    start: moment("2025-02-14T10:00:00").toDate(),
-    end: moment("2025-02-14T11:00:00").toDate(),
-    title: "Event 2",
-    allDay: false,
-    details: "test 2",
-  },
-  {
-    start: moment("2025-02-17T10:00:00").toDate(),
-    end: moment("2025-02-17T11:00:00").toDate(),
-    title: "Event 3",
-    allDay: false,
-    details: "test 3",
-  },
-];
 
 export default function ClientCalendar() {
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  const {
+    events,
+    selectedEvent,
+    isModalOpen,
+    isRSVPModalOpen,
+    mappedEvents,
+    rsvpFName,
+    rsvpLName,
+    rsvpEmail,
+    rsvpPhone,
+    rsvpAttendeeCount,
+    errorMessage,
+    setSelectedEvent,
+    setErrorMessage,
+    setIsModalOpen,
+    setIsRSVPModalOpen,
+    setRsvpFName,
+    setRsvpLName,
+    setRsvpEmail,
+    setRsvpPhone,
+    setRsvpAttendeeCount,
+    handleCloseRSVP,
+    handleRSVPSubmit,
+    handleCloseModalBasic,
+    handleRSVPEventClick,
+  } = useCalendar(); // Only use selectedEvent and isModalOpen state
+
+
 
   // Handle event selection
   const handleEventSelect = (event: RBCEvent) => {
@@ -53,16 +57,16 @@ export default function ClientCalendar() {
             agenda: true,
           }}
           toolbar={true}
-          events={events}
+          events={mappedEvents}
           onSelectEvent={handleEventSelect} // Open modal when event is clicked
         />
 
 
         {/* Modal to display event details */}
         {selectedEvent && (
-          <div className="calendar-internal"
+          <div className="calendar-internal-RSVP"
           >
-            <RSVPEvent event={selectedEvent} onClose={closeModal} />
+            <RSVPEvent eventId={selectedEvent.id} event={selectedEvent} onClose={closeModal} />
           </div>
         )}
 

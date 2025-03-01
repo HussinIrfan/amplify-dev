@@ -1,0 +1,8 @@
+file upload
+npm add @aws-amplify/ui-react-storage aws-amplify
+
+file download
+npm add @aws-amplify/ui-react-storage aws-amplify
+
+storage
+npm install @aws-amplify/storage
