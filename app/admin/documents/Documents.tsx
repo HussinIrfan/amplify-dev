@@ -11,7 +11,6 @@ import { StorageImage } from "@aws-amplify/ui-react-storage";
 
 export default function adminDocuments() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
-  const uploadPath = "Documents/";
   const ref = React.useRef(null); // reset File Uploader
 
   //Documents Logic functions
@@ -19,6 +18,15 @@ export default function adminDocuments() {
     documents,
     uploadDoc501c3,
     uploadDoc990,
+    url501c3,
+    url990,
+    uploadPath,
+    uploadDoc501c3Name,
+    uploadDoc990Name,
+    setDoc990Name,
+    setDoc501c3Name,
+    setUrl990,
+    setUrl501c3,
     setDoc990,
     setDoc501c3,
     setDocuments,
@@ -53,29 +61,39 @@ export default function adminDocuments() {
         >
           {isContentCollapsed && (
             <>
-              <div className="form-group-document">
-                <p>Upload 501(c)3 Here</p>
-                <FileUploader
-                  // Only accept document type files
-                  acceptedFileTypes={[
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    "text/plain",
-                    "application/pdf",
-                  ]}
-                  path={uploadPath}
-                  maxFileCount={1}
-                  autoUpload={false}
-                  isResumable
-                  ref={ref}
-                  onUploadSuccess={(file) => {
-                    updateDoc501c3(file.key || "");
-                    (ref.current as any).clearFiles();
-                  }}
-                />
-              </div>
+              {console.log(`Name: ${uploadDoc501c3Name}`)};{" "}
+              {/* Debugging log */}
+              <p>Upload 501(c)3 Here</p>
+              <a>Current Form: </a>
+              <a href={`${url501c3}`} target="_blank" rel="noopener noreferrer">
+                {uploadDoc501c3Name || "No file uploaded"}{" "}
+                {/* Show the name of the file or a fallback message */}
+              </a>
+              <FileUploader
+                // Only accept document type files
+                acceptedFileTypes={[
+                  "application/msword",
+                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                  "text/plain",
+                  "application/pdf",
+                ]}
+                path={uploadPath}
+                maxFileCount={1}
+                autoUpload={false}
+                isResumable
+                ref={ref}
+                onUploadSuccess={(file) => {
+                  updateDoc501c3(file.key || "");
+                  (ref.current as any).clearFiles();
+                }}
+              />
               <br />
               <p>Upload 990 Here</p>
+              <a>Current Form: </a>
+              <a href={`${url990}`} target="_blank" rel="noopener noreferrer">
+                {uploadDoc990Name || "No file uploaded"}{" "}
+                {/* Show the name of the file or a fallback message */}
+              </a>
               <div className="form-group-document">
                 <FileUploader
                   // Only accept document type files

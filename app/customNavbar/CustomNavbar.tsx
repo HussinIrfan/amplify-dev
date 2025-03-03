@@ -84,7 +84,7 @@ export default function CustomNavbar() {
             </div>
 
             {/* Instagram Link */}
-            <Link className={styles.instaLink} href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <Link className={styles.instaLink} href="https://instagram.com/sltfirefightersfoundation" target="_blank" rel="noopener noreferrer">
               <Image
                 src={instaLogo}
                 alt="Instagram"
