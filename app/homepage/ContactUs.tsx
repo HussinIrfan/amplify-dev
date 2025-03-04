@@ -27,7 +27,6 @@ const ContactUs = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setResponseMessage('');
-
     // Send form data to API
     try {
       const res = await fetch('/api/contact', {
