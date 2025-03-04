@@ -72,9 +72,6 @@ export default function adminDocuments() {
               <FileUploader
                 // Only accept document type files
                 acceptedFileTypes={[
-                  "application/msword",
-                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                  "text/plain",
                   "application/pdf",
                 ]}
                 path={uploadPath}
@@ -98,9 +95,6 @@ export default function adminDocuments() {
                 <FileUploader
                   // Only accept document type files
                   acceptedFileTypes={[
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    "text/plain",
                     "application/pdf",
                   ]}
                   path={uploadPath}

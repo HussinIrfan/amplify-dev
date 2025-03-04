@@ -121,6 +121,8 @@ export function useDocumentsLogic() {
     console.log(`Created document name: ${docName}`);  // Log the created name
     return docName;
   };
+
+  
   
 
   return {

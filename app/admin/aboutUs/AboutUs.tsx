@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from 'react';
+import * as React from "react";
 import { useAboutUsLogic } from "./AboutUsLogic"; // Import the logic file
 import { useCollapse } from "../../supportFunctions/ToggleCollase";
 import "@aws-amplify/ui-react/styles.css";
@@ -9,7 +9,8 @@ import "../../page.module.css";
 import "../admin.css";
 import { FileUploader } from "@aws-amplify/ui-react-storage";
 import "@aws-amplify/ui-react/styles.css";
-import { StorageImage } from '@aws-amplify/ui-react-storage';
+import { StorageImage } from "@aws-amplify/ui-react-storage";
+import FireStations from "./FireStation";
 
 export default function AboutUs() {
   const {
@@ -82,7 +83,10 @@ export default function AboutUs() {
                     return (
                       <tr key={emp.id}>
                         <td>
-                          <StorageImage alt="No Image" path={emp.picture || "No Image"} />
+                          <StorageImage
+                            alt="No Image"
+                            path={emp.picture || "No Image"}
+                          />
                         </td>
                         <td>
                           {editingEmps.has(emp.id) ? (
@@ -214,10 +218,23 @@ export default function AboutUs() {
                     className="form-input"
                   />
                 </div>
-                <button type="submit" className="button" onClick={() => (ref.current as any).clearFiles()}>
+                <button
+                  type="submit"
+                  className="button"
+                  onClick={() => (ref.current as any).clearFiles()}
+                >
                   Create Entry
                 </button>
               </form>
+              <hr
+                style={{
+                  border: "none",
+                  height: "10px",
+                  backgroundColor: "black",
+                  margin: "0",
+                }}
+              />
+              <FireStations />
             </>
           )}
         </div>

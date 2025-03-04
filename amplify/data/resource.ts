@@ -75,7 +75,7 @@ const schema = a.schema({
   FireStation: a
     .model({
       stationName: a.string().required(),     // Fire station name
-      address: a.string().required(),        // Address of fire station
+      address: a.string(),                    // Address of fire station
       phone: a.string(),                      // Contact number
       image: a.string(),                      // Image URL for fire station
     })
