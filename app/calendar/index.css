@@ -1,40 +1,3 @@
-/* Reset body and html margins and padding */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrollbar */
-  }
-
-  body {
-    display: flex;
-  flex-direction: column;
-  height: 100%;
-  }
-
-/* Make sure the .admin-config div starts from the top of the page */
-.admin-config {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Full height of the viewport */
-    margin: 0; /* Removes any margin */
-    padding: 0; /* Removes any padding */
-    overflow: auto; /* Prevents overflow issues */
-}
-
-/* Remove any extra margin and padding from the navbar */
-.navbar-admin {
-    margin: 0; /* Ensures no extra space above the navbar */
-    padding: 0; /* Removes padding */
-}
-
-/* Ensure the admin-h1 title doesn't add extra space */
-.admin-h1 {
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove padding */
-}
-
-/* Original CSS code */
 .background-image-div {
     position: absolute;
     top: 0;
@@ -68,7 +31,6 @@ html, body {
     padding: 10px;
     padding-bottom: 50px;
     background: #dbeaea;
-    overflow: hidden;
 }
 
 .calendar-internal {
@@ -94,50 +56,6 @@ html, body {
     z-index: 200; /* Ensures it is above everything */
     overflow: auto;
 }
-
-.collapsible-content {
-    overflow: hidden; /* Initially hide overflow */
-    transition: max-height 0.3s ease-out; /* Smooth transition */
-    max-height: 0; /* Collapsed state */
-  }
-
-  .collapsible-content.expanded {
-    max-height: 5000px; /* Arbitrary large value for expansion */
-    overflow-y: auto; /* Enable scrolling within the content */
-  }
-
-/* Center the content inside the table and add padding to cells */
-.attendees-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  .attendees-table th, .attendees-table td {
-    text-align: center; /* Center align text inside each cell */
-    padding: 12px 15px; /* Add padding for better spacing */
-  }
-  
-  .attendees-table th {
-    background-color: #f4f4f4; /* Light background color for the header */
-    font-weight: bold; /* Bold the header text */
-  }
-  
-  .attendees-table td {
-    border: 1px solid #ddd; /* Add borders around each cell */
-  }
-  
-  /* Style for checkboxes to center them properly */
-  .attendees-table input[type="checkbox"] {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Optional: Add a hover effect to the rows for better UX */
-  .attendees-table tr:hover {
-    background-color: #f1f1f1;
-  }
 
 .calendar-h1 {
     text-align: center;
@@ -193,8 +111,6 @@ html, body {
     margin-top: 10px;
 }
 
-
-
 .divButton {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -225,7 +141,6 @@ html, body {
     box-sizing: border-box;
     max-height: 70vh; /* Ensure it doesn't exceed parent */
     overflow-y: auto; /* Enables scrolling inside the modal */
-    margin-top: -6%;
 }
 
 .divPopUp .logo {
@@ -236,12 +151,7 @@ html, body {
     height: auto; /* Maintain aspect ratio */
 }
 
-.edit-Buttons-space{
-    position: absolute;
-    padding-top: 1px;
-    top: 15.5%;
-    left: 50%;
-}
+
 
 .popUpInputBox,
 .popUpInputBox-Deatils {
