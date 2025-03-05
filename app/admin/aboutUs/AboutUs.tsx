@@ -226,6 +226,7 @@ export default function AboutUs() {
                   Create Entry
                 </button>
               </form>
+              <br />
               <hr
                 style={{
                   border: "none",

@@ -24,6 +24,10 @@ export default function AdminPage() {
         <EmailList />
         <Documents />
         <StoreFront />
+        <br />
+        <br />
+        <br />
+        <br />
     </div>
     </>
   );

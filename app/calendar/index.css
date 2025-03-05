@@ -1,7 +1,6 @@
 .background-image-div {
     position: absolute;
     top: 0;
-    left: 3px;
     width: 100vw;
     height: 100vh;
     background-size: cover;
@@ -11,9 +10,11 @@
     overflow: hidden;
 }
 
+/* Push footer to the bottom */
 .footer-update {
     width: 100vw;
-    padding: 20px;
+    padding: 0;
+    margin-top: auto; /* This pushes the footer to the bottom of the page */
 }
 
 .calendar-container {
@@ -82,7 +83,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 0;
+    min-height: 100vh; /* Ensures full page height */
 }
 
 .rbc-day-bg:hover {
@@ -237,4 +238,31 @@
         max-height: 80vh;
         padding: 15px;
     }
+
+    .calendar-container {
+        position: relative;
+        height: 40vh;
+        margin-bottom: 10px;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .background-image-div {
+        position: absolute;
+        top: 266px;
+        left: 36px;
+        width: 100vw;
+        height: 100vh;
+        background-size: cover;
+        background-position: 200px center;
+        z-index: -1;
+        object-fit: cover;
+        overflow: hidden;
+        scale: 150%;
+    }
+
+    .footer-update {
+        padding: 0; /* Remove any extra padding on mobile */
+    }
 }
+

@@ -61,7 +61,7 @@ export default function adminDocuments() {
         >
           {isContentCollapsed && (
             <>
-              {console.log(`Name: ${uploadDoc501c3Name}`)};{" "}
+              {console.log(`Name: ${uploadDoc501c3Name}`)}{" "}
               {/* Debugging log */}
               <p>Upload 501(c)3 Here</p>
               <a>Current Form: </a>
@@ -69,21 +69,21 @@ export default function adminDocuments() {
                 {uploadDoc501c3Name || "No file uploaded"}{" "}
                 {/* Show the name of the file or a fallback message */}
               </a>
-              <FileUploader
-                // Only accept document type files
-                acceptedFileTypes={[
-                  "application/pdf",
-                ]}
-                path={uploadPath}
-                maxFileCount={1}
-                autoUpload={false}
-                isResumable
-                ref={ref}
-                onUploadSuccess={(file) => {
-                  updateDoc501c3(file.key || "");
-                  (ref.current as any).clearFiles();
-                }}
-              />
+              <div className="form-group-document">
+                <FileUploader
+                  // Only accept document type files
+                  acceptedFileTypes={["application/pdf"]}
+                  path={uploadPath}
+                  maxFileCount={1}
+                  autoUpload={false}
+                  isResumable
+                  ref={ref}
+                  onUploadSuccess={(file) => {
+                    updateDoc501c3(file.key || "");
+                    (ref.current as any).clearFiles();
+                  }}
+                />
+              </div>
               <br />
               <p>Upload 990 Here</p>
               <a>Current Form: </a>
@@ -94,9 +94,7 @@ export default function adminDocuments() {
               <div className="form-group-document">
                 <FileUploader
                   // Only accept document type files
-                  acceptedFileTypes={[
-                    "application/pdf",
-                  ]}
+                  acceptedFileTypes={["application/pdf"]}
                   path={uploadPath}
                   maxFileCount={1}
                   autoUpload={false}
