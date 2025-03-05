@@ -11,6 +11,7 @@ import { FileUploader } from "@aws-amplify/ui-react-storage";
 import "@aws-amplify/ui-react/styles.css";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import FireStations from "./FireStation";
+import Honors from "./Honors";
 
 export default function AboutUs() {
   const {
@@ -236,6 +237,16 @@ export default function AboutUs() {
                 }}
               />
               <FireStations />
+              <br />
+              <hr
+                style={{
+                  border: "none",
+                  height: "10px",
+                  backgroundColor: "black",
+                  margin: "0",
+                }}
+              />
+              <Honors />
             </>
           )}
         </div>

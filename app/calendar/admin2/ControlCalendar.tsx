@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Calendar from "../CalendarLocal";
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import useCalendar from "./Calendar"; // Import the hook
 import moment from "moment";
 import logoImage from "../../navbarAssets/Logo-CutOut.png";
 import Image from "next/image";
+import "./controlCal.css";
 
 const ControlCalendar: React.FC = () => {
   const {
@@ -309,6 +309,9 @@ const ControlCalendar: React.FC = () => {
                       <button className="popUpDeleteButton"
                         onClick={handleBulkDeleteAttendees}
                       >Delete Selected</button>
+                    <button onClick={handleRSVPEventClick}>Add Attendee</button>
+                    <button onClick={handleCloseAttendeesModal}>Close</button>
+                      <p>Total Number of Attendees: {partySizeTotal}</p>
                     </div>
               
                     {attendees.length > 0 ? (
@@ -349,9 +352,7 @@ const ControlCalendar: React.FC = () => {
                     ) : (
                       <p>No attendees found for this event.</p>
                     )}
-                    <p>Total Number of Attendees: {partySizeTotal}</p>
-                    <button onClick={handleRSVPEventClick}>Add Attendee</button>
-                    <button onClick={handleCloseAttendeesModal}>Close</button>
+                    
                   </div>
                 </div>
                 )}

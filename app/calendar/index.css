@@ -10,6 +10,12 @@
     overflow: hidden;
 }
 
+.table-container {
+    max-height: 300px; /* Adjust the max-height to control the scrollable area */
+    overflow-y: auto; /* Enable scrolling for long lists */
+    overflow-x: auto; /* Allow horizontal scrolling for mobile screens */
+}
+
 /* Push footer to the bottom */
 .footer-update {
     width: 100vw;
