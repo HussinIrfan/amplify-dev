@@ -43,7 +43,7 @@ export default function Honors() {
           <tr>
             <th>Image</th>
             <th>Honor</th>
-            <th>Name</th>
+            <th>Recipient</th>
             <th>Date Awarded</th>
             <th>Description</th>
             <th>Action</th>
