@@ -5,9 +5,13 @@ import CustomNavbar from '../customNavbar/CustomNavbar';
 import Footer from '../footer/footer';
 import CartItem from '../homepage/CartItem';
 import styles from './Cart.module.css';
+import useStore from '../admin/storeAdmin/StoreLogic';
+import { Link } from "@nextui-org/react";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
+  // Admin store setting
+    const { storeOpen } = useStore();
 
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -23,6 +27,7 @@ const CartPage = () => {
   const total = subtotal + tax;
 
   return (
+    storeOpen ? (
     <div className={styles.pageContainer}>
       {/* Header */}
       <CustomNavbar />
@@ -95,6 +100,13 @@ const CartPage = () => {
       {/* Footer */}
       <Footer />
     </div>
+  ) : (
+    <div className="store-closed-container">
+          <h1>Store Closed</h1>
+          <p>Sorry, the store is currently closed. Please check back later.</p>
+          <Link href="/">Return Home</Link>
+        </div>
+  )
   );
 };
 

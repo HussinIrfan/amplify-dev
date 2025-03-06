@@ -38,7 +38,7 @@ const Footer = () => {
             {/*Social Media Section*/}
             <div className={styles.mediaContainer}>
                 <h3>Social Media</h3>
-                <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</Link>
+                <Link href="https://instagram.com/sltfirefightersfoundation" target="_blank" rel="noopener noreferrer">Instagram</Link>
                 <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</Link>
             </div>
 
