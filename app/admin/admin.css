@@ -21,6 +21,18 @@
     padding: 0;              /* Remove any padding */
 }
 
+.navbar-admin {
+    position: relative; /* Keep navbar in the normal document flow */
+    top: 0; /* Ensure it starts at the very top of the page */
+    width: 100%; /* Makes the navbar span the entire width of the page */
+    z-index: 1000; /* Ensures the navbar appears above other content */
+    background-color: #fff; /* Adjust background color as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow under the navbar */
+    margin-top: 0; /* Remove any space above the navbar */
+    padding-top: 0; /* Remove any padding above the navbar */
+}
+
+
 .admin-h1 {
     text-align: center;
     margin-bottom: 20px;

@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Checkout.module.css';
 import CustomNavbar from '../customNavbar/CustomNavbar';
 import Footer from '../footer/footer';
+import useStore from '../admin/storeAdmin/StoreLogic';
+import { Link } from "@nextui-org/react";
 
 const PAYPAL_CLIENT_ID = 'AZVlUKD1V6oT6Ym_JWGNGZYW17n-uUdOjiYVTLWtKc6dWfTaI_cnFh0tXzFWDOAhP37OHuRhhLB6Cns7';
 
@@ -12,6 +14,7 @@ declare global {
     paypal: any;
   }
 }
+
 
 const Checkout = () => {
   useEffect(() => {
@@ -27,7 +30,7 @@ const Checkout = () => {
         renderPayPalButtons();
       }
     };
-
+    
     const renderPayPalButtons = () => {
       if (window.paypal) {
         window.paypal
@@ -54,7 +57,7 @@ const Checkout = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
               });
-
+              
               const orderData = await response.json();
               if (orderData?.purchase_units) {
                 alert(`Payment successful! Transaction ID: ${orderData.id}`);
@@ -68,15 +71,19 @@ const Checkout = () => {
             },
           })
           .render('#paypal-button-container');
-      } else {
-        console.error('PayPal SDK failed to load.');
+        } else {
+          console.error('PayPal SDK failed to load.');
       }
     };
-
+    
     loadPayPalScript();
   }, []);
-
+  
+  // Admin store setting
+    const { storeOpen } = useStore();
+  
   return (
+    storeOpen ? (
     <div className={styles.checkoutContainer}>
       <CustomNavbar />
       <h1 className={styles.heading}>Checkout</h1>
@@ -176,6 +183,13 @@ const Checkout = () => {
 
       <Footer />
     </div>
+    ) : (
+      <div className="store-closed-container">
+            <h1>Store Closed</h1>
+            <p>Sorry, the store is currently closed. Please check back later.</p>
+            <Link href="/">Return Home</Link>
+          </div>
+    )
   );
 };
 
