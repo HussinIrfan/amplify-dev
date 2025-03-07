@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./assets/ProductDetails.module.css";
+import cartImage from "./assets/cart.png"; // Ensure you have a cart icon image
 
 interface ProductDetailsProps {
     id: string;
@@ -19,6 +20,20 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     imageUrl
 }) => {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [confirmationMessage, setConfirmationMessage] = useState<string>("");
+    const [cartCount, setCartCount] = useState<number>(0);
+
+    useEffect(() => {
+        const updateCartCount = () => {
+            const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
+            const newCartCount = cartItems.reduce((acc: number, item: any) => acc + item.quantity, 0);
+            setCartCount(newCartCount);
+        };
+
+        updateCartCount();
+        window.addEventListener("storage", updateCartCount);
+        return () => window.removeEventListener("storage", updateCartCount);
+    }, []);
 
     const handleSizeSelection = (size: string) => {
         setSelectedSize(size);
@@ -37,38 +52,35 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             name,
             price,
             size: selectedSize,
-            quantity: 1, // Defaults quantity to 1
+            quantity: 1,
             imageUrl
         };
 
-        // Check if the item with the same ID and size already exists in the cart
         const existingItemIndex = cartItems.findIndex(
             (item: any) => item.id === id && item.size === selectedSize
         );
 
         if (existingItemIndex !== -1) {
-            // If the item exists, update its quantity
             cartItems[existingItemIndex].quantity += 1;
         } else {
-            // Otherwise, add a new item
             cartItems.push(newItem);
-            
         }
 
-        // Save updated cart back to localStorage
         localStorage.setItem("cart", JSON.stringify(cartItems));
 
-        const value = localStorage.getItem(cartItems);
-        console.log(cartItems, value);
+        const newCartCount = cartItems.reduce((acc: number, item: any) => acc + item.quantity, 0);
+        setCartCount(newCartCount);
 
-        // Redirect to the cart page
-        // window.location.href = "/cart";
+        setConfirmationMessage(`${name} (${selectedSize}) has been added to the cart!`);
+        setTimeout(() => setConfirmationMessage(""), 3000);
+
+        const value = localStorage.getItem("cart");
+        console.log(cartItems, value);
     };
 
     return (
         <section className={styles['product_details']}>
             <span className={styles['description']}>{description}</span>
-
             <span className={styles['price']}>${price.toFixed(2)}</span>
 
             <span className={styles['sizing_buttons']}>
@@ -85,14 +97,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
             <div>
                 <span className={styles['quantity']}>Quantity: {quantity}</span>
-
                 <button className={styles['btn-wrapper']} onClick={handleAddToCart}>
                     Add to Cart
                 </button>
             </div>
+
+            {confirmationMessage && <div className={styles['confirmation']}>{confirmationMessage}</div>}
         </section>
     );
 };
 
 export default ProductDetails;
-
