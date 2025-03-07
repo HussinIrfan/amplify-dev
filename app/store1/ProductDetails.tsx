@@ -84,7 +84,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             <span className={styles['price']}>${price.toFixed(2)}</span>
 
             <span className={styles['sizing_buttons']}>
-                {["XS", "S", "M", "L", "XL"].map((size) => (
+                {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
                     <button
                         key={size}
                         className={`${styles['size']} ${selectedSize === size ? styles['selected'] : ''}`}
