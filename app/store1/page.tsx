@@ -4,7 +4,7 @@ import CustomNavbar from "../customNavbar/CustomNavbar";
 import ProductSection from "./ProductSection";
 import Footer from "../footer/footer";
 import styles from "./assets/page.module.css";
-import AddToCartButton from "./AddToCartButton";
+import CartButton from "./CartButton";
 import useStore from "../admin/storeAdmin/StoreLogic";
 import { Link } from "@nextui-org/react";
 
@@ -17,7 +17,7 @@ export default function AdminPage() {
       <main className={styles["main"]}>
         <CustomNavbar />
 
-        <AddToCartButton />
+        <CartButton />
 
         <div className={styles["content"]}>
           <ProductSection />

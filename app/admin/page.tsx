@@ -22,7 +22,7 @@ export default function AdminPage() {
         </div>
         <WebsiteSettings />
         <EmailList />
-        <Documents />
+        {/* <Documents /> */}
         <StoreFront />
         <br />
         <br />
