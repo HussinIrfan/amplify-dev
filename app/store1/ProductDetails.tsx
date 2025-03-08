@@ -7,7 +7,6 @@ interface ProductDetailsProps {
     name: string;
     price: number;
     description: string;
-    quantity: number;
     imageUrl: string;
 }
 
@@ -16,10 +15,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     name,
     price,
     description,
-    quantity,
     imageUrl
 }) => {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
     const [confirmationMessage, setConfirmationMessage] = useState<string>("");
     const [cartCount, setCartCount] = useState<number>(0);
 
@@ -39,6 +38,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         setSelectedSize(size);
     };
 
+    const handleQuantityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedQuantity(parseInt(event.target.value));
+    };
+
     const handleAddToCart = () => {
         if (!selectedSize) {
             alert("Please select a size before adding to cart.");
@@ -52,7 +55,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             name,
             price,
             size: selectedSize,
-            quantity: 1,
+            quantity: selectedQuantity,
             imageUrl
         };
 
@@ -61,7 +64,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         );
 
         if (existingItemIndex !== -1) {
-            cartItems[existingItemIndex].quantity += 1;
+            cartItems[existingItemIndex].quantity += selectedQuantity;
         } else {
             cartItems.push(newItem);
         }
@@ -71,7 +74,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         const newCartCount = cartItems.reduce((acc: number, item: any) => acc + item.quantity, 0);
         setCartCount(newCartCount);
 
-        setConfirmationMessage(`${name} (${selectedSize}) has been added to the cart!`);
+        setConfirmationMessage(`${name} (${selectedSize}, Quantity: ${selectedQuantity}) has been added to the cart!`);
         setTimeout(() => setConfirmationMessage(""), 3000);
 
         const value = localStorage.getItem("cart");
@@ -84,7 +87,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             <span className={styles['price']}>${price.toFixed(2)}</span>
 
             <span className={styles['sizing_buttons']}>
-                {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
+                {Array.from(["XS", "S", "M", "L", "XL", "XXL"], size => (
                     <button
                         key={size}
                         className={`${styles['size']} ${selectedSize === size ? styles['selected'] : ''}`}
@@ -96,7 +99,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             </span>
 
             <div>
-                <span className={styles['quantity']}>Quantity: {quantity}</span>
+                <label className={styles['quantity_label']}>
+                    Quantity:
+                    <select value={selectedQuantity} onChange={handleQuantityChange} className={styles['quantity_select']}>
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map(num => (
+                            <option key={num} value={num}>{num}</option>
+                        ))}
+                    </select>
+                </label>
                 <button className={styles['btn-wrapper']} onClick={handleAddToCart}>
                     Add to Cart
                 </button>
