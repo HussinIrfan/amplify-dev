@@ -38,8 +38,6 @@
   align-items: center; /* Center items vertically */
   width: 100%; /* Full width */
   max-width: 100%; /* Ensures no extra width */
-  padding: 0 1rem; /* Add padding for better spacing */
-  position: relative;
 }
 
 .navbarLinks {
@@ -99,7 +97,7 @@
 }
 
 /*max width set to 825 because thats when insta button starts to overlap*/
-@media (max-width: 1070px) {
+@media (max-width: 1120px) {
   .overlayText {
     font-size: 1.5rem; 
     white-space: wrap; 
@@ -115,8 +113,8 @@
     display: none; /* Hide by default on mobile */
     flex-direction: column; 
     position: absolute; 
-    top: 100%; 
-    left: 0; 
+    top: 100%; /* Move down by 1 pixel */
+    align-items: center; /* Center items vertically */
     width: 100%; 
     max-width: 100%; /* Ensures no extra width */
     background-color: black; 
@@ -133,6 +131,7 @@
     display: flex; 
     opacity: 1;
     transform: translateY(0);
+    align-items: center; /* Center items vertically */
   }
 
   /* Hamburger Menu Button*/
@@ -143,6 +142,9 @@
     color: white; /* Text color */
     font-size: 1.5rem; /* Font size */
     cursor: pointer; /* Pointer cursor on hover */
-    
+    left: 10rem;
+  }
+  .mobileMenuButton:focus {
+    outline: none; /* Remove the default focus outline */
   }
 }

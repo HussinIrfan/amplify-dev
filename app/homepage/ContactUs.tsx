@@ -54,8 +54,6 @@ const ContactUs = () => {
     <div className={styles.contactContainer}>
       <h2>Contact Us</h2>
       <div className={styles.contactInfo}>
-        <h3>Contact Us:</h3>
-        <p>Office Phone: (555) 555-5555</p>
         <p>
           Please submit any questions, suggestions, or general feedback in the form below.
           We appreciate your comments and will respond as soon as possible.
