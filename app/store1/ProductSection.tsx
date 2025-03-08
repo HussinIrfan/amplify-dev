@@ -24,7 +24,6 @@ const ProductImage = () => {
                                     Reiciendis repellendus alias vitae ut neque natus reprehenderit laboriosam asperiores, 
                                     voluptates dicta quas veritatis commodi voluptatibus vel aspernatur itaque minima tempora. 
                                     Eligendi? You will love it!"
-                    quantity={30}
                     imageUrl = "test"
                 />
                     
