@@ -12,7 +12,7 @@ const images = [
     description:
       "Your contribution helps provide vital equipment, training, and resources to keep our community safe and our firefighters ready for action.",
     buttonText: "Donate Now",
-    link: "/donate", // Add link to this image's button
+    link: "/donation", // Add link to this image's button
   },
   {
     src: firefighters2Image,
@@ -26,9 +26,9 @@ const images = [
     src: firefighters3Image,
     title: "Stay Connected",
     description:
-      "Join our newsletter to receive updates on firefighter stories, upcoming events, and how you can help protect our community.",
+      "Check out our calendar and RSVP for an event to stay connected, support our cause, and be part of the action in protecting our community.",
     buttonText: "Sign Up",
-    link: "/signup", // Add link to this image's button
+    link: "/calendar", // Add link to this image's button
   },
 ];
 
