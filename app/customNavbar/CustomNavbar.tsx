@@ -69,20 +69,21 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/ourwork" onClick={closeMobileMenu}>
                 Our Work
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
-                News
-              </Link>
               <Link className={styles.navbarItem} href="/calendar" onClick={closeMobileMenu}>
                 Calendar
               </Link>
               <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
+
               {storeOpen && (
                 <Link className={styles.navbarItem} href="/featured" onClick={closeMobileMenu}>
                 Store
               </Link>
-              )}
+              )}              
+              <Link className={styles.navbarItem} href="/contactus" onClick={closeMobileMenu}>
+              Contact Us
+              </Link>
             </div>
 
             {/* Instagram Link */}
