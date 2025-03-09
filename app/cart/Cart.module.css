@@ -11,15 +11,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem;
+  padding: 2rem;
 }
 
+/* Cart Container */
 .cartContainer {
   max-width: 1200px;
   width: 100%;
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  align-items: center; /* Align everything to the left initially */
+  flex-direction: column;
+  align-items: center;
   gap: 2rem;
   margin: 0 auto;
 }
@@ -34,7 +35,7 @@
 
 /* Yellow bar below the heading */
 .heading::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -10px;
   left: 50%;
@@ -44,18 +45,50 @@
   background-color: #fdd835;
 }
 
-/* Cart header and item layout */
+/* Responsive Cart Header Fix */
 .cartHeader {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr); /* Ensure 4 equal columns */
   align-items: center;
   text-align: center;
   background-color: #f2f2f2;
   padding: 1rem;
   font-weight: bold;
   font-size: 1.2rem;
+  width: 100%;
 }
 
+/* Ensure cart header stays in one row on mobile */
+@media (max-width: 768px) {
+  .cartHeader {
+    display: flex;
+    flex-wrap: nowwrap;
+    justify-content: space-between;
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .cartHeader div {
+    flex: 1;
+    text-align: center;
+    min-width: auto;  /* ✅ Fix alignment */
+  }
+}
+
+/* Extra Small Screen Fix (Stack Headers Vertically) */
+@media (max-width: 480px) {
+  .cartHeader {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cartHeader div {
+    width: 100%;
+    padding: 5px 0;
+  }
+}
+
+/* Cart Item Layout */
 .cartItem {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -65,10 +98,36 @@
   font-size: 1.6rem;
 }
 
-/* Cart Summary Container */
+/* Make Cart Items Responsive */
+@media (max-width: 768px) {
+  .cartItem {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 1rem;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .cartItem img {
+    max-width: 90px; /* Adjust image size for better fit */
+    margin-bottom: 0.5rem;
+  }
+
+  .cartItem div {
+    width: 100%;
+  }
+
+  .cartQuantity input {
+    max-width: 50px; /* Prevent input field from overflowing */
+    text-align: center;
+  }
+}
+
+/* Cart Summary */
 .cartSummaryContainer {
   max-width: 400px;
-  width: 90%; /* Ensures it stretches properly */
+  width: 90%;
   background-color: #f9f9f9;
   padding: 1.5rem;
   border-radius: 8px;
@@ -78,42 +137,16 @@
   flex-direction: column;
   gap: 0.8rem;
   margin-left: auto;
+  margin-right: auto; /* Fix: Keep it centered on mobile */
 }
 
-/* Cart Summary Title */
-.cartSummaryContainer h2 {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-}
-
-/* Each row of Cart Summary */
-.cartSummaryRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  align-items: center;
-}
-
-/* Left Column (Labels) */
-.cartLabel {
-  background-color: #ddd; /* Light grey background */
-  padding: 0.6rem;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-/* Right Column (Values) */
-.cartValue {
-  padding: 1.2rem;
-  text-align: right;
-}
-
-/* Checkout Button - Positioned Below */
-.checkoutButtonContainer {
-  display: flex;
-  justify-content: center; 
-  width: 150%;
-  margin-top: 2rem;
+/* Ensure Summary Stays Centered on Mobile */
+@media (max-width: 768px) {
+  .cartSummaryContainer {
+    width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+  }
 }
 
 /* Checkout Button */
@@ -131,6 +164,15 @@
   margin-top: 1rem;
 }
 
+/* Fix Button Alignment on Mobile */
+@media (max-width: 768px) {
+  .checkoutButton {
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
 .checkoutButton:hover {
   background-color: #000;
 }
@@ -144,6 +186,14 @@
   display: flex;
   justify-content: flex-end;
   margin: 1.5rem auto;
+}
+
+/* Fix Update Button for Mobile */
+@media (max-width: 768px) {
+  .updateButtonContainer {
+    justify-content: center;
+    width: 100%;
+  }
 }
 
 .updateButton {

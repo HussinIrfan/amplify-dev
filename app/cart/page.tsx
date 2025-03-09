@@ -3,22 +3,31 @@
 import React, { useEffect, useState } from 'react';
 import CustomNavbar from '../customNavbar/CustomNavbar';
 import Footer from '../footer/footer';
-import CartItem from '../homepage/CartItem';
 import styles from './Cart.module.css';
 import useStore from '../admin/storeAdmin/StoreLogic';
 import { Link } from "@nextui-org/react";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
-  // Admin store setting
-    const { storeOpen } = useStore();
+  const { storeOpen } = useStore(); // Admin store setting
 
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
-      const parsedCart = JSON.parse(storedCart);
-      console.log("Cart Items from Local Storage:", parsedCart); // 🔍 Debugging Line
-      setCartItems(parsedCart);
+      try {
+        const parsedCart = JSON.parse(storedCart).map((item: any) => ({
+          id: item.id,
+          name: item.name || "Unknown Product",  // ✅ Ensure name is not missing
+          price: item.price,
+          size: item.size || "N/A",
+          quantity: item.quantity || 1,
+          imageUrl: item.imageUrl || "/default-product.jpg",  // ✅ Ensure imageUrl is always present
+        }));
+        console.log("Cart Items from Local Storage:", parsedCart);
+        setCartItems(parsedCart);
+      } catch (error) {
+        console.error("Error parsing cart:", error);
+      }
     }
   }, []);
 
@@ -29,16 +38,12 @@ const CartPage = () => {
   return (
     storeOpen ? (
     <div className={styles.pageContainer}>
-      {/* Header */}
       <CustomNavbar />
-
-      {/* Main Content */}
       <main className={styles.mainContent}>
         <div className={styles.cartContainer}>
           <div className={styles.cartItemsSection}>
             <h1 className={styles.heading}>Cart</h1>
 
-            {/* Cart Items Header */}
             <div className={styles.cartHeader}>
               <div>Product</div>
               <div>Price</div>
@@ -49,11 +54,16 @@ const CartPage = () => {
             {/* Render Cart Items */}
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
-                <div key={item.id} className={styles.cartItem}>
-                  <img src={item.imageUrl} alt={item.name} className={styles.cartImage} />
+                <div key={`${item.id}-${item.size}`} className={styles.cartItem}>
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.name} 
+                    className={styles.cartImage} 
+                    onError={(e) => e.currentTarget.src = "/default-product.jpg"} // ✅ Handle missing/broken images
+                  />
                   <div className={styles.cartDetails}>
                     <p className={styles.itemDescription}>{item.name}</p>
-                    <p>Size: {item.size ? item.size : "Not Available"}</p> {/* ✅ Ensure Size is Displayed */}
+                    <p>Size: {item.size}</p> 
                     <p>Quantity: {item.quantity}</p>
                   </div>
                   <div className={styles.cartPrice}>${item.price.toFixed(2)}</div>
@@ -67,13 +77,11 @@ const CartPage = () => {
               <p>Your cart is empty.</p>
             )}
 
-            {/* Update Button */}
             <div className={styles.updateButtonContainer}>
               <button className={styles.updateButton}>Update</button>
             </div>
           </div>
 
-          {/* Cart Summary Section */}
           <div className={styles.cartSummaryContainer}>
             <h2>Cart totals</h2>
 
@@ -96,16 +104,14 @@ const CartPage = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
       <Footer />
     </div>
   ) : (
     <div className="store-closed-container">
-          <h1>Store Closed</h1>
-          <p>Sorry, the store is currently closed. Please check back later.</p>
-          <Link href="/">Return Home</Link>
-        </div>
+      <h1>Store Closed</h1>
+      <p>Sorry, the store is currently closed. Please check back later.</p>
+      <Link href="/">Return Home</Link>
+    </div>
   )
   );
 };
