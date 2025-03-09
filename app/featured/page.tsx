@@ -13,25 +13,25 @@ const FeaturedPage: React.FC = () => {
     {
       image: "/firefighter_tshirt.jpg",
       name: "Product 1",
-      description: "This is a description for Product 1.",
+      description: " ",
       price: 19.99,
     },
     {
       image: "/firefighter_tshirt.jpg",
       name: "Product 2",
-      description: "This is a description for Product 2.",
+      description: " ",
       price: 29.99,
     },
     {
       image: "/firefighter_tshirt.jpg",
       name: "Product 3",
-      description: "This is a description for Product 3.",
+      description: " ",
       price: 39.99,
     },
     {
       image: "/firefighter_tshirt.jpg",
       name: "Product 4",
-      description: "This is a description for Product 4.",
+      description: " ",
       price: 49.99,
     },
   ];
@@ -69,20 +69,7 @@ const FeaturedPage: React.FC = () => {
                   <p className="product-description">{product.description}</p>
                   <p className="product-price">${product.price.toFixed(2)}</p>
 
-                  {/* Size Buttons */}
-                  <div className="size-buttons">
-                    {["S", "M", "L", "XL"].map((size) => (
-                      <button
-                        key={size}
-                        className="size-button"
-                        onClick={() => handleSizeClick(size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-
-                  <button className="add-to-cart">Add to Cart</button>
+                  <button className="view-product">View Product</button>
                 </div>
               ))}
             </div>
