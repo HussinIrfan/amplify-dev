@@ -9,26 +9,60 @@ import EmailList from "./emailList/EmailList";
 import WebsiteSettings from "./WebsiteSettings";
 import Documents from "./documents/Documents";
 import StoreFront from "./storeAdmin/Store";
+import ProductList from "./storeAdmin/productList";
+import ProductEditForm from "./storeAdmin/editProductForm";
+import { useState } from "react";
 
 export default function AdminPage() {
+  const [editingProduct, setEditingProduct] = useState<any | null>(null);
+
+  // Function to handle cancel action
+  const handleCancel = () => {
+    setEditingProduct(null); // Reset the editing product state
+  };
+
   return (
     <>
-    <div className="admin-config">
+      <div className="admin-config">
         <div className="navbar-admin">
-        <CustomNavbar />
+          <CustomNavbar />
         </div>
         <div>
-          <h1 className="admin-h1"> Admin Settings</h1>
+          <h1 className="admin-h1">Admin Settings</h1>
         </div>
         <WebsiteSettings />
         <EmailList />
-        {/* <Documents /> */}
+
+        {/* Store Section (This includes the Store On/Off Toggle) */}
         <StoreFront />
+
+        {/* Product Management Section - Nest under Store */}
+        <div className="store-admin-section">
+          {/* Add Product Button */}
+          {!editingProduct && (
+            <button onClick={() => setEditingProduct({})} className="add-product-button">
+              Add Product
+            </button>
+          )}
+
+          {/* Show Product List or Edit Form */}
+          {!editingProduct ? (
+            <ProductList onEdit={setEditingProduct} />
+          ) : (
+            <ProductEditForm
+              product={editingProduct}
+              onSave={() => setEditingProduct(null)}
+              onCancel={handleCancel} // Pass the onCancel handler
+              isNewProduct={!editingProduct.id} // If no ID, it's a new product
+            />
+          )}
+        </div>
+
         <br />
         <br />
         <br />
         <br />
-    </div>
+      </div>
     </>
   );
 }

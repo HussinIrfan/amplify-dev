@@ -9,29 +9,26 @@ import type { Schema } from "@/amplify/data/resource";
 import { useState, useEffect } from "react";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 
-
 Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export default function useStore() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
-  const [storeOpen, setStoreOpen] = useState<boolean | null>(null); // Allow null since storeOpen can be nullable
-  
+  const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
+  const [products, setProducts] = useState<Array<Schema["Product"]["type"]>>([]);
+
   const tableID = "1";
 
   // Fetch store open state from the database on initial load
   useEffect(() => {
     const fetchStoreStatus = async () => {
       try {
-        // Fetch the entry with id "1"
         const response = await client.models.isOpen.get({ id: tableID });
         if (response.data != null) {
-          // Safely extract storeOpen, considering the nullable type
-          setStoreOpen(response.data.storeOpen ?? true); // Default to true if null or undefined
-        }
-        else{
+          setStoreOpen(response.data.storeOpen ?? true);
+        } else {
           try {
-            const entry = await client.models.isOpen.create({
+            await client.models.isOpen.create({
               id: tableID,
               aboutUS: true,
               ourWork: true,
@@ -51,7 +48,7 @@ export default function useStore() {
 
     // Real-time subscription to the storeOpen field
     const sub = client.models.isOpen.observeQuery().subscribe({
-      next: ({ items}) => {
+      next: ({ items }) => {
         const currentStoreStatus = items.find(item => item.id === tableID);
         if (currentStoreStatus) {
           setStoreOpen(currentStoreStatus.storeOpen);
@@ -62,18 +59,66 @@ export default function useStore() {
     
     fetchStoreStatus();
 
-     // Cleanup the subscription on unmount
-     return () => sub.unsubscribe();
+    return () => sub.unsubscribe();
   }, []);
 
+  // Fetch products from database
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await client.models.Product.list();
+        setProducts(response.data ?? []);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    
+    const sub = client.models.Product.observeQuery().subscribe({
+      next: ({ items }) => setProducts(items),
+      error: (err) => console.error("Error in real-time subscription:", err),
+    });
+
+    fetchProducts();
+    return () => sub.unsubscribe();
+  }, []);
+
+  // Create a new product
+  const createProduct = async (productData: Omit<Schema["Product"]["type"], "id">) => {
+    try {
+      const newProduct = await client.models.Product.create(productData);
+      console.log("Product created:", newProduct);
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  // Update an existing product
+  const updateProduct = async (updatedProduct: Schema["Product"]["type"]) => {
+    try {
+      await client.models.Product.update(updatedProduct);
+      console.log("Product updated successfully");
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
+  // Delete a product
+  const deleteProduct = async (productId: string) => {
+    try {
+      await client.models.Product.delete({ id: productId });
+      console.log(`Product with ID ${productId} deleted successfully.`);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   const toggleStoreStatus = async () => {
-    const newStatus = storeOpen !== null ? !storeOpen : true; // Handle null state appropriately
+    const newStatus = storeOpen !== null ? !storeOpen : true;
     setStoreOpen(newStatus);
 
     try {
-      // Update the store status in the database
       await client.models.isOpen.update({
-        id: tableID, // Pass the object with the 'id' property
+        id: tableID,
         storeOpen: newStatus
       });
       console.log("Store status updated to:", newStatus);
@@ -87,6 +132,10 @@ export default function useStore() {
     isContentCollapsed,
     toggleCollapse,
     storeOpen,
-    toggleStoreStatus
+    toggleStoreStatus,
+    products,
+    createProduct,
+    updateProduct,
+    deleteProduct,
   };
 }
