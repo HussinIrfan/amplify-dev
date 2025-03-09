@@ -28,6 +28,49 @@ const Checkout = () => {
       }
     };
 
+    const createOrder = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            totalAmount: "95.69",
+            currency: "USD",
+          }),
+        });
+
+        if (!response.ok) throw new Error("Failed to create order");
+        const orderData = await response.json();
+        return orderData.id;
+      } catch (error) {
+        console.error("Error creating order:", error);
+        alert("Failed to create PayPal order.");
+      }
+    };
+
+    const captureOrder = async (orderID: string) => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/orders/${orderID}/capture`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const orderData = await response.json();
+        if (orderData.success) {
+          alert(`Payment successful! Transaction ID: ${orderData.data.id}`);
+        } else {
+          alert("Payment failed.");
+        }
+      } catch (error) {
+        console.error("Error capturing payment:", error);
+        alert("There was an error processing your payment.");
+      }
+    };
+
     const renderPayPalButtons = () => {
       if (window.paypal) {
         window.paypal
@@ -38,29 +81,9 @@ const Checkout = () => {
               color: 'gold',
               label: 'paypal',
             },
-            createOrder: async () => {
-              const response = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  cart: [{ id: '123', quantity: 1 }],
-                }),
-              });
-              const orderData = await response.json();
-              return orderData.id;
-            },
+            createOrder: createOrder,
             onApprove: async (data: { orderID: string }) => {
-              const response = await fetch(`/api/orders/${data.orderID}/capture`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-              });
-
-              const orderData = await response.json();
-              if (orderData?.purchase_units) {
-                alert(`Payment successful! Transaction ID: ${orderData.id}`);
-              } else {
-                alert('Payment failed.');
-              }
+              await captureOrder(data.orderID);
             },
             onError: (err: unknown) => {
               console.error('PayPal Checkout Error:', err);
