@@ -74,6 +74,7 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    handleRSVPSubmit(e, eventId);
     onSubmit(formData); // Pass form data back to parent
     onClose(); // Close the modal after submitting
   };
@@ -138,7 +139,7 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
         {errorMessage && (
               <div className="error-message">{errorMessage}</div>
             )}
-        <button className="submit-button" type="submit" onClick={handleRSVPSubmit}>
+        <button className="submit-button" type="submit">
           Submit RSVP
         </button>
         <button className="cancel-button" type="button" onClick={onClose}>

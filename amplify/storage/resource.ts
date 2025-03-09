@@ -12,6 +12,12 @@ export const storage = defineStorage({
         'Documents/*': [
             allow.guest.to(['read', 'write', 'delete']),
         ],
+        'fire-stations/*': [
+            allow.guest.to(['read', 'write', 'delete']),
+        ],
+        'hornors/*': [
+            allow.guest.to(['read', 'write', 'delete']),
+        ],
     })
 
 });

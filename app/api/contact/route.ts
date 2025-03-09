@@ -1,28 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-// Load AWS credentials from environment variables
-const ses = new SESClient({
-  region: process.env.KEY_AWS_REGION!,
-  credentials: {
-    accessKeyId: process.env.KEY_AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.KEY_AWS_SECRET_ACCESS_KEY!,
-  },
-});
-
+// Function to send an email
 export async function POST(req: NextRequest) {
   try {
+    const ses = new SESClient({
+      region: "us-west-2", // Hardcoded region (replace with your desired region)
+    });
+
     const { firstName, lastName, email, phone, subject, message } = await req.json();
 
     const params = {
-      Destination: { ToAddresses: ["support@sltfirefoundation.org"] },
+      Destination: { ToAddresses: ["support@sltfirefoundation.org"] }, // Hardcoded email
       Message: {
         Body: {
-          Text: { Data: `First Name: ${firstName}\nLast Name: ${lastName}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`, },
+          Text: { Data: `First Name: ${firstName}\nLast Name: ${lastName}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}` },
         },
         Subject: { Data: subject },
       },
-      Source: process.env.KEY_AWS_SES_FROM_EMAIL!,
+      Source: "support@sltfirefoundation.org", // Hardcoded sender email
     };
 
     await ses.send(new SendEmailCommand(params));

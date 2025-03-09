@@ -69,22 +69,25 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/ourwork" onClick={closeMobileMenu}>
                 Our Work
               </Link>
-              <Link className={styles.navbarItem} href="#" onClick={closeMobileMenu}>
-                News
-              </Link>
               <Link className={styles.navbarItem} href="/calendar" onClick={closeMobileMenu}>
                 Calendar
               </Link>
               <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
-              <Link className={styles.navbarItem} href="/featured" onClick={closeMobileMenu}>
+
+              {storeOpen && (
+                <Link className={styles.navbarItem} href="/featured" onClick={closeMobileMenu}>
                 Store
+              </Link>
+              )}              
+              <Link className={styles.navbarItem} href="/contactus" onClick={closeMobileMenu}>
+              Contact Us
               </Link>
             </div>
 
             {/* Instagram Link */}
-            <Link className={styles.instaLink} href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <Link className={styles.instaLink} href="https://instagram.com/sltfirefightersfoundation" target="_blank" rel="noopener noreferrer">
               <Image
                 src={instaLogo}
                 alt="Instagram"

@@ -1,4 +1,3 @@
-//NOTE: REMOVE IMAGE STYLES 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./ImageCarousel.module.css";
@@ -13,6 +12,7 @@ const images = [
     description:
       "Your contribution helps provide vital equipment, training, and resources to keep our community safe and our firefighters ready for action.",
     buttonText: "Donate Now",
+    link: "/donation", // Add link to this image's button
   },
   {
     src: firefighters2Image,
@@ -20,13 +20,15 @@ const images = [
     description:
       "Shop our official merchandise to support our firefighters. Proceeds fund critical programs and essential tools.",
     buttonText: "Shop Now",
+    link: "/featured", // Add link to this image's button
   },
   {
     src: firefighters3Image,
     title: "Stay Connected",
     description:
-      "Join our newsletter to receive updates on firefighter stories, upcoming events, and how you can help protect our community.",
+      "Check out our calendar and RSVP for an event to stay connected, support our cause, and be part of the action in protecting our community.",
     buttonText: "Sign Up",
+    link: "/calendar", // Add link to this image's button
   },
 ];
 
@@ -45,8 +47,7 @@ const ImageCarousel = () => {
     );
   };
 
-
-  // Automatically change the image every 5 seconds
+  // Automatically change the image every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
@@ -70,9 +71,10 @@ const ImageCarousel = () => {
           <p className={styles.description}>
             {images[currentIndex].description}
           </p>
-          <button className={styles.actionButton}>
+          {/* Wrap the button in an anchor tag */}
+          <a href={images[currentIndex].link} className={styles.actionButton}>
             {images[currentIndex].buttonText}
-          </button>
+          </a>
         </div>
         <button onClick={handlePrev} className={styles.navButtonLeft}>
           ←

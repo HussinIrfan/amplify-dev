@@ -1,6 +1,6 @@
 import React from "react";
 import Image from 'next/image'; 
-import "./assets/AddToCartButton.css"; 
+import "./assets/CartButton.css"; 
 import cartIcon from "./assets/cart.png"; 
 
 
