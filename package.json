@@ -28,7 +28,7 @@
     "@schedule-x/events-service": "^2.6.0",
     "@schedule-x/react": "^2.5.0",
     "@schedule-x/theme-default": "^2.6.0",
-    "aws-amplify": "^6.13.0",
+    "aws-amplify": "^6.13.4",
     "core-js": "^3.23.3",
     "date-fns": "^2.30.0",
     "moment": "^2.30.1",

@@ -104,7 +104,7 @@ const client = generateClient<Schema>();
 //                 ))}
 //               </div>
 
-//               <button className="add-to-cart">Add to Cart</button>
+//               <button className="view-product ">View Product</button>
 //             </div>
 //           ))}
 //         </div>
