@@ -14,8 +14,10 @@ const client = generateClient<Schema>();
 
 export default function useStore() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
+
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
   const [products, setProducts] = useState<Array<Schema["Product"]["type"]>>([]);
+
 
   const tableID = "1";
 
@@ -25,10 +27,13 @@ export default function useStore() {
       try {
         const response = await client.models.isOpen.get({ id: tableID });
         if (response.data != null) {
-          setStoreOpen(response.data.storeOpen ?? true);
-        } else {
+
+          // Safely extract storeOpen, considering the nullable type
+          setStoreOpen(response.data.storeOpen ?? true); // Default to true if null or undefined
+        }
+        else{
           try {
-            await client.models.isOpen.create({
+            const entry = await client.models.isOpen.create({
               id: tableID,
               aboutUS: true,
               ourWork: true,
@@ -48,7 +53,8 @@ export default function useStore() {
 
     // Real-time subscription to the storeOpen field
     const sub = client.models.isOpen.observeQuery().subscribe({
-      next: ({ items }) => {
+
+      next: ({ items}) => {
         const currentStoreStatus = items.find(item => item.id === tableID);
         if (currentStoreStatus) {
           setStoreOpen(currentStoreStatus.storeOpen);
@@ -58,8 +64,8 @@ export default function useStore() {
     });
     
     fetchStoreStatus();
-
-    return () => sub.unsubscribe();
+     // Cleanup the subscription on unmount
+     return () => sub.unsubscribe();
   }, []);
 
   // Fetch products from database
