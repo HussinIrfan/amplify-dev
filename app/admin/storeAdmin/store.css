@@ -1,4 +1,6 @@
 /* store.css */
+
+/* General styles for the store toggle button */
 .store-toggle-btn {
     padding: 10px 15px;
     font-size: 16px;
@@ -8,45 +10,247 @@
     border: none;
     border-radius: 4px;
     transition: background-color 0.3s;
-}
-
-/* Hover effect */
-.store-toggle-btn:hover {
+  }
+  
+  /* Hover effect */
+  .store-toggle-btn:hover {
     background-color: #333; /* Darker shade on hover */
-}
-
-/* Store open and closed states */
-.store-toggle-btn.open {
+  }
+  
+  /* Store open and closed states */
+  .store-toggle-btn.open {
     background-color: #000000; /* Green when store is open */
-}
-
-.store-toggle-btn.closed {
+  }
+  
+  .store-toggle-btn.closed {
     background-color: #000000; /* Red when store is closed */
-}
-
-/* Hover effects for the dynamic states */
-.store-toggle-btn.open:hover {
+  }
+  
+  /* Hover effects for the dynamic states */
+  .store-toggle-btn.open:hover {
     background-color: #45a049; /* Darker green when store is open */
-}
-
-.store-toggle-btn.closed:hover {
+  }
+  
+  .store-toggle-btn.closed:hover {
     background-color: #d32f2f; /* Darker red when store is closed */
-}
-
-.collapsible-content {
+  }
+  
+  /* Styles for collapsible content */
+  .collapsible-content {
     margin-top: 10px;
     padding-left: 20px;
     transition: max-height 0.3s ease-out;
-}
-
-.collapsible-content.collapsed {
+  }
+  
+  .collapsible-content.collapsed {
     display: none;
-}
-
-.collapsible-content.expanded {
+  }
+  
+  .collapsible-content.expanded {
     display: block;
-}
-
-.dropdown-arrow {
+  }
+  
+  /* Styles for dropdown arrow */
+  .dropdown-arrow {
     font-size: 18px;
-}
+  }
+  
+  /* Styles for the product edit form */
+  .product-edit-form {
+    max-width: 600px; /* Limit the width of the form */
+    margin: 20px auto; /* Center the form horizontally */
+    padding: 20px; /* Add padding inside the form */
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .product-edit-form h3 {
+    margin-bottom: 20px; /* Add space below the heading */
+    font-size: 24px; /* Larger font size for the heading */
+    color: #333; /* Darker text color */
+  }
+  
+  .product-edit-form label {
+    display: block; /* Make labels block-level for better spacing */
+    margin-bottom: 8px; /* Add space below labels */
+    font-size: 14px; /* Slightly larger font size */
+    color: #555; /* Medium-dark text color */
+  }
+  
+  .product-edit-form input[type="text"],
+  .product-edit-form input[type="number"],
+  .product-edit-form textarea,
+  .product-edit-form input[type="file"] {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Add padding inside inputs */
+    margin-bottom: 15px; /* Add space below inputs */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 14px; /* Consistent font size */
+  }
+  
+  .product-edit-form textarea {
+    resize: vertical; /* Allow vertical resizing of textarea */
+    min-height: 100px; /* Minimum height for textarea */
+  }
+  
+  .product-edit-form .size-quantity-section {
+    margin-bottom: 20px; /* Add space below the size section */
+  }
+  
+  .product-edit-form .size-quantity-input {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 10px; /* Add space between size inputs */
+  }
+  
+  .product-edit-form .size-quantity-input label {
+    margin-right: 10px; /* Add space between checkbox and label */
+  }
+  
+  .product-edit-form .size-quantity-input input[type="number"] {
+    width: 80px; /* Fixed width for quantity inputs */
+    margin-left: 10px; /* Add space between checkbox and quantity input */
+  }
+  
+  .product-edit-form button {
+    padding: 10px 20px; /* Add padding to buttons */
+    font-size: 14px; /* Consistent font size */
+    color: white; /* White text */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+  }
+  
+  .product-edit-form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .product-edit-form button:not(:last-child) {
+    margin-right: 10px; /* Add space between buttons */
+  }
+  
+  /* Header Container */
+  .header-container {
+    margin-bottom: 20px; /* Add space below the header container */
+  }
+  
+  /* Header for the product section */
+  .product-header {
+    display: flex; /* Align title and button horizontally */
+    justify-content: space-between; /* Space out title and button */
+    align-items: left; /* Vertically center items */
+    padding: 10 20px; /* Add padding to match the product list */
+  }
+  
+  .product-header h2 {
+    margin: 0; /* Remove default margin */
+    font-size: 24px; /* Larger font size for the title */
+    color: #333; /* Dark text color */
+  }
+  
+  .product-header button {
+    padding: 10px 20px; /* Add padding to the button */
+    font-size: 14px; /* Consistent font size */
+    color: white; /* White text */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+  }
+  
+  .product-header button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Horizontal Divider */
+  .divider {
+    border: 0; /* Remove default border */
+    height: 5px; /* Set height of the bar */
+    background-color: #2e1c1c; /* Light gray color */
+    margin: 20px 0; /* Add space above and below the bar */
+  }
+  
+  /* Container for the product list */
+  .product-list {
+    display: flex; /* Arrange items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+    gap: 20px; /* Add spacing between items */
+    padding: 20px; /* Add padding around the container */
+  }
+  
+  /* Individual product item */
+  .product-item {
+    flex: 1 1 200px; /* Flexible sizing for each item */
+    background-color: #b4b4b4; /* Background color for each product */
+    padding: 15px; /* Add padding inside each product */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack child elements vertically */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text */
+  }
+  
+  /* Product image */
+  .product-image img {
+    max-width: 100%; /* Ensure the image fits within its container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 4px; /* Rounded corners for the image */
+  }
+  
+  /* Product info */
+  .product-info {
+    margin-top: 10px; /* Add space between image and info */
+  }
+  
+  /* Product sizes */
+  .product-sizes {
+    margin-top: 10px; /* Add space between price and sizes */
+    font-size: 14px; /* Smaller font size for sizes */
+  }
+  
+  .product-sizes span {
+    display: inline-block; /* Display sizes inline */
+    margin-right: 5px; /* Add spacing between sizes */
+  }
+  
+  /* Product action buttons */
+  .product-actions {
+    margin-top: 10px; /* Add space between info and buttons */
+  }
+  
+  .product-actions button {
+    margin-right: 10px; /* Add spacing between buttons */
+    padding: 5px 10px; /* Add padding to buttons */
+    font-size: 14px; /* Consistent font size */
+    color: white; /* White text */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+  }
+  
+  .product-actions button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  /* Cancel Button */
+.cancel-button {
+    padding: 10px 20px; /* Add padding to the button */
+    font-size: 14px; /* Consistent font size */
+    color: #e31b1b; /* Dark text color */
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+  }
+  
+  .cancel-button:hover {
+    background-color: #e0e0e0; /* Slightly darker gray on hover */
+  }
