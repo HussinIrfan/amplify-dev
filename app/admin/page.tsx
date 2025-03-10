@@ -33,7 +33,6 @@ export default function AdminPage() {
         <WebsiteSettings />
         <EmailList />
 
-
         {/* Store Section (This includes the Store On/Off Toggle) */}
         <StoreFront />
 
@@ -59,7 +58,6 @@ export default function AdminPage() {
           )}
         </div>
 
-
         {/* <Documents /> */}
         <StoreFront />
 
@@ -67,7 +65,7 @@ export default function AdminPage() {
         <br />
         <br />
         <br />
-
+      </div> 
     </>
   );
 }

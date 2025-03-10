@@ -81,8 +81,8 @@ export default function useStore() {
     
     const sub = client.models.Product.observeQuery().subscribe({
       next: ({ items }) => setProducts(items),
-      error: (err) => console.error("Error in real-time subscription:", err),
-    });
+      error: (err) => console.error("❌ Real-time subscription error:", JSON.stringify(err, null, 2)),
+    });    
 
     fetchProducts();
     return () => sub.unsubscribe();
