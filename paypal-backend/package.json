@@ -1,0 +1,22 @@
+{
+  "name": "paypal-backend",
+  "version": "1.0.0",
+  "description": "Backend API for handling PayPal payments and sending confirmation emails.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["paypal", "backend", "express", "payments"],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.9.11"
+  }
+}
