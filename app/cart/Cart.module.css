@@ -11,17 +11,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem;
+  padding: 2rem;
 }
 
+/* Cart Container */
 .cartContainer {
   max-width: 1200px;
   width: 100%;
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  align-items: center; /* Align everything to the left initially */
-  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 /* Header for the cart section */
@@ -34,7 +36,7 @@
 
 /* Yellow bar below the heading */
 .heading::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -10px;
   left: 50%;
@@ -44,18 +46,36 @@
   background-color: #fdd835;
 }
 
-/* Cart header and item layout */
+/* Cart Header (Default View) */
 .cartHeader {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   text-align: center;
   background-color: #f2f2f2;
   padding: 1rem;
   font-weight: bold;
   font-size: 1.2rem;
+  width: 100%;
 }
 
+/* 📱 Mobile Fix: Keep headers readable */
+@media (max-width: 768px) {
+  .cartHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .cartHeader div {
+    flex: 1;
+    text-align: center;
+    min-width: auto;
+  }
+}
+
+/* 🛒 Cart Item Layout */
 .cartItem {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -65,10 +85,33 @@
   font-size: 1.6rem;
 }
 
-/* Cart Summary Container */
+/* 📱 Mobile Fix: Stack items */
+@media (max-width: 768px) {
+  .cartItem {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 1rem;
+    padding: 1rem;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .cartItem div {
+    width: 100%;
+  }
+
+  .cartQuantity input {
+    max-width: 50px;
+    text-align: center;
+    padding: 5px;
+  }
+}
+
+/* 🛍️ Cart Summary */
 .cartSummaryContainer {
   max-width: 400px;
-  width: 90%; /* Ensures it stretches properly */
+  width: 90%;
   background-color: #f9f9f9;
   padding: 1.5rem;
   border-radius: 8px;
@@ -77,46 +120,26 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  margin-left: auto;
+  margin: 0 auto;
+  text-align: center;
 }
 
-/* Cart Summary Title */
-.cartSummaryContainer h2 {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+/* 📱 Mobile Fix: Center Summary */
+@media (max-width: 768px) {
+  .cartSummaryContainer {
+    width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+  }
 }
 
-/* Each row of Cart Summary */
-.cartSummaryRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  align-items: center;
+/* 🔄 Update Button */
+.updateButtonContainer {
+  text-align: center;
+  width: 100%;
 }
 
-/* Left Column (Labels) */
-.cartLabel {
-  background-color: #ddd; /* Light grey background */
-  padding: 0.6rem;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-/* Right Column (Values) */
-.cartValue {
-  padding: 1.2rem;
-  text-align: right;
-}
-
-/* Checkout Button - Positioned Below */
-.checkoutButtonContainer {
-  display: flex;
-  justify-content: center; 
-  width: 150%;
-  margin-top: 2rem;
-}
-
-/* Checkout Button */
+/* 🛒 Sticky Checkout Button */
 .checkoutButton {
   width: 100%;
   max-width: 400px;
@@ -131,31 +154,13 @@
   margin-top: 1rem;
 }
 
-.checkoutButton:hover {
-  background-color: #000;
-}
-
-/* Update Button */
-.updateButtonContainer {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin: 1.5rem auto;
-}
-
-.updateButton {
-  padding: 0.5rem 2rem;
-  background-color: #fdd835;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.updateButton:hover {
-  background-color: #e6b800;
+/* 📱 Mobile Fix: Keep checkout button visible */
+@media (max-width: 768px) {
+  .checkoutButton {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+  }
 }

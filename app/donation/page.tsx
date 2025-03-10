@@ -2,79 +2,114 @@
 
 import React, { useState } from "react";
 import styles from "./donation.module.css";
-import CustomNavbar from "../customNavbar/CustomNavbar"; // Importing Navbar component
-import Footer from "../footer/footer"; // Importing Footer component
+import CustomNavbar from "../customNavbar/CustomNavbar"; 
+import Footer from "../footer/footer"; 
+
+const MAX_DONATION_AMOUNT = 5000; // Maximum allowed donation
 
 const DonationPage: React.FC = () => {
-  const [donationAmount, setDonationAmount] = useState<number | string>(0);
+  const [donationAmount, setDonationAmount] = useState<number | string>("");
   const [showThankYou, setShowThankYou] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handlePresetDonation = (amount: number) => {
     setDonationAmount(amount);
+    setErrorMessage(""); // Clear error when selecting a preset amount
   };
 
   const handleDonation = () => {
     const amount = Number(donationAmount);
 
     if (amount <= 0 || isNaN(amount)) {
-      alert("Please enter a valid donation amount.");
+      setErrorMessage("Please enter a valid donation amount.");
+      return;
+    }
+
+    if (amount > MAX_DONATION_AMOUNT) {
+      setErrorMessage(`The maximum donation amount is $${MAX_DONATION_AMOUNT}.`);
       return;
     }
 
     setShowThankYou(true);
-    alert(`Thank you for your donation of $${donationAmount}`);
+    setErrorMessage(""); // Clear error on successful donation
+
+    // ❌ Removed alert() (no more pop-up)
   };
 
   return (
     <div className={styles.donationPage}>
-      <CustomNavbar /> {/* Add Navbar at the top */}
+      <CustomNavbar />
 
-      {/* Hero Section */}
+      {/* ✅ Hero Section */}
       <section className={styles.hero}>
-        {/* The image is now handled by the CSS background-image */}
-      </section>
+        <h1 className={styles.heroText}>South Lake Tahoe Firefighter's Foundation</h1>
+        <h2 className={styles.heroSubText}>Your support helps provide vital resources</h2>
 
-      {/* Donation Section */}
-      <section className={styles.donationSection}>
-        <h1>South Lake Tahoe Firefighter's Foundation</h1>
-        <h2 className={styles.donationTitle}>Your support helps provide vital resources</h2>
+        {/* ✅ Donation Box */}
         <div className={styles.donationOptionsBox}>
-          <h2>Donate Now</h2>
-          <p>
-            Thank you for supporting the South Lake Tahoe Firefighter's Foundation. Your donation helps us provide critical resources for
-            our community and first responders.
-          </p>
-
           {!showThankYou ? (
-            <div className={styles.donationOptions}>
-              <button onClick={() => handlePresetDonation(25)}>$25</button>
-              <button onClick={() => handlePresetDonation(50)}>$50</button>
-              <button onClick={() => handlePresetDonation(100)}>$100</button>
-            </div>
+            <>
+              {/* ✅ "Donate Now" Title Still Here */}
+              <h2>Donate Now</h2>
+              <p>
+                Thank you for supporting the South Lake Tahoe Firefighter's Foundation. 
+                Your donation helps us provide critical resources for our community and first responders.
+              </p>
+
+              <p>Select or enter an amount</p>
+              <div className={styles.donationOptions}>
+                <button onClick={() => handlePresetDonation(25)}>$25</button>
+                <button onClick={() => handlePresetDonation(50)}>$50</button>
+                <button onClick={() => handlePresetDonation(100)}>$100</button>
+              </div>
+
+              <input
+                type="number"
+                className={styles.donationInput}
+                placeholder="$"
+                value={donationAmount}
+                onChange={(e) => {
+                  const inputAmount = Number(e.target.value);
+                  if (!isNaN(inputAmount) && inputAmount <= MAX_DONATION_AMOUNT) {
+                    setDonationAmount(inputAmount);
+                    setErrorMessage(""); // Clear error if input is valid
+                  } else {
+                    setErrorMessage(`Max donation is $${MAX_DONATION_AMOUNT}.`);
+                  }
+                }}
+                max={MAX_DONATION_AMOUNT}
+              />
+
+              {/* ✅ Inline Error Message */}
+              {errorMessage && <p className={styles.errorText}>{errorMessage}</p>}
+
+              <button 
+                onClick={handleDonation} 
+                className={styles.donateButton}
+                disabled={!!errorMessage} // Disable button if there's an error
+              >
+                Donate
+              </button>
+            </>
           ) : (
-            <div id="thankYouMessage" className={styles.thankYouMessage}>
-              <h3>Thank you for your donation!</h3>
-              <p>Your support helps the South Lake Tahoe Firefighter's Foundation continue providing critical services to the community. We truly appreciate your generosity.</p>
-            </div>
+            <>
+              {/* ✅ Thank You Message */}
+              <div className={styles.thankYouMessage}>
+                <h3>Thank You for Your Support!</h3>
+                <p>Your donation helps provide essential resources for our first responders and the community.</p>
+                <button 
+                  onClick={() => setShowThankYou(false)} 
+                  className={styles.donateButton}
+                >
+                  Donate Again
+                </button>
+              </div>
+            </>
           )}
-
-          {/* Move input field directly below the donation buttons */}
-          {!showThankYou && (
-            <input
-              type="number"
-              id="donation-amount"
-              placeholder="Enter your donation amount"
-              value={donationAmount}
-              onChange={(e) => setDonationAmount(e.target.value)}
-              className={styles.donationInput}
-            />
-          )}
-
-          {!showThankYou && <button onClick={handleDonation} className={styles.donateButton}>Donate</button>}
         </div>
       </section>
 
-      <Footer /> {/* Add Footer at the bottom */}
+      <Footer />
     </div>
   );
 };
