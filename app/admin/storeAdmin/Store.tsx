@@ -3,7 +3,7 @@
 
 import React from "react";
 import "./store.css";
-import useStore from "./StoreLogic"; // Import the logic
+import useStore from "./StoreLogic"; 
 
 export default function Store() {
 
@@ -39,7 +39,7 @@ export default function Store() {
         >
           {isContentCollapsed && (
             <>
-              {/* Step 3: Add the button */}
+              {/* Add the button */}
               <button
                 onClick={toggleStoreStatus}
                 className={`store-toggle-btn ${storeOpen ? "open" : "closed"}`}
