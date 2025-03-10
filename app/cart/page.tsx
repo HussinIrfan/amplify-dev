@@ -17,11 +17,13 @@ const CartPage = () => {
       try {
         const parsedCart = JSON.parse(storedCart).map((item: any) => ({
           id: item.id,
-          name: item.name || "Unknown Product",  // ✅ Ensure name is not missing
+          name: item.name || "Unknown Product",
           price: item.price,
           size: item.size || "N/A",
           quantity: item.quantity || 1,
-          imageUrl: item.imageUrl || "/default-product.jpg",  // ✅ Ensure imageUrl is always present
+          imageUrl: item.imageUrl && item.imageUrl !== "default-product.jpg" 
+            ? item.imageUrl 
+            : "/assets/t_shirt.png", // ✅ Force fallback to t_shirt.png
         }));
         console.log("Cart Items from Local Storage:", parsedCart);
         setCartItems(parsedCart);
@@ -59,7 +61,7 @@ const CartPage = () => {
                     src={item.imageUrl} 
                     alt={item.name} 
                     className={styles.cartImage} 
-                    onError={(e) => e.currentTarget.src = "/default-product.jpg"} // ✅ Handle missing/broken images
+                    onError={(e) => e.currentTarget.src = "/assets/t_shirt.png"} // ✅ Ensure fallback image
                   />
                   <div className={styles.cartDetails}>
                     <p className={styles.itemDescription}>{item.name}</p>
