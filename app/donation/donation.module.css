@@ -1,134 +1,165 @@
-/* Hero Section */
+/* ✅ HERO SECTION */
 .hero {
     position: relative;
-    width: 1900px;
+    width: 100%;
     height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url('/donation.jpg');
     background-size: cover;
     background-position: center;
-    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-/* Donation Section */
-.donationSection {
+/* ✅ HEADER TEXT - Centers Above Box */
+.heroText {
     position: absolute;
-    top: 50%;
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(18px, 3.5vw, 38px); /* Responsive font */
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 15px;
+    border-radius: 6px;
+    max-width: 90%;
+    text-align: center;
+}
+
+/* ✅ SUBTITLE TEXT */
+.heroSubText {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(12px, 2.5vw, 20px); /* Responsive font */
+    font-weight: normal;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+    z-index: 9;
+    max-width: 85%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+
+/* ✅ DONATION BOX */
+.donationOptionsBox {
+    position: absolute;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 2;
-}
-
-.donationOptionsBox {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.98);
+    padding: 20px;
     border-radius: 10px;
-    width: 60%;
-    margin: 0 auto;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.donationSection h1 {
-    font-size: 48px;
-    font-weight: bolder;
-    margin-bottom: 20px;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 5px black; /* Added black outline using text-shadow */
-    margin-top: 2cm; /* Added 2cm margin to move the text down */
-}
-
-.donationTitle h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: white;
-    font-weight: bolder;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 5px black; /* Added black outline using text-shadow */
-}
-
-.donationTitle {
-    color: white;
-    font-weight: bolder;
-    font-size: 36px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 5px black; /* Added black outline using text-shadow */
-}
-
+/* ✅ DONATION BUTTONS */
 .donationOptions {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
-/* Align the donation buttons properly */
 .donationOptions button {
-    margin: 5px;
-    padding: 10px 20px;
-    font-size: 18px;
+    padding: 10px 18px;
+    font-size: 14px;
     background-color: #d3d3d3;
     color: black;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    transition: 0.3s;
 }
 
 .donationOptions button:hover {
     background-color: #b3b3b3;
 }
 
-/* Position input field directly under the donation buttons */
+/* ✅ DONATION INPUT */
 .donationInput {
     padding: 10px;
-    font-size: 18px;
-    margin-top: 20px;
+    font-size: 16px;
     border: 1px solid #ccc;
-    width: 200px;
+    width: 90%;
+    max-width: 300px;
     text-align: center;
     background-color: #d3d3d3;
     border-radius: 5px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 12px;
 }
 
-/* Donate button styling */
+/* ✅ DONATE BUTTON */
 .donateButton {
-    margin-top: 20px;
-    padding: 10px 20px;
+    width: 90%;
+    max-width: 200px;
+    padding: 12px 18px;
     background-color: #ff9900;
-    color: white;
-    font-size: 18px;
+    color: black;
+    font-size: 16px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    transition: 0.3s;
 }
 
 .donateButton:hover {
-    background-color: #e68900;
+    background-color: #e6b800;
 }
 
-/* Styling for the Thank You Message */
-#thankYouMessage {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #333;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 60%;
-    padding: 30px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+.errorText {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
-#thankYouMessage h3 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #28a745;
+
+/* ✅ MOBILE FIXES */
+@media (max-width: 768px) {
+    .heroText {
+        font-size: 20px; /* Smaller title for mobile */
+        top: 5%;
+        padding: 6px 12px;
+    }
+
+    .heroSubText {
+        font-size: 14px;
+        top: 20%;
+        max-width: 85%;
+        padding: 5px 10px;
+    }
+
+    .donationOptionsBox {
+        top: 60%;
+        width: 95%;
+        padding: 20px;
+    }
+
+    .donationOptions button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .donationInput {
+        font-size: 14px;
+        max-width: 200px;
+    }
+
+    .donateButton {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
 }

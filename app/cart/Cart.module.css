@@ -21,8 +21,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 /* Header for the cart section */
@@ -45,10 +46,10 @@
   background-color: #fdd835;
 }
 
-/* Responsive Cart Header Fix */
+/* Cart Header (Default View) */
 .cartHeader {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Ensure 4 equal columns */
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   text-align: center;
   background-color: #f2f2f2;
@@ -58,11 +59,10 @@
   width: 100%;
 }
 
-/* Ensure cart header stays in one row on mobile */
+/* 📱 Mobile Fix: Keep headers readable */
 @media (max-width: 768px) {
   .cartHeader {
     display: flex;
-    flex-wrap: nowwrap;
     justify-content: space-between;
     font-size: 1rem;
     padding: 0.8rem;
@@ -71,24 +71,11 @@
   .cartHeader div {
     flex: 1;
     text-align: center;
-    min-width: auto;  /* ✅ Fix alignment */
+    min-width: auto;
   }
 }
 
-/* Extra Small Screen Fix (Stack Headers Vertically) */
-@media (max-width: 480px) {
-  .cartHeader {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .cartHeader div {
-    width: 100%;
-    padding: 5px 0;
-  }
-}
-
-/* Cart Item Layout */
+/* 🛒 Cart Item Layout */
 .cartItem {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -98,7 +85,7 @@
   font-size: 1.6rem;
 }
 
-/* Make Cart Items Responsive */
+/* 📱 Mobile Fix: Stack items */
 @media (max-width: 768px) {
   .cartItem {
     display: flex;
@@ -107,11 +94,7 @@
     font-size: 1rem;
     padding: 1rem;
     width: 100%;
-  }
-
-  .cartItem img {
-    max-width: 90px; /* Adjust image size for better fit */
-    margin-bottom: 0.5rem;
+    gap: 0.5rem;
   }
 
   .cartItem div {
@@ -119,12 +102,13 @@
   }
 
   .cartQuantity input {
-    max-width: 50px; /* Prevent input field from overflowing */
+    max-width: 50px;
     text-align: center;
+    padding: 5px;
   }
 }
 
-/* Cart Summary */
+/* 🛍️ Cart Summary */
 .cartSummaryContainer {
   max-width: 400px;
   width: 90%;
@@ -136,11 +120,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  margin-left: auto;
-  margin-right: auto; /* Fix: Keep it centered on mobile */
+  margin: 0 auto;
+  text-align: center;
 }
 
-/* Ensure Summary Stays Centered on Mobile */
+/* 📱 Mobile Fix: Center Summary */
 @media (max-width: 768px) {
   .cartSummaryContainer {
     width: 100%;
@@ -149,7 +133,13 @@
   }
 }
 
-/* Checkout Button */
+/* 🔄 Update Button */
+.updateButtonContainer {
+  text-align: center;
+  width: 100%;
+}
+
+/* 🛒 Sticky Checkout Button */
 .checkoutButton {
   width: 100%;
   max-width: 400px;
@@ -173,39 +163,13 @@
   }
 }
 
-.checkoutButton:hover {
-  background-color: #000;
-}
-
-/* Update Button */
-.updateButtonContainer {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin: 1.5rem auto;
-}
-
-/* Fix Update Button for Mobile */
+/* 📱 Mobile Fix: Keep checkout button visible */
 @media (max-width: 768px) {
-  .updateButtonContainer {
-    justify-content: center;
-    width: 100%;
+  .checkoutButton {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
   }
-}
-
-.updateButton {
-  padding: 0.5rem 2rem;
-  background-color: #fdd835;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.updateButton:hover {
-  background-color: #e6b800;
 }

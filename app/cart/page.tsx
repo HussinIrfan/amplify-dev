@@ -21,9 +21,6 @@ const CartPage = () => {
           price: item.price,
           size: item.size || "N/A",
           quantity: item.quantity || 1,
-          imageUrl: item.imageUrl && item.imageUrl !== "default-product.jpg" 
-            ? item.imageUrl 
-            : "/assets/t_shirt.png", // ✅ Force fallback to t_shirt.png
         }));
         console.log("Cart Items from Local Storage:", parsedCart);
         setCartItems(parsedCart);
@@ -57,12 +54,6 @@ const CartPage = () => {
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
                 <div key={`${item.id}-${item.size}`} className={styles.cartItem}>
-                  <img 
-                    src={item.imageUrl} 
-                    alt={item.name} 
-                    className={styles.cartImage} 
-                    onError={(e) => e.currentTarget.src = "/assets/t_shirt.png"} // ✅ Ensure fallback image
-                  />
                   <div className={styles.cartDetails}>
                     <p className={styles.itemDescription}>{item.name}</p>
                     <p>Size: {item.size}</p> 
@@ -76,7 +67,7 @@ const CartPage = () => {
                 </div>
               ))
             ) : (
-              <p>Your cart is empty.</p>
+              <p className={styles.emptyCartMessage}>Your cart is empty.</p>
             )}
 
             <div className={styles.updateButtonContainer}>

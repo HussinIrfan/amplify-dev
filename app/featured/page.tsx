@@ -1,45 +1,36 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import CustomNavbar from "../customNavbar/CustomNavbar";
 import Footer from "../footer/footer";
 import "./FeaturedStyles.css";
 import useStore from "../admin/storeAdmin/StoreLogic";
-import { Link } from "@nextui-org/react";
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "@/amplify/data/resource";
+
+// Create an Amplify client instance
+const client = generateClient<Schema>();
 
 const FeaturedPage: React.FC = () => {
-  const products = [
-    {
-      image: "/firefighter_tshirt.jpg",
-      name: "Product 1",
-      description: " ",
-      price: 19.99,
-    },
-    {
-      image: "/firefighter_tshirt.jpg",
-      name: "Product 2",
-      description: " ",
-      price: 29.99,
-    },
-    {
-      image: "/firefighter_tshirt.jpg",
-      name: "Product 3",
-      description: " ",
-      price: 39.99,
-    },
-    {
-      image: "/firefighter_tshirt.jpg",
-      name: "Product 4",
-      description: " ",
-      price: 49.99,
-    },
-  ];
+  const [products, setProducts] = useState<Schema["Product"]["type"][]>([]); // Store products in state
 
-  // Function to handle size selection (for now, it does nothing)
-  const handleSizeClick = (size: string) => {
-    console.log(`Selected size: ${size}`);
-  };
+  // Fetch products from the backend on page load
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await client.models.Product.list(); // Fetch products from DB
+        if (response.data) {
+          setProducts(response.data); // Store fetched products in state
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts(); // Call the function when the page loads
+  }, []);
 
   // Admin store setting
   const { storeOpen } = useStore();
@@ -51,28 +42,40 @@ const FeaturedPage: React.FC = () => {
           <CustomNavbar />
 
           <main className="featured-page">
-            <h1>Featured Products</h1>
-            <div className="yellow-bar"></div>
+            <h1 style={{ textAlign: "center", fontSize: "1.8rem", padding: "10px" }}>Featured Products</h1>
+            <div className="yellow-bar" style={{ width: "80%", margin: "10px auto" }}></div>
             <div className="product-grid">
-              {products.map((product, index) => (
-                <div key={index} className="product-card">
-                  {/* Next.js Image component instead of <img> */}
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={300} // Adjust width
-                    height={300} // Adjust height
-                    className="product-image"
-                    style={{ borderRadius: "10px" }}
-                  />
-                  <h3 className="product-name">{product.name}</h3>
-                  <p className="product-description">{product.description}</p>
-                  <p className="product-price">${product.price.toFixed(2)}</p>
 
-                  <button className="view-product">View Product</button>
-                </div>
-              ))}
-            </div>
+            {products.length > 0 ? (
+              products
+                .filter(product => product) // ✅ Removes null/undefined products
+                .map((product, index) => (
+                  <div key={index} className="product-card">
+                    {/* ✅ Safe null check for product properties */}
+                       <Image
+                      src={product.imageUrl || "/placeholder.jpg"}
+                      alt={product.name || "No name available"}
+                      width={300}
+                      height={300}
+                      className="product-image"
+                      style={{ borderRadius: "10px", maxWidth: "100%", height: "auto" }} 
+                    />
+
+                    <h3 className="product-name">{product.name || "Unnamed Product"}</h3>
+                    <p className="product-description">{product.description || "No description available."}</p>
+                    <p className="product-price">${product.basePrice ? product.basePrice.toFixed(2) : "N/A"}</p>
+
+                    {/* ✅ "View Product" now links to /store1 */}
+                    <Link href={`/store1`}>
+                      <button className="view-product">View Product</button>
+                    </Link>
+                  </div>
+                ))
+            ) : (
+              <p>Loading products...</p>
+            )}
+          </div>
+
           </main>
 
           <Footer />
