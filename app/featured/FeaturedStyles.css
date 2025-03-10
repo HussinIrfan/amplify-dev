@@ -98,3 +98,87 @@
     font-size: 1.2em;
     color: #666;
   }
+
+  /* Ensure the page container is responsive */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Adjust the product grid for smaller screens */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* More flexible grid */
+  gap: 50px;
+  justify-content: center;
+  width: 100%;
+  padding: 27px;
+}
+
+/* Ensure product cards fit smaller screens */
+.product-card {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 100%;
+  max-width: 250px; /* Prevents the cards from being too wide */
+}
+
+/* Adjust images for smaller screens */
+.product-image {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure buttons are easy to tap */
+.view-product {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Reduce text size for mobile */
+.product-name {
+  font-size: 1rem;
+}
+
+.product-description {
+  font-size: 0.9rem;
+}
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 768px) {
+  .featured-page h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .product-card {
+    max-width: 200px;
+  }
+
+  .product-name {
+    font-size: 0.9rem;
+  }
+
+  .product-description {
+    font-size: 0.8rem;
+  }
+
+  .product-price {
+    font-size: 0.9rem;
+  }
+
+  .view-product {
+    font-size: 14px;
+  }
+}

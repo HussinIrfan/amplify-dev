@@ -42,23 +42,25 @@ const FeaturedPage: React.FC = () => {
           <CustomNavbar />
 
           <main className="featured-page">
-            <h1>Featured Products</h1>
-            <div className="yellow-bar"></div>
+            <h1 style={{ textAlign: "center", fontSize: "1.8rem", padding: "10px" }}>Featured Products</h1>
+            <div className="yellow-bar" style={{ width: "80%", margin: "10px auto" }}></div>
             <div className="product-grid">
+
             {products.length > 0 ? (
               products
                 .filter(product => product) // ✅ Removes null/undefined products
                 .map((product, index) => (
                   <div key={index} className="product-card">
                     {/* ✅ Safe null check for product properties */}
-                    <Image
+                       <Image
                       src={product.imageUrl || "/placeholder.jpg"}
                       alt={product.name || "No name available"}
                       width={300}
                       height={300}
                       className="product-image"
-                      style={{ borderRadius: "10px" }}
+                      style={{ borderRadius: "10px", maxWidth: "100%", height: "auto" }} 
                     />
+
                     <h3 className="product-name">{product.name || "Unnamed Product"}</h3>
                     <p className="product-description">{product.description || "No description available."}</p>
                     <p className="product-price">${product.basePrice ? product.basePrice.toFixed(2) : "N/A"}</p>
