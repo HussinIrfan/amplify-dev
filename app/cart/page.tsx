@@ -40,71 +40,57 @@ const CartPage = () => {
       <CustomNavbar />
       <main className={styles.mainContent}>
         <div className={styles.cartContainer}>
-          <div className={styles.cartItemsSection}>
-            <h1 className={styles.heading}>Cart</h1>
+          <h1 className={styles.heading}>Cart</h1>
 
-            <div className={styles.cartHeader}>
-              <div>Product</div>
-              <div>Price</div>
-              <div>Quantity</div>
-              <div>Subtotal</div>
-            </div>
-
-            {/* Render Cart Items */}
-            {cartItems.length > 0 ? (
-              cartItems.map((item) => (
-                <div key={`${item.id}-${item.size}`} className={styles.cartItem}>
-                  <div className={styles.cartDetails}>
-                    <p className={styles.itemDescription}>{item.name}</p>
-                    <p>Size: {item.size}</p> 
-                    <p>Quantity: {item.quantity}</p>
-                  </div>
-                  <div className={styles.cartPrice}>${item.price.toFixed(2)}</div>
-                  <div className={styles.cartQuantity}>
-                    <input type="number" value={item.quantity} readOnly />
-                  </div>
-                  <div className={styles.cartSubtotal}>${(item.price * item.quantity).toFixed(2)}</div>
-                </div>
-              ))
-            ) : (
-              <p className={styles.emptyCartMessage}>Your cart is empty.</p>
-            )}
-
-            <div className={styles.updateButtonContainer}>
-              <button className={styles.updateButton}>Update</button>
-            </div>
+          {/* Cart Headers (for Desktop & Mobile) */}
+          <div className={styles.cartHeader}>
+            <div>Product</div>
+            <div>Price</div>
+            <div>Quantity</div>
+            <div>Subtotal</div>
           </div>
 
+          {/* Render Cart Items */}
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <div key={item.id} className={styles.cartItem}>
+                <div className={styles.cartProduct}>
+                  <strong>{item.name}</strong>
+                  <p>Size: {item.size}</p>
+                </div>
+
+                <div className={styles.cartPrice}>${item.price.toFixed(2)}</div>
+
+                <div className={styles.cartQuantity}>
+                  <input type="number" value={item.quantity} readOnly />
+                </div>
+
+                <div className={styles.cartSubtotal}>${(item.price * item.quantity).toFixed(2)}</div>
+              </div>
+            ))
+          ) : (
+            <p>Your cart is empty.</p>
+          )}
+
+          {/* Update Button Positioned Below Cart Items */}
+          <div className={styles.updateButtonContainer}>
+            <button className={styles.updateButton}>Update</button>
+          </div>
+
+          {/* Cart Totals Section */}
           <div className={styles.cartSummaryContainer}>
-            <h2>Cart totals</h2>
-
-            <div className={styles.cartSummaryRow}>
-              <span className={styles.cartLabel}>Subtotal</span>
-              <span className={styles.cartValue}>${subtotal.toFixed(2)}</span>
-            </div>
-
-            <div className={styles.cartSummaryRow}>
-              <span className={styles.cartLabel}>Tax</span>
-              <span className={styles.cartValue}>${tax.toFixed(2)}</span>
-            </div>
-
-            <div className={styles.cartSummaryRow}>
-              <span className={styles.cartLabel}>Total</span>
-              <span className={styles.cartValue}>${total.toFixed(2)}</span>
-            </div>
-
-            <button className={styles.checkoutButton}>Proceed to checkout</button>
+            <h2>Cart Totals</h2>
+            <p>Subtotal: ${subtotal.toFixed(2)}</p>
+            <p>Tax: ${tax.toFixed(2)}</p>
+            <p>Total: ${total.toFixed(2)}</p>
+            <button className={styles.checkoutButton}>Proceed to Checkout</button>
           </div>
         </div>
       </main>
       <Footer />
     </div>
   ) : (
-    <div className="store-closed-container">
-      <h1>Store Closed</h1>
-      <p>Sorry, the store is currently closed. Please check back later.</p>
-      <Link href="/">Return Home</Link>
-    </div>
+    <div>Store Closed</div>
   )
   );
 };
