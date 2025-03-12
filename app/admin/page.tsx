@@ -11,11 +11,6 @@ import "@aws-amplify/ui-react/styles.css";
 import "../page.module.css";
 import "./admin.css";
 import "../calendar/index.css";
-import outputs from "@/amplify_outputs.json"; // Your AWS configuration
-import { Amplify } from "aws-amplify";
-
-// Configure Amplify with your config file
-Amplify.configure(outputs);
 
 function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
