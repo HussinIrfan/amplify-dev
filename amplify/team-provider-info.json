@@ -23,6 +23,11 @@
       "StackName": "amplify-amplifydev-hussinenv-aae16",
       "StackId": "arn:aws:cloudformation:us-west-2:491085391320:stack/amplify-amplifydev-hussinenv-aae16/6ada3e60-feb8-11ef-9223-0203a90abfed",
       "AmplifyAppId": "d1beyvtmblhlh5"
+    },
+    "categories": {
+      "auth": {
+        "amplifydeva9f0a92a": {}
+      }
     }
   }
 }
