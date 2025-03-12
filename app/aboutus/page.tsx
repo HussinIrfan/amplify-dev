@@ -34,7 +34,7 @@ export default function AboutUsPage() {
         <div className={styles.section}>
           <img
             src={AboutTheFoundation.src}
-            alt="About the Foundation"
+            alt="Blank"
             className={styles.foundationImage}
           />
           <p className={styles.foundationText}>
@@ -55,7 +55,7 @@ export default function AboutUsPage() {
               <div key={member.id} className={styles.teamMember}>
                 <StorageImage
                   path={member.picture || ""}
-                  alt={member.name || "Team Member"}
+                  alt="No Image"
                   className={styles.teamImage}
                   fallbackSrc="/default-placeholder.jpg"
                 />
@@ -77,7 +77,7 @@ export default function AboutUsPage() {
               <div key={station.id} className={styles.stationCard}>
                 <StorageImage
                   path={station.image || ""}
-                  alt={station.stationName || "Fire Station"}
+                  alt="Blank"
                   className={styles.stationImage}
                   fallbackSrc="/default-placeholder.jpg"
                 />
@@ -99,7 +99,7 @@ export default function AboutUsPage() {
               <div key={honor.id} className={styles.honorCard}>
                 <StorageImage
                   path={honor.recipientImage || ""}
-                  alt={honor.recipientName || "Honor Recipient"}
+                  alt="No Image"
                   className={styles.honorImage}
                   fallbackSrc="/default-placeholder.jpg"
                 />
