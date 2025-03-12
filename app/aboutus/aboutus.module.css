@@ -1,111 +1,237 @@
+/* 🌍 General Styles */
 .main {
-    text-align: center;
-    padding: 40px 20px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* HEADERS */
+.header {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* ABOUT THE FOUNDATION */
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.foundationImage {
+  border-radius: 10px;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.foundationText {
+  max-width: 750px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* 👥 TEAM MEMBERS SECTION */
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+/* 🏆 Team Member Card */
+.teamMember {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 40px;
+  max-width: 350px;
+  margin: 0 auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.teamMember:hover {
+  transform: translateY(0px);
+}
+
+/* 🖼️ Team Member Image */
+.teamImage {
+  border-radius: 4px;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* ℹ️ Team Member Info */
+.memberInfo {
+  text-align: center;
+}
+
+.memberName {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.memberTitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.memberDescription {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* 🔥 Fire Stations Grid */
+.stationGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stationCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 850px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+}
+
+.stationImage {
+  border-radius: 12px;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.stationName {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.stationAddress,
+.stationPhone {
+  font-size: 1rem;
+  margin-top: 5px;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* 🏆 HONORS & AWARDS SECTION */
+.honorsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increased min size */
+  gap: 30px; /* Slightly more spacing */
+  justify-content: center;
+  margin-bottom: 60px; /* More bottom spacing */
+}
+
+/* 🎖️ Honor Card */
+.honorCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 40px; /* Increased padding */
+  max-width: 400px; /* Increased width */
+  margin: 0 auto;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.00);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.honorCard:hover {
+  transform: translateY(0px); /* prev -5px */
+}
+
+/* 🖼️ Honor Image */
+.honorImage {
+  border-radius: 6px;
+  width: 180px; /* Increased size */
+  height: 180px; /* Increased size */
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* ℹ️ Honor Information */
+.honorTitle {
+  font-size: 1.6rem; /* Slightly bigger */
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.honorRecipient {
+  font-size: 1.2rem; /* Slightly bigger */
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.honorDate {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.honorDescription {
+  font-size: 1.1rem; /* Slightly bigger */
+  color: #444;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
+/* 🎨 Responsive Design */
+@media (max-width: 768px) {
+  .teamGrid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
-  
-  .header {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 40px;
-  }
-  
-  .foundationImage,
-  .staffImage {
-    border-radius: 10px;
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .foundationText {
-    max-width: 800px;
-    margin-top: 20px;
-    font-size: 1.2rem;
-    line-height: 1.5;
-  }
-  
-  .teamContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    margin-bottom: 40px;
-  }
-  
+
   .teamMember {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 500px;
+    padding: 15px;
   }
-  
+
   .teamImage {
-    border-radius: 10px;
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
+    width: 130px;
+    height: 130px;
   }
-  
-  .memberName {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .memberTitle {
-    font-size: 1.2rem;
-    font-weight: normal;
-    margin-bottom: 10px;
-  }
-  
+
   .memberDescription {
+    font-size: 0.9rem;
+  }
+
+  .stationCard {
+    width: 100%;
+  }
+
+  .honorsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Increased min size */
+  }
+
+  .honorCard {
+    padding: 25px; /* Slightly reduced padding on smaller screens */
+  }
+
+  .honorImage {
+    width: 160px;
+    height: 160px;
+  }
+
+  .honorDescription {
     font-size: 1rem;
-    max-width: 400px;
   }
-  
-  .stationContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 40px;
-  }
-  
-  .stationImage {
-    border-radius: 10px;
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .stationText {
-    max-width: 800px;
-    margin-top: 20px;
-    font-size: 1.2rem;
-    line-height: 1.5;
-  }
-  
-  /* Responsive Design */
-  @media (min-width: 768px) {
-    .teamContainer {
-      flex-direction: row;
-      justify-content: center;
-    }
-  
-    .stationContainer {
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 30px;
-    }
-  
-    .stationText {
-      max-width: 500px;
-      text-align: left;
-    }
-  }
+}
