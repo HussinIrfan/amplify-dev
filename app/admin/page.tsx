@@ -24,9 +24,9 @@ export default function AdminPage() {
   return (
     <>
       <div className="admin-config">
-        <div className="navbar-admin">
+        
           <CustomNavbar />
-        </div>
+        
         <div>
           <h1 className="admin-h1">Admin Settings</h1>
         </div>
