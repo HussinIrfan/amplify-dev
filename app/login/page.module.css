@@ -1,0 +1,42 @@
+/* page.module.css */
+.authContainer {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .welcomeMessage {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  .signInButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .signInButton:hover {
+    background-color: #e64a19;
+  }
+  
+  .formInput {
+    margin-bottom: 15px;
+  }
+  
+  .inputField {
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
