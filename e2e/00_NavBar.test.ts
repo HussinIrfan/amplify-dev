@@ -55,7 +55,13 @@ test.describe("NavBar Loads Correctly", () => {
       page.getByRole("navigation").getByRole("link", { name: "Facebook" })
     ).toBeVisible();
   });
+});
 
+test.describe("NavBar Navigation", () => {
+  //Navigation to Home page
+  test.beforeEach(async ({ page }) => {
+    await page.goto(URL_HOME);
+  });
   //Navigation
   test("Home Page Navigation", async ({ page }) => {
     await page.getByRole("link", { name: "Home" }).click();
@@ -100,23 +106,53 @@ test.describe("NavBar Loads Correctly", () => {
       .click();
     const page1 = await page1Promise;
 
-    if (page.url() == INSTAGRAM) {
+    // Wait for the Instagram page to load
+    await page1.waitForLoadState("domcontentloaded");
+
+    // Get the current page title
+    const pageTitle = await page1.title();
+
+    if (page1.url() == INSTAGRAM) {
       expect(page1.url()).toBe(INSTAGRAM);
     } else {
-      // Check for login redirect
-      expect(page1.url()).toBe(
-        "https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fsltfirefightersfoundation%2F&is_from_rle"
-      );
+      const expectedTitles = [
+        "Instagram",
+        "Login • Instagram ",
+        "Log into Instagram",
+      ];
+      expect(expectedTitles.some((t) => pageTitle.includes(t))).toBe(true);
+      // Check if the pageTitle matches one of the expected titles
     }
   });
 
-  test("FaceBook Navigation", async ({ page }) => {
+  test("Facebook Navigation", async ({ page }) => {
     const page1Promise = page.waitForEvent("popup");
     await page
       .getByRole("navigation")
       .getByRole("link", { name: "Facebook" })
       .click();
     const page1 = await page1Promise;
-    expect(page1.url()).toBe(FACEBOOK);
+
+    // Wait for the Facebook page to load
+    await page1.waitForLoadState("domcontentloaded");
+
+    // Get the current page title
+    const pageTitle = await page1.title();
+
+    // Check for possible expected titles
+    if (page1.url() == FACEBOOK) {
+      // If the URL is Facebook, check for the title as Facebook's homepage
+      expect(page1.url()).toBe(FACEBOOK);
+    } else if (page1.url().includes("facebook.com")) {
+      // If the URL is a Facebook login page or another page, check for login prompt title
+      expect([
+        "Facebook",
+        "Facebook - log in or sign up",
+        "Log into Facebook",
+      ]).toContain(pageTitle);
+    } else {
+      // Handle any other unexpected cases
+      expect(page1.url()).toContain("facebook.com");
+    }
   });
 });
