@@ -11,6 +11,7 @@ export interface Event {
   end?: Date;
   title: string;
   allDay: boolean;
+  location: string;
   details: string;
 }
 
@@ -42,6 +43,9 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose }) => {
         </p>
         <p>
           <strong>All Day:</strong> {event.allDay ? "Yes" : "No"}
+        </p>
+        <p>
+          <strong>Location:</strong> {event.location}
         </p>
         <p>
           <strong>Details:</strong> {event.details}

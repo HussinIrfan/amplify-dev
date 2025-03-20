@@ -38,7 +38,8 @@ const schema = a.schema({
       eventLocation: a.string(),
       eventDetails: a.string(),
       allday: a.boolean(),
-      attendents: a.hasMany("EventAttentants", "eventId"),
+      attendents: a.hasMany("EventAttentants", "eventId"), // Link to attendees
+      sponsors: a.hasMany("EventSponsors", "eventId"), // Link to sponsors for this event
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
@@ -49,7 +50,8 @@ const schema = a.schema({
       phoneNumber: a.string(),
       email: a.email(),
       partySize: a.integer(),
-      events: a.hasMany("EventAttentants", "attendeeId"),
+      events: a.hasMany("EventAttentants", "attendeeId"), // Link to events attended
+      sponsoredEvents: a.hasMany("EventSponsors", "attendeeId"), // Link to events sponsored by this attendee
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
@@ -59,6 +61,17 @@ const schema = a.schema({
       attendeeId: a.id().required(),
       event: a.belongsTo("Event", "eventId"),
       attendee: a.belongsTo("Attendee", "attendeeId"),
+      isSponsor: a.boolean().default(false), // Flag to indicate if this attendee is a sponsor for this event
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  EventSponsors: a
+    .model({
+      eventId: a.id().required(), // ID of the event the attendee sponsors
+      attendeeId: a.id().required(), // ID of the attendee who is sponsoring the event
+      event: a.belongsTo("Event", "eventId"), // Link to Event
+      attendee: a.belongsTo("Attendee", "attendeeId"), // Link to Attendee
+      support: a.string(), // Support or contribution details (optional)
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
