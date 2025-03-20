@@ -20,8 +20,7 @@ const Footer = () => {
     const [url501c3, setUrl501c3] = useState("");
     const [url990, setUrl990] = useState("");
 
-    const expirationTime = 6 * 24 * 60 * 60 * 1000; // 6 days in milliseconds
-
+    const expirationTime = 60000 * 50; //1 minute x 50 = 50 minutes in milliseconds for cache expiration
     useEffect(()=>{
         const fetchDocUrls = async () => {
             const cachedData = localStorage.getItem('docUrls');
@@ -53,11 +52,11 @@ const Footer = () => {
                     const newUrls: { url501c3?: string, url990?: string } = {};
 
                     if(response.data.doc501c3){
-                        const url1 = await getUrl({path: response.data.doc501c3});
+                        const url1 = await getUrl({path: response.data.doc501c3, options: {expiresIn: 3600}});
                         newUrls.url501c3 = url1.url.toString();
                     }
                     if(response.data.doc990){
-                        const url2 = await getUrl({ path: response.data.doc990 });
+                        const url2 = await getUrl({ path: response.data.doc990, options: {expiresIn: 3600} });
                         newUrls.url990 = url2.url.toString();
                     }
                         // Set state with the new URLs
