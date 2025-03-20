@@ -1,9 +1,16 @@
+"use client";
+
 import react, { useState } from "react";
 import "./donations.css";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
+import useDonations from "./DonationsLogic";
+import "../storeAdmin/store.css";
 
 export default function Donations() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
+
+  const { donationOpen, setDonationOpen, toggleDonationStatus } =
+    useDonations();
 
   return (
     <>
@@ -30,7 +37,17 @@ export default function Donations() {
             !isContentCollapsed ? "collapsed" : "expanded"
           }`}
         >
-          {isContentCollapsed && <></>}
+          {isContentCollapsed && <>
+          {/* Add the button */}
+          <button
+                onClick={toggleDonationStatus}
+                className={`store-toggle-btn ${donationOpen ? "open" : "closed"}`}
+              >
+                {donationOpen ? "✅ Donations Open" : "❌ Donations Closed"}
+              </button>
+
+
+          </>}
         </div>
       </div>
     </>

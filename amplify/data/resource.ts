@@ -5,10 +5,10 @@ const schema = a.schema({
     .model({
       aboutUS: a.boolean(),
       ourWork: a.boolean(),
-      news: a.boolean(),
       calendar: a.boolean(),
       donations: a.boolean(),
       storeOpen: a.boolean(),
+      contactUs: a.boolean(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
