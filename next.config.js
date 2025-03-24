@@ -10,6 +10,7 @@ const nextConfig = {
     domains: [
       "amplify-d3h9m824z08a60-ma-sltfirestoragebucket5d60-tyvsluifahjj.s3.us-west-2.amazonaws.com",
       "s3.us-west-2.amazonaws.com",
+      "sltffimagetestbucket.s3.us-west-2.amazonaws.com", // ✅ added your new bucket
     ],
   },
 };
