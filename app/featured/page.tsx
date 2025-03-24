@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -40,7 +39,6 @@ const FeaturedPage: React.FC = () => {
       {storeOpen ? (
         <>
           <CustomNavbar />
-
           <main className="featured-page">
             <h1 style={{ textAlign: "center", fontSize: "1.8rem", padding: "10px" }}>
               Featured Products
@@ -86,7 +84,6 @@ const FeaturedPage: React.FC = () => {
               )}
             </div>
           </main>
-
           <Footer />
         </>
       ) : (
