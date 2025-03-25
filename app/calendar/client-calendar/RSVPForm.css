@@ -58,6 +58,25 @@
   .rsvp-form-modal button:hover {
     opacity: 0.9;
   }
+
+  .sponsor-checkbox-container {
+    display: flex;
+    align-items: center; /* Ensures checkbox and text are vertically aligned */
+  }
+  
+  .sponsor-checkbox-label {
+    margin-right: 8px; /* Adds space between the checkbox and the text */
+  }
+  
+  .sponsor-checkbox-label input {
+    margin-top: 20px; /* Adjust this value to move the checkbox down */
+  }
+  
+  .sponsorText {
+    margin: 0; /* Removes any default margin on the <p> tag */
+    padding-bottom: 18px; /* Slightly raise the text */
+  }
+  
   
   /* Mobile-Friendly Adjustments */
   @media (max-width: 768px) {

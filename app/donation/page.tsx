@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./donation.module.css";

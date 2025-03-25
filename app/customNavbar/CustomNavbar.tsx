@@ -9,10 +9,12 @@ import instaLogo from '../navbarAssets/instaLogo.png';
 import fbLogo from '../navbarAssets/fbLogo.png';
 import { useState, useEffect } from 'react';
 import useStore from "../admin/storeAdmin/StoreLogic";
+import useDonations from "../admin/donations/DonationsLogic";
 
 export default function CustomNavbar() {
   //Admin store setting
   const {storeOpen} = useStore();
+  const {donationOpen} = useDonations(); // Donations store setting
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -72,10 +74,11 @@ export default function CustomNavbar() {
               <Link className={styles.navbarItem} href="/calendar" onClick={closeMobileMenu}>
                 Calendar
               </Link>
+              {donationOpen && (
               <Link className={styles.navbarItem} href="/donation" onClick={closeMobileMenu}>
                 Donation
               </Link>
-
+              )}
               {storeOpen && (
                 <Link className={styles.navbarItem} href="/featured" onClick={closeMobileMenu}>
                 Store
@@ -87,7 +90,7 @@ export default function CustomNavbar() {
             </div>
 
             {/* Instagram Link */}
-            <Link className={styles.instaLink} href="https://instagram.com/sltfirefightersfoundation" target="_blank" rel="noopener noreferrer">
+            <Link className={styles.instaLink} href="https://www.instagram.com/sltfirefightersfoundation/" target="_blank" rel="noopener noreferrer">
               <Image
                 src={instaLogo}
                 alt="Instagram"

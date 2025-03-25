@@ -3,3 +3,21 @@
     overflow-y: auto; /* Enable scrolling for long lists */
     overflow-x: auto; /* Allow horizontal scrolling for mobile screens */
 }
+
+.attendees-table {
+    border-collapse: collapse; /* Makes the table borders collapse into one */
+    width: 100%; /* Ensure the table takes up the full width */
+  }
+  
+  .attendees-table th, .attendees-table td {
+    border-left: 1px solid black; /* Adds a vertical line between columns */
+    padding: 8px; /* Adds padding inside each cell */
+  }
+  
+  .attendees-table th:first-child, .attendees-table td:first-child {
+    border-left: none; /* Remove the left border from the first column */
+  }
+  
+  .attendees-table tr {
+    border-bottom: 1px solid black; /* Adds a bottom border between rows */
+  }

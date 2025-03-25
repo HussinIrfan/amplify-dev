@@ -342,3 +342,6 @@ button:disabled {
   .dropdown-arrow.collapsed {
     transform: rotate(180deg);
   }
+  .signOutButton {
+    background: red;
+  }
