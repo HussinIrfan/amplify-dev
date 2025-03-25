@@ -46,6 +46,7 @@
   "devDependencies": {
     "@aws-amplify/backend": "^1.8.0",
     "@aws-amplify/backend-cli": "^1.2.6",
+    "@playwright/test": "^1.51.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-big-calendar": "^1.16.1",
