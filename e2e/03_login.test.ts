@@ -44,6 +44,6 @@ test.describe("Admin Login Functionality", () => {
     await page.waitForURL("http://localhost:3000/admin");
 
     // Confirm you're now on admin page (adjust locator if needed)
-    // await expect(page.getByRole("heading")).toContainText("Admin"); 
+    await expect(page.locator("h1.admin-h1")).toHaveText("Admin Settings");
   });
 });
