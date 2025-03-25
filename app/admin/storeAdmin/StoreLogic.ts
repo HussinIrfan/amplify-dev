@@ -1,5 +1,3 @@
-/** TODO Store Open / Close state will be stored in DATABASE once deployed */
-
 "use client"
 
 import { Amplify } from "aws-amplify";
@@ -37,10 +35,10 @@ export default function useStore() {
               id: tableID,
               aboutUS: true,
               ourWork: true,
-              news: true,
               calendar: true,
               donations: true,
               storeOpen: true,
+              contactUs: true,
             });
           } catch (err) {
             console.error("Error creating entry", err);

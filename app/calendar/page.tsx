@@ -33,9 +33,9 @@ export default function CalendarPage() {
               <ClientCalendar />
             </div>
           </div>
-          <div className="footer-update">
-            <Footer />
-          </div>
+        </div>
+        <div className="footer-update">
+          <Footer />
         </div>
       </main>
     </>

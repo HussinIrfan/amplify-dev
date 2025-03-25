@@ -5,6 +5,7 @@ import moment from "moment";
 import logoImage from "../../navbarAssets/Logo-CutOut.png";
 import Image from "next/image";
 import "./controlCal.css";
+import "../client-calendar/RSVPForm.css";
 
 const ControlCalendar: React.FC = () => {
   const {
@@ -36,6 +37,10 @@ const ControlCalendar: React.FC = () => {
     attendeeSearchQuery,
     partySizeTotal,
     selectedAttendees,
+    sponsor,
+    support,
+    setSponsor,
+    setSupport,
     setSelectedAttendees,
     handleAttendeeCheckboxChange,
     setAttendeesSearchOptions,
@@ -117,7 +122,6 @@ const ControlCalendar: React.FC = () => {
                   Add Event
                 </button>
 
-
                 {/* Modal for adding a new event */}
                 {isModalOpen && !isEditMode && (
                   <div className="divPopUp">
@@ -173,7 +177,7 @@ const ControlCalendar: React.FC = () => {
                             onChange={(e) => setEventEndDate(e.target.value)}
                             className="popUpInputBox"
                             required
-                            />
+                          />
                         </div>
                         <div className="popUpInputColumn">
                           <label>End Time:</label>
@@ -183,7 +187,7 @@ const ControlCalendar: React.FC = () => {
                             onChange={(e) => setEventEndTime(e.target.value)}
                             className="popUpInputBox"
                             disabled={allday}
-                            />
+                          />
                         </div>
                       </div>
                       <div>
@@ -258,12 +262,11 @@ const ControlCalendar: React.FC = () => {
                       {selectedEvent.details}
                     </p>
                     <div className="divButton">
-                      
                       <button
                         type="button"
                         className="popUpCancelButton"
                         onClick={handleListAttendeesClick}
-                        >
+                      >
                         List Attendees
                       </button>
                       <button
@@ -294,67 +297,85 @@ const ControlCalendar: React.FC = () => {
                 {/** Modal for viewing list of attendees */}
                 {isAttendeesModalOpen && (
                   <div className="divTablePopUp">
-                  <div className="attendee-div-container">
-                    <h3>Attendees for {selectedEvent.title} event</h3>
-                    <div className="attendee-search-container">
-                      <input
-                        type="text"
-                        value={attendeeSearchQuery}
-                        onChange={(e) => setAttendeesSearchQuery(e.target.value)}
-                      />
-                    <p>Email Search</p>
-                    </div>
-                    <div className="edit-Buttons-space">
-                      <button className="attendee-popup-button">Search</button>
-                      <button className="popUpDeleteButton"
-                        onClick={handleBulkDeleteAttendees}
-                      >Delete Selected</button>
-                    <button onClick={handleRSVPEventClick}>Add Attendee</button>
-                    <button onClick={handleCloseAttendeesModal}>Close</button>
-                      <p>Total Number of Attendees: {partySizeTotal}</p>
-                    </div>
-              
-                    {attendees.length > 0 ? (
-                      <div className="table-container">
-                        <table className="attendees-table">
-                          <thead>
-                            <tr>
-                              <th>Select</th>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Phone</th>
-                              <th>Party Size</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {attendees.map((attendee) => (
-                              <tr key={attendee.id}>
-                                <td>
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedAttendees.has(attendee.id)}
-                                    onChange={() => 
-                                      handleAttendeeCheckboxChange(attendee.id)
-                                    }
-                                  />
-                                </td>
-                                <td>
-                                  {attendee.nameFirst} {attendee.nameLast}
-                                </td>
-                                <td>{attendee.email}</td>
-                                <td>{attendee.phoneNumber}</td>
-                                <td>{attendee.partySize}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                    <div className="attendee-div-container">
+                      <h3>Attendees for {selectedEvent.title} event</h3>
+                      <div className="attendee-search-container">
+                        <input
+                          type="text"
+                          value={attendeeSearchQuery}
+                          onChange={(e) =>
+                            setAttendeesSearchQuery(e.target.value)
+                          }
+                        />
+                        <p>Email Search</p>
                       </div>
-                    ) : (
-                      <p>No attendees found for this event.</p>
-                    )}
-                    
+                      <div className="edit-Buttons-space">
+                        <button className="attendee-popup-button">
+                          Search
+                        </button>
+                        <button
+                          className="popUpDeleteButton"
+                          onClick={handleBulkDeleteAttendees}
+                        >
+                          Delete Selected
+                        </button>
+                        <button onClick={handleRSVPEventClick}>
+                          Add Attendee
+                        </button>
+                        <button onClick={handleCloseAttendeesModal}>
+                          Close
+                        </button>
+                        <p>Total Number of Attendees: {partySizeTotal}</p>
+                      </div>
+
+                      {attendees.length > 0 ? (
+                        <div className="table-container">
+                          <table className="attendees-table">
+                            <thead>
+                              <tr>
+                                <th>Select</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Party Size</th>
+                                <th>Sponsor</th>
+                                <th>Support Info</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {attendees.map((attendee) => (
+                                <tr key={attendee.id}>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedAttendees.has(
+                                        attendee.id
+                                      )}
+                                      onChange={() =>
+                                        handleAttendeeCheckboxChange(
+                                          attendee.id
+                                        )
+                                      }
+                                    />
+                                  </td>
+                                  <td>
+                                    {attendee.nameFirst} {attendee.nameLast}
+                                  </td>
+                                  <td>{attendee.email}</td>
+                                  <td>{attendee.phoneNumber}</td>
+                                  <td>{attendee.partySize}</td>
+                                  <td>{}</td>
+                                  <td>{}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : (
+                        <p>No attendees found for this event.</p>
+                      )}
+                    </div>
                   </div>
-                </div>
                 )}
 
                 {/* Modal view to add attendee to event */}
@@ -435,6 +456,30 @@ const ControlCalendar: React.FC = () => {
                           ))}
                         </select>
                       </div>
+                      {/* Checkbox to become a sponsor */}
+                      <div className="sponsor-checkbox-container">
+                        <label className="sponsor-checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={sponsor} // Use the sponsor state directly
+                            onChange={() => setSponsor((prev) => !prev)}
+                          />
+                        </label>
+                        <p className="sponsorText">
+                          Become a Sponsor for Event / Additional Contributions
+                        </p>
+                      </div>
+                      {/* Conditionally render the support inquiry input if the checkbox is checked */}
+                      {sponsor && (
+                        <label>
+                          Sponsorship & Support Inquiry:
+                          <input
+                            value={support}
+                            onChange={(e) => setSupport(e.target.value)}
+                            required={sponsor} // Make it required only when the box is checked
+                          />
+                        </label>
+                      )}
                       {errorMessage && (
                         <div className="error-message">{errorMessage}</div>
                       )}
@@ -463,7 +508,7 @@ const ControlCalendar: React.FC = () => {
                           onChange={(e) => setEventTitle(e.target.value)}
                           placeholder="Event Title"
                           className="popUpInputBox"
-                          />
+                        />
                       </div>
                       <div className="allDayToggle">
                         <label className="strong-title">All Day</label>
@@ -552,7 +597,7 @@ const ControlCalendar: React.FC = () => {
                     </form>
                   </div>
                 )}
-          </div>
+              </div>
             </>
           )}
         </div>
