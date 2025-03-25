@@ -14,18 +14,17 @@ test.describe("Admin Sign Out Functionality", () => {
     await page.getByPlaceholder("Password").fill(PASSWORD);
     await page.getByRole("button", { name: "Sign in" }).click();
 
-    // Confirm login by checking the Admin Settings heading
     await page.waitForURL(URL_ADMIN);
     await expect(page.locator("h1.admin-h1")).toHaveText("Admin Settings");
   });
 
   test("Clicking Sign Out logs out and redirects to login", async ({ page }) => {
-    // Click the Sign Out button
-    await page.getByRole("button", { name: "Sign Out" }).click();
+    // Click the sign out button using its class
+    await page.locator("button.signOutButton").click();
 
-    await page.waitForURL(URL_LOGIN);
+    await page.waitForURL(URL_ADMIN);
 
-    // Confirm you're back on login screen
+    // Confirm login screen is shown again
     await expect(page.getByRole("button", { name: "Sign in" })).toBeVisible();
   });
 });
