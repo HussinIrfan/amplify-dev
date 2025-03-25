@@ -12,7 +12,6 @@ import { useEffect } from "react";
 
 // Import static images
 import AboutTheFoundation from "../aboutusAssets/aboutthefoundation.png";
-import FireFighterStaff from "../aboutusAssets/firefighterstaff.png";
 
 export default function AboutUsPage() {
   const { emps } = useAboutUsLogic(); // Fetch team members
@@ -47,77 +46,81 @@ export default function AboutUsPage() {
           </p>
         </div>
 
+        {/* ✅ Yellow divider between sections */}
+        <div className={styles.sectionDivider}></div>
+
         {/* ✅ Foundation Team Section - Dynamic */}
-        <h1 className={styles.header}>The Foundation Team</h1>
-        <div className={styles.teamGrid}>
-          {emps.length > 0 ? (
-            emps.map((member) => (
+        {emps && emps.length > 0 && (
+          <>
+          <h1 className={styles.header}>The Foundation Team</h1>
+          <div className={styles.teamGrid}>
+            {emps.map((member) => (
               <div key={member.id} className={styles.teamMember}>
                 <StorageImage
-                  path={member.picture || ""}
-                  alt="No Image"
-                  className={styles.teamImage}
-                  fallbackSrc="/default-placeholder.jpg"
+                path={member.picture || ""}
+                alt="No Image"
+                className={styles.teamImage}
+                fallbackSrc="/default-placeholder.jpg"
                 />
-                <h2 className={styles.memberName}>{member.name}</h2>
-                <p className={styles.memberTitle}>{member.title}</p>
-                <p className={styles.memberDescription}>{member.description}</p>
-              </div>
-            ))
-          ) : (
-            <p>Loading team members...</p>
-          )}
-        </div>
+                 <h2 className={styles.memberName}>{member.name}</h2>
+                 <p className={styles.memberTitle}>{member.title}</p>
+                 <p className={styles.memberDescription}>{member.description}</p>
+                 </div>
+                ))}
+                </div>
+                <div className={styles.sectionDivider}></div> {/* Yellow divider */}
+                </>
+              )}
 
         {/* ✅ Fire Stations Section - Dynamic */}
-        <h1 className={styles.header}>Firefighter Stations</h1>
-        <div className={styles.stationGrid}>
-          {stations.length > 0 ? (
-            stations.map((station) => (
+        {stations && stations.length > 0 && (
+          <>
+          <h1 className={styles.header}>Firefighter Stations</h1>
+          <div className={styles.stationGrid}>
+            {stations.map((station) => (
               <div key={station.id} className={styles.stationCard}>
                 <StorageImage
-                  path={station.image || ""}
-                  alt="Blank"
-                  className={styles.stationImage}
-                  fallbackSrc="/default-placeholder.jpg"
+                path={station.image || ""}
+                alt="Blank"
+                className={styles.stationImage}
+                fallbackSrc="/default-placeholder.jpg"
                 />
                 <h2 className={styles.stationName}>{station.stationName}</h2>
                 <p className={styles.stationAddress}>{station.address}</p>
                 <p className={styles.stationPhone}>{station.phone}</p>
+                </div>
+              ))}
               </div>
-            ))
-          ) : (
-            <p>Loading fire stations...</p>
-          )}
-        </div>
+              <div className={styles.sectionDivider}></div> {/* Yellow divider */}
+              </>
+            )}
 
         {/* ✅ Honors & Awards Section - Dynamic */}
-        <h1 className={styles.header}>Honors & Awards</h1>
-        <div className={styles.honorsGrid}>
-          {honors.length > 0 ? (
-            honors.map((honor) => (
+        {honors && honors.length > 0 && (
+          <>
+          <h1 className={styles.header}>Honors & Awards</h1>
+          <div className={styles.honorsGrid}>
+            {honors.map((honor) => (
               <div key={honor.id} className={styles.honorCard}>
                 <StorageImage
-                  path={honor.recipientImage || ""}
-                  alt="No Image"
-                  className={styles.honorImage}
-                  fallbackSrc="/default-placeholder.jpg"
+                path={honor.recipientImage || ""}
+                alt="No Image"
+                className={styles.honorImage}
+                fallbackSrc="/default-placeholder.jpg"
                 />
-                <h2 className={styles.honorTitle}>{honor.title}</h2>
+                <h2 className={styles.honorTitle}>{honor.recipientName}</h2>
                 <p className={styles.honorRecipient}>
-                  Recipient: <strong>{honor.recipientName}</strong>
-                </p>
-                <p className={styles.honorDate}>Awarded on: {honor.dateAwarded}</p>
-                <p className={styles.honorDescription}>{honor.description}</p>
-              </div>
-            ))
-          ) : (
-            <p>Loading honors...</p>
-          )}
-        </div>
-
-        {/* ✅ Contact Us Section */}
-        <ContactUs />
+                  Recipient: <strong>{honor.title}</strong>
+                  </p>
+                  <p className={styles.honorDate}>Awarded on: {honor.dateAwarded}</p>
+                  <p className={styles.honorDescription}>{honor.description}</p>
+                  </div>
+                ))}
+                </div>
+                <div className={styles.sectionDivider}></div> {/* Yellow divider */}
+                </>
+              )}
+    
       </div>
       <Footer />
     </main>
