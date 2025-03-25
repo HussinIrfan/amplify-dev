@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Image Carousel', () => {
   test.beforeEach(async ({ page }) => {
     // Visit your site
-    await page.goto('http://localhost:3001/', { waitUntil: 'networkidle' });
+    await page.goto('http://localhost:3000/', { waitUntil: 'networkidle' });
 
     // Wait for hydration: ensure carousel is loaded visually
     await page.waitForSelector('text=Support South Lake Tahoe Firefighters');
@@ -55,7 +55,7 @@ test.describe('Image Carousel', () => {
       expect(href).toBe(links[i]);
 
       // Reset to first slide for next test (optional)
-      await page.goto('http://localhost:3001/');
+      await page.goto('http://localhost:3000/');
       await page.waitForSelector('img');
       await page.waitForTimeout(1000);
     }
