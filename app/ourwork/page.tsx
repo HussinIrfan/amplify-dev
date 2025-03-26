@@ -37,6 +37,7 @@ export default function OurWorkPage()
       sessionStorage.setItem("ourWorks", JSON.stringify(ourWorks));
     }
     console.log("Organization data: ", ourWorks)
+    console.log("cachedworks:", cachedWorks)
 
     const interval = setInterval(checkForUpdates, 10000);
     return () => clearInterval(interval);
@@ -55,8 +56,9 @@ export default function OurWorkPage()
        
        {/* Organizations */}
         <div className={styles.orgContainer}>
-        {cachedWorks.length > 0 ? (
-            cachedWorks.map((org) => (
+          
+        {ourWorks.length > 0 ? (
+            ourWorks.map((org) => (
               <div key={org.id}>
                 <h3>{org.business || "No Business Name"}</h3>
                 <p className={styles.textContainer}>{org.description || "No description available."}</p>

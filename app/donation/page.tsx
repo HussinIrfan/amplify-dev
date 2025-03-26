@@ -25,7 +25,7 @@ const DonationPage: React.FC = () => {
 
   const paypalContainerRef = useRef<HTMLDivElement>(null);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
-
+  const { donationOpen, setDonationOpen, toggleDonationStatus } =useDonations();
   useEffect(() => {
     if (paypalLoaded) return;
 
