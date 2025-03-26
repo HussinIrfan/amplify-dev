@@ -26,7 +26,12 @@ export function useFireStationsLogic() {
   // Function to list existing "About Us" entries
   function listFireStations() {
     client.models.FireStation.observeQuery().subscribe({
-      next: (data) => setStation([...data.items]),
+      next: (data) =>
+        setStation(
+          [...data.items].sort((a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
+        ),
       error: (err) => console.log(err),
     });
   }
