@@ -4,6 +4,15 @@
   padding: 40px 20px;
 }
 
+/* Yellow Bar */
+.sectionDivider {
+  height: 5px;
+  width: 90%;
+  margin: 40px auto;
+  background-color: #f2c744; /* Yellow bar */
+  border-radius: 4px;
+}
+
 /* HEADERS */
 .header {
   font-size: 2rem;
@@ -13,6 +22,7 @@
 
 /* ABOUT THE FOUNDATION */
 .section {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,8 +49,8 @@
 /* 👥 TEAM MEMBERS SECTION */
 .teamGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, minmax(280px, 1fr)); /* Ensures 3 cards per row */
+  gap: 50px; /* Increased space between cards */
   justify-content: center;
   margin-bottom: 50px;
 }
@@ -49,35 +59,26 @@
 .teamMember {
   background: #ffffff;
   border-radius: 10px;
-  padding: 40px;
-  max-width: 350px;
+  padding: 20px;
+  max-width: 320px;
   margin: 0 auto;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.0);
-  transition: transform 0.2s ease-in-out;
-}
-
-.teamMember:hover {
-  transform: translateY(0px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.00);
+  text-align: center;
 }
 
 /* 🖼️ Team Member Image */
 .teamImage {
-  border-radius: 4px;
-  width: 150px;
-  height: 150px;
+  border-radius: 8px;
+  width: 260px;
+  height: 400px; 
   object-fit: cover;
   margin-bottom: 10px;
 }
 
 /* ℹ️ Team Member Info */
-.memberInfo {
-  text-align: center;
-}
-
 .memberName {
   font-size: 1.4rem;
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .memberTitle {
@@ -90,6 +91,9 @@
   font-size: 1rem;
   color: #444;
   line-height: 1.4;
+  max-width: 280px;
+  word-wrap: break-word;
+  text-align: center;
 }
 
 /* 🔥 Fire Stations Grid */
@@ -102,22 +106,21 @@
 }
 
 .stationCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
   background: #ffffff;
   padding: 20px;
   border-radius: 10px;
   width: 100%;
-  max-width: 850px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+  max-width: 900px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.00);
+  text-align: center;
 }
 
 .stationImage {
-  border-radius: 12px;
+  border-radius: 8px;
   width: 100%;
-  height: 300px;
+  max-width: 900px;
+  height: auto;
+  aspect-ratio: 3/2;
   object-fit: cover;
 }
 
@@ -138,46 +141,41 @@
 /* 🏆 HONORS & AWARDS SECTION */
 .honorsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increased min size */
-  gap: 30px; /* Slightly more spacing */
+  grid-template-columns: repeat(3, minmax(280px, 1fr)); /* Matches team members layout */
+  gap: 20px;
   justify-content: center;
-  margin-bottom: 60px; /* More bottom spacing */
+  margin-bottom: 0px;
 }
 
 /* 🎖️ Honor Card */
 .honorCard {
   background: #ffffff;
   border-radius: 12px;
-  padding: 40px; /* Increased padding */
-  max-width: 400px; /* Increased width */
+  padding: 30px;
+  max-width: 400px;
   margin: 0 auto;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.00);
   text-align: center;
-  transition: transform 0.2s ease-in-out;
-}
-
-.honorCard:hover {
-  transform: translateY(0px); /* prev -5px */
 }
 
 /* 🖼️ Honor Image */
 .honorImage {
-  border-radius: 6px;
-  width: 180px; /* Increased size */
-  height: 180px; /* Increased size */
+  border-radius: 8px;
+  width: 260px;
+  height: 400px; /* Matches team member images */
   object-fit: cover;
   margin-bottom: 15px;
 }
 
 /* ℹ️ Honor Information */
 .honorTitle {
-  font-size: 1.6rem; /* Slightly bigger */
+  font-size: 1.6rem;
   font-weight: bold;
   margin-bottom: 8px;
 }
 
 .honorRecipient {
-  font-size: 1.2rem; /* Slightly bigger */
+  font-size: 1.2rem;
   color: #666;
   margin-bottom: 8px;
 }
@@ -189,49 +187,83 @@
 }
 
 .honorDescription {
-  font-size: 1.1rem; /* Slightly bigger */
+  font-size: 1.1rem;
   color: #444;
   line-height: 1.5;
   margin-top: 12px;
 }
 
 /* 🎨 Responsive Design */
-@media (max-width: 768px) {
-  .teamGrid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+@media (max-width: 1024px) {
+  .teamGrid,
+  .honorsGrid {
+    grid-template-columns: repeat(2, minmax(280px, 1fr)); /* Keeps 2 cards per row */
+    gap: 40px; /* Increases spacing for better layout */
+    margin-bottom: 40px;
   }
 
-  .teamMember {
-    padding: 15px;
+  .teamMember,
+  .honorCard {
+    max-width: 90%; /* Ensures cards don’t stretch too wide */
   }
 
-  .teamImage {
-    width: 130px;
-    height: 130px;
-  }
-
-  .memberDescription {
-    font-size: 0.9rem;
+  .teamImage,
+  .honorImage {
+    max-width: 100%; /* Ensures images are responsive */
+    max-height: 350px; /* Prevents images from stretching */
+    object-fit: cover;
   }
 
   .stationCard {
-    width: 100%;
+    max-width: 90%; /* Adjusts fire station cards for better spacing */
   }
 
+  .stationImage {
+    max-width: 100%;
+    max-height: 500px; /* Keeps fire station images proportional */
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamGrid,
   .honorsGrid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Increased min size */
+    grid-template-columns: repeat(1, minmax(280px, 1fr)); /* Switches to 1 per row */
+    gap: 30px; /* Reduce gap for better spacing */
+    margin-bottom: 30px; /* Extra spacing */
   }
 
+  .teamMember,
   .honorCard {
-    padding: 25px; /* Slightly reduced padding on smaller screens */
+    padding: 15px;
+    max-width: 90%; /* Keeps cards from touching screen edges */
   }
 
+  .teamImage,
   .honorImage {
-    width: 160px;
-    height: 160px;
+    max-width: 100%; /* Makes sure images are not too wide */
+    max-height: 280px; /* Keeps images proportional on smaller screens */
+    object-fit: cover;
   }
 
-  .honorDescription {
+  .stationCard {
+    padding: 15px;
+    max-width: 90%; /* Ensures station cards fit well on mobile */
+  }
+
+  .stationImage {
+    max-width: 100%;
+    max-height: 400px; /* Prevents images from getting too tall */
+    object-fit: cover;
+  }
+
+  .honorDescription,
+  .memberDescription {
     font-size: 1rem;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    padding: 0 10px; /* Adds some space so text doesn't touch screen edges */
   }
 }

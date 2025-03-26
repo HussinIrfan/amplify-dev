@@ -42,7 +42,7 @@ export function useDocumentsLogic() {
     
           // Check if uploadDoc501c3 is not empty or undefined before calling getUrl
           if (uploadDoc501c3) {
-            const url1 = await getUrl({ path: uploadDoc501c3 });
+            const url1 = (await getUrl({ path: uploadDoc501c3, options: {expiresIn: 3600} }));
             setUrl501c3(url1.url.toString());
           } else {
             setUrl501c3(""); // Set a fallback value
@@ -56,7 +56,7 @@ export function useDocumentsLogic() {
     
           // Check if uploadDoc990 is not empty or undefined before calling getUrl
           if (uploadDoc990) {
-            const url2 = await getUrl({ path: uploadDoc990 });
+            const url2 = await getUrl({ path: uploadDoc990, options: {expiresIn: 3600} });
             setUrl990(url2.url.toString());
           } else {
             setUrl990(""); // Set a fallback value

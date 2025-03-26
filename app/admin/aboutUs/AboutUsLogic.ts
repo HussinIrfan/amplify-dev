@@ -23,13 +23,18 @@ export function useAboutUsLogic() {
   const [description, setDescription] = useState("");
   const uploadPath = "about-us-founders/"; //S3 Bucket Location
 
-  // Function to list existing "About Us" entries
-  function listAboutUs() {
-    client.models.aboutUs.observeQuery().subscribe({
-      next: (data) => setEmp([...data.items]),
-      error: (err) => console.log(err),
-    });
-  }
+// Function to list existing "About Us" entries
+function listAboutUs() {
+  client.models.aboutUs.observeQuery().subscribe({
+    next: (data) =>
+      setEmp(
+        [...data.items].sort((a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
+      ),
+    error: (err) => console.log(err),
+  });
+}
 
   // UseEffect to fetch initial data
   useEffect(() => {
