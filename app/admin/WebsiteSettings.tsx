@@ -35,7 +35,6 @@ export default function Store() {
           <>
             <AboutUs />
             <OurWork />
-            <News />
             <Calendar />
             <Donations />
           </>

@@ -69,8 +69,6 @@ export default function ClientCalendar() {
             <RSVPEvent eventId={selectedEvent.id} event={selectedEvent} onClose={closeModal} />
           </div>
         )}
-
-        {/* Modal to display RSVP event form */}
       </div>
     </>
   );

@@ -16,10 +16,11 @@ export interface RSVPFormData {
   email: string;
   phone: string;
   partySize: number;
+  sponsor: boolean;
+  support: string;
 }
 
 const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
-
   const {
     events,
     selectedEvent,
@@ -32,6 +33,10 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
     rsvpPhone,
     rsvpAttendeeCount,
     errorMessage,
+    sponsor,
+    support,
+    setSponsor,
+    setSupport,
     setErrorMessage,
     setIsModalOpen,
     setIsRSVPModalOpen,
@@ -47,30 +52,15 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
     handleRSVPEventClick,
   } = useCalendar(); // Only use selectedEvent and isModalOpen state
 
-
   const [formData, setFormData] = useState<RSVPFormData>({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
     partySize: 1, // Set default party size to 1
+    sponsor: false, // Set default sponsor status to false
+    support: "", // Set default support status to empty string
   });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handlePartySizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setFormData((prevState) => ({
-      ...prevState,
-      partySize: value,
-    }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,9 +85,9 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
         <label>
           Last Name:
           <input
-             type="text"
-             value={rsvpLName}
-             onChange={(e) => setRsvpLName(e.target.value)}
+            type="text"
+            value={rsvpLName}
+            onChange={(e) => setRsvpLName(e.target.value)}
             required
           />
         </label>
@@ -113,11 +103,11 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
         <label>
           Phone:
           <input
-             type="tel"
-             value={rsvpPhone}
-             placeholder="555-555-5555"
-             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-             onChange={(e) => setRsvpPhone(e.target.value)}
+            type="tel"
+            value={rsvpPhone}
+            placeholder="555-555-5555"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            onChange={(e) => setRsvpPhone(e.target.value)}
             required
           />
         </label>
@@ -136,9 +126,30 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ eventId, onClose, onSubmit }) => {
             ))}
           </select>
         </label>
-        {errorMessage && (
-              <div className="error-message">{errorMessage}</div>
-            )}
+        {/* Checkbox to become a sponsor */}
+        <div className="sponsor-checkbox-container">
+          <label className="sponsor-checkbox-label">
+            <input
+              type="checkbox"
+              checked={sponsor} // Use the sponsor state directly
+              onChange={() => setSponsor((prev) => !prev)}
+            />
+          </label>
+          <p>Become a Sponsor for Event / Additional Contributions</p>
+        </div>
+        {/* Conditionally render the support inquiry input if the checkbox is checked */}
+        {sponsor && (
+          <label>
+            Sponsorship & Support Inquiry:
+            <input
+              value={support}
+              onChange={(e) => setSupport(e.target.value)}
+              required={sponsor} // Make it required only when the box is checked
+            />
+          </label>
+        )}
+
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <button className="submit-button" type="submit">
           Submit RSVP
         </button>

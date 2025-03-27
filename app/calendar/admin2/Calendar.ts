@@ -8,6 +8,7 @@ import { Sanitize } from "../../supportFunctions/SanitizeInput";
 import { PhoneSanitize } from "../../supportFunctions/SanitizePhoneNum";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import { Event as RBCEvent, Views } from "react-big-calendar";
+import * as XLSX from "xlsx"; //npm install xlsx
 
 import _ from "lodash"; // for binary seachability
 
@@ -35,12 +36,16 @@ export interface Attendee {
   phoneNumber: string;
   email: string;
   partySize: number;
+  isSponsor: boolean;
+  supportDetails?: string;
 }
 
 const useCalendar = () => {
- const { isContentCollapsed, toggleCollapse } = useCollapse();
- const [currentDate, setCurrentDate] = useState(new Date());
- const [view, setView] = useState<typeof Views[keyof typeof Views]>(Views.MONTH);
+  const { isContentCollapsed, toggleCollapse } = useCollapse();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState<(typeof Views)[keyof typeof Views]>(
+    Views.MONTH
+  );
 
   const [events, setEvents] = useState<Event[]>([]); // Store events fetched from the database
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
@@ -65,15 +70,22 @@ const useCalendar = () => {
   const [rsvpPhone, setRsvpPhone] = useState("");
   const [rsvpAttendeeCount, setRsvpAttendeeCount] = useState(defaultPartySize);
 
-  const [attendees, setAttendees] = useState<Array<Schema["Attendee"]["type"]>>([]);
+  const [attendees, setAttendees] = useState<Array<Schema["Attendee"]["type"]>>(
+    []
+  );
   const [listAttendees, setListAttendees] = useState(false);
   const [attendeesList, setAttendeesList] = useState<Attendee[]>([]);
-  const [selectedAttendees, setSelectedAttendees] = useState<Set<string>>(new Set());
+  const [selectedAttendees, setSelectedAttendees] = useState<Set<string>>(
+    new Set()
+  );
   const [isAttendeesModalOpen, setIsAttendeesModalOpen] = useState(false);
   const [attendeeSearchQuery, setAttendeesSearchQuery] = useState("");
   const [selectedAttendeeSearchOptions, setAttendeesSearchOptions] =
     useState("name");
   const [partySizeTotal, setPartySizeTotal] = useState(0);
+
+  const [sponsor, setSponsor] = useState(false);
+  const [support, setSupport] = useState("");
 
   const { sanitizeInput } = Sanitize();
   const { sanitizePhone } = PhoneSanitize();
@@ -115,8 +127,8 @@ const useCalendar = () => {
 
   function listedAttendees() {
     const query = attendeeSearchQuery
-    ? { filter: {email: {eq: attendeeSearchQuery}}}
-    : {};
+      ? { filter: { email: { eq: attendeeSearchQuery } } }
+      : {};
 
     client.models.Attendee.observeQuery(query).subscribe({
       next: (data) => setAttendees([...data.items]),
@@ -287,6 +299,7 @@ const useCalendar = () => {
     setIsAttendeesModalOpen(false);
     setIsModalOpen(false);
     setPartySizeTotal(0);
+    setSponsor(false);
   };
 
   const handleCloseModal = () => {
@@ -338,11 +351,12 @@ const useCalendar = () => {
   const handleDeleteEventClick = async () => {
     if (
       selectedEvent &&
-      window.confirm("Are you sure you want to delete this event")
+      window.confirm("Are you sure you want to delete this event?")
     ) {
       try {
-        await deleteAttendeesForEventId(selectedEvent.id);
-        await client.models.Event.delete({ id: selectedEvent.id });
+        await deleteSponsorsForEventId(selectedEvent.id); // Delete sponsors first
+        await deleteAttendeesForEventId(selectedEvent.id); // Delete attendees for the event
+        await client.models.Event.delete({ id: selectedEvent.id }); // Now delete the event itself
         handleCloseModal();
         const updatedEvents = await fetchUpdatedEvents();
         setEvents(updatedEvents);
@@ -352,114 +366,179 @@ const useCalendar = () => {
       }
     }
   };
+
+  // Function to delete sponsors for a given event
+  const deleteSponsorsForEventId = async (eventId: string) => {
+    try {
+      // Fetch all EventSponsors entries for the given eventId
+      const { data: eventSponsors } = await client.models.EventSponsors.list({
+        filter: { eventId: { eq: eventId } },
+      });
+
+      if (!eventSponsors || eventSponsors.length === 0) {
+        console.log("No sponsors found for this event.");
+        return;
+      }
+
+      // Deleting the sponsors from the EventSponsors model
+      for (const eventSponsor of eventSponsors) {
+        await client.models.EventSponsors.delete({ id: eventSponsor.id });
+        console.log(`Deleted EventSponsor with ID ${eventSponsor.id}`);
+      }
+
+      console.log(`All sponsors for event ${eventId} have been deleted.`);
+    } catch (error) {
+      console.error(`Error deleting sponsors: ${error}`);
+    }
+  };
+
+  // Function to delete attendees for a given event
   const deleteAttendeesForEventId = async (eventId: string) => {
     try {
       // Fetch all EventAttentants entries for the given eventId
-      const { data: eventAttendants } = await client.models.EventAttentants.list({
-        filter: { eventId: { eq: eventId } },
-      });
-  
+      const { data: eventAttendants } =
+        await client.models.EventAttentants.list({
+          filter: { eventId: { eq: eventId } },
+        });
+
       if (!eventAttendants || eventAttendants.length === 0) {
         console.log("No attendees found for this event.");
         return;
       }
-  
+
       // Extract attendeeIds from the eventAttendants data
-      const attendeeIds = eventAttendants.map((relation) => relation.attendeeId);
-  
+      const attendeeIds = eventAttendants.map(
+        (relation) => relation.attendeeId
+      );
+
       // Fetch the corresponding attendees
       const { data: attendees } = await client.models.Attendee.list({
         filter: { or: attendeeIds.map((id) => ({ id: { eq: id } })) },
       });
-  
+
       if (!attendees || attendees.length === 0) {
         console.log("No attendees found.");
         return;
       }
-  
-      // Deleting the attendees from the Attendee model
+
+      // Loop through attendees and check if they are attending other events before deleting
       for (const attendee of attendees) {
-        await client.models.Attendee.delete({ id: attendee.id });
-        console.log(`Deleted attendee with ID ${attendee.id}`);
+        const { data: otherEventsAttended } =
+          await client.models.EventAttentants.list({
+            filter: {
+              attendeeId: { eq: attendee.id },
+              eventId: { ne: eventId },
+            },
+          });
+
+        if (otherEventsAttended && otherEventsAttended.length > 0) {
+          // If the attendee is attending other events, do not delete them
+          console.log(
+            `Attendee with ID ${attendee.id} is attending other events. Skipping deletion.`
+          );
+        } else {
+          // If the attendee is not attending any other events, delete them
+          await client.models.Attendee.delete({ id: attendee.id });
+          console.log(`Deleted attendee with ID ${attendee.id}`);
+        }
+
+        // Optionally, you can delete the EventAttentants relationships as well
+        for (const eventAttendant of eventAttendants) {
+          await client.models.EventAttentants.delete({ id: eventAttendant.id });
+          console.log(`Deleted EventAttendant with ID ${eventAttendant.id}`);
+        }
       }
-  
-      // Optionally, you can delete the EventAttentants relationships as well
-      for (const eventAttendant of eventAttendants) {
-        await client.models.EventAttentants.delete({ id: eventAttendant.id });
-        console.log(`Deleted EventAttendant with ID ${eventAttendant.id}`);
-      }
-  
-      console.log(`All attendees for event ${eventId} have been deleted.`);
+
+      console.log(`All attendees for event ${eventId} have been processed.`);
     } catch (error) {
-      console.error(`Error deleting attendees:${error}`);
+      console.error(`Error deleting attendees: ${error}`);
     }
   };
 
   const deleteEventAttendeeId = async (attendeeId: string) => {
-    try{
-      const { data: eventAttendants } = await client.models.EventAttentants.list({
-        filter: { attendeeId: { eq: attendeeId }},
-      });
+    try {
+      const { data: eventAttendants } =
+        await client.models.EventAttentants.list({
+          filter: { attendeeId: { eq: attendeeId } },
+        });
 
-      if ( !eventAttendants || eventAttendants.length === 0){
+      if (!eventAttendants || eventAttendants.length === 0) {
         console.log("No attendees found for this event");
         return;
       }
 
       for (const eventAttendant of eventAttendants) {
-        await client.models.EventAttentants.delete({id: eventAttendant.id})
+        await client.models.EventAttentants.delete({ id: eventAttendant.id });
+      }
+    } catch (e) {
+      console.error(`Error deleting attendees Join:${e}`);
+    }
+  };
+
+  const deleteSponsorFromEvent = async (attendeeId: string) => {
+    try {
+      const { data: eventSponsors } = await client.models.EventSponsors.list({
+        filter: { attendeeId: { eq: attendeeId } },
+      });
+
+      if (!eventSponsors || eventSponsors.length === 0) {
+        console.log("No sponsors found for this attendee");
+        return;
       }
 
-    } catch(e){
-      console.error(`Error deleting attendees Join:${e}`);
+      for (const eventSponsor of eventSponsors) {
+        await client.models.EventSponsors.delete({ id: eventSponsor.id });
+      }
+    } catch (e) {
+      console.error(`Error deleting sponsor records: ${e}`);
     }
   };
 
   const handleAttendeeCheckboxChange = (attendeeId: string) => {
     setSelectedAttendees((prevSelected) => {
       const newSelected = new Set(prevSelected);
-      if(newSelected.has(attendeeId)){
+      if (newSelected.has(attendeeId)) {
         newSelected.delete(attendeeId);
       } else {
         newSelected.add(attendeeId);
       }
       return newSelected;
     });
-
   };
-  
-const handleBulkDeleteAttendees = async () => {
 
-  if (selectedAttendees.size === 0){
-    alert("No emails selected for deletion.");
+  const handleBulkDeleteAttendees = async () => {
+    if (selectedAttendees.size === 0) {
+      alert("No emails selected for deletion.");
       return;
-  }
-  
-  if (
-    window.confirm("Are you sure you want to delete the selected Attendees?")
-  ){
-    try {
-      const attendeesToDelete = attendees.filter((attendee) => 
-        selectedAttendees.has(attendee.id)
-      
-    );
-        
-        for (const attendee of attendeesToDelete) {
-          
-          await client.models.Attendee.delete({ id: attendee.id });
-          deleteEventAttendeeId(attendee.id);
-        console.log(`Deleted attendee with ID ${attendee.id}`);
-      }
-      listedAttendees();
-      setSelectedAttendees(new Set());
-    } catch (e) {
-      console.error("Error deleting Attendees:", e);
     }
-  }
 
-};
+    if (
+      window.confirm("Are you sure you want to delete the selected Attendees?")
+    ) {
+      try {
+        const attendeesToDelete = attendees.filter((attendee) =>
+          selectedAttendees.has(attendee.id)
+        );
 
+        for (const attendee of attendeesToDelete) {
+          // First, delete the attendee from the Attendee table
+          await client.models.Attendee.delete({ id: attendee.id });
 
+          // Then delete the attendee from the EventAttentants table
+          deleteEventAttendeeId(attendee.id);
+
+          // And delete the attendee from the EventSponsors table if they are a sponsor
+          await deleteSponsorFromEvent(attendee.id);
+
+          console.log(`Deleted attendee with ID ${attendee.id}`);
+        }
+        listedAttendees();
+        setSelectedAttendees(new Set());
+      } catch (e) {
+        console.error("Error deleting Attendees:", e);
+      }
+    }
+  };
 
   const handleRSVPEventClick = () => {
     setIsAttendeesModalOpen(false);
@@ -562,6 +641,14 @@ const handleBulkDeleteAttendees = async () => {
             eventId: selectedEvent.id, // Event ID from selected event
             attendeeId: attendee.id, // Link attendee by email (or use attendee.id)
           });
+          // If the attendee is sponsoring the event, create a sponsorship record
+          if (sponsor) {
+            await client.models.EventSponsors.create({
+              eventId: selectedEvent.id,
+              attendeeId: attendee.id,
+              supportDetails: support, // Use the inquiry text for the sponsorship
+            });
+          }
         }
       }
     } catch (error) {
@@ -666,7 +753,16 @@ const handleBulkDeleteAttendees = async () => {
           await client.models.EventAttentants.create({
             eventId: formEventId, // Event ID from selected event
             attendeeId: attendee.id, // Link attendee by email (or use attendee.id)
+            isSponsor: sponsor,
           });
+          // If the attendee is sponsoring the event, create a sponsorship record
+          if (sponsor) {
+            await client.models.EventSponsors.create({
+              eventId: formEventId,
+              attendeeId: attendee.id,
+              supportDetails: support, // Use the inquiry text for the sponsorship
+            });
+          }
         }
       }
     } catch (error) {
@@ -684,6 +780,7 @@ const handleBulkDeleteAttendees = async () => {
         await client.models.EventAttentants.list({
           filter: { eventId: { eq: eventId } },
         });
+      console.log("event attendee: ", eventAttendants);
 
       if (eventAttendants && eventAttendants.length > 0) {
         // Extract attendee IDs from the relationships
@@ -699,8 +796,42 @@ const handleBulkDeleteAttendees = async () => {
           filter: { or: filterCondition },
         });
 
-        // Return attendees data
-        return attendees;
+        // Fetch sponsor details for the attendees who are sponsors
+        const { data: eventSponsors } = await client.models.EventSponsors.list({
+          filter: {
+            and: [
+              { eventId: { eq: eventId } }, // Filter by eventId
+            ],
+          },
+        });
+
+        // Map sponsor information to a dictionary based on attendeeId
+        const sponsorInfo = eventSponsors?.reduce((acc, sponsor) => {
+          acc[sponsor.attendeeId] = sponsor;
+          console.log("reduced sponsor list: ", acc);
+          return acc;
+        }, {} as Record<string, any>);
+
+        // Combine attendee details with sponsor data
+        const attendeesWithSponsorInfo = attendees.map((attendee) => {
+          console.log("attendee id: ", attendee.id);
+          console.log("sponsor id: ", sponsorInfo[attendee.id]);
+          const sponsorDetails = sponsorInfo[attendee.id];
+
+          // Safely check sponsorDetails and handle null values
+          const isSponsor = sponsorDetails ? true : false;
+          const supportDetails = sponsorDetails?.supportDetails ?? ""; // Use empty string if null or undefined
+
+          console.log("Sponsor details: ", supportDetails);
+          return {
+            ...attendee,
+            isSponsor, // Set to true if sponsorDetails exist, false otherwise
+            supportDetails, // Set to supportDetails or empty string if null or undefined
+          };
+        });
+
+        // Return combined attendees data with sponsor information
+        return attendeesWithSponsorInfo;
       } else {
         console.error("No attendees found for this event.");
         return []; // Return empty array if no attendees are found
@@ -726,6 +857,8 @@ const handleBulkDeleteAttendees = async () => {
     phoneNumber: string;
     email: string;
     partySize: number;
+    isSponsor: boolean;
+    supportDetails: string;
   }[] => {
     return attendees.map((attendee) => ({
       id: attendee.id, // Ensure no null values
@@ -734,11 +867,14 @@ const handleBulkDeleteAttendees = async () => {
       phoneNumber: attendee.phoneNumber || "",
       email: attendee.email || "",
       partySize: attendee.partySize || defaultPartySize,
+      isSponsor: attendee.isSponsor || false,
+      supportDetails: attendee.supportDetails || "",
     }));
   };
 
   const getRsvpPartyInital = async (eventId: string) => {
     const attendees = await fetchAttendeesForEvent(eventId);
+    console.log("123 attendees getPartyInit: ", attendees);
     if (attendees.length > 0) {
       // Use the helper function to transform the attendees data
       const transformedAttendees = transformAttendeesData(attendees);
@@ -755,11 +891,11 @@ const handleBulkDeleteAttendees = async () => {
     try {
       // Call the refactored function to fetch attendee data
       const attendees = await fetchAttendeesForEvent(eventId);
-
+      console.log("attendees: ", attendees);
       if (attendees.length > 0) {
         // Use the helper function to transform the attendees data
         const transformedAttendees = transformAttendeesData(attendees);
-
+        console.log("transform: ", transformedAttendees);
         // Set state for attendees list
         setAttendeesList(transformedAttendees);
         setIsAttendeesModalOpen(true); // Open modal to display attendees
@@ -796,10 +932,86 @@ const handleBulkDeleteAttendees = async () => {
     setCurrentDate(newDate);
   };
 
-    // Handle changing the calendar view
-    const handleViewChange = (newView: string) => {
-      setView(newView as typeof Views[keyof typeof Views]); // Proper casting
+  // Handle changing the calendar view
+  const handleViewChange = (newView: string) => {
+    setView(newView as (typeof Views)[keyof typeof Views]); // Proper casting
+  };
+
+  // Export to Excel
+  const exportToExcel = (attendeesList: Attendee[], eventName: string) => {
+    // Map the attendees list to a format suitable for Excel export
+    const data = attendeesList.map((attendee) => ({
+      Name: `${attendee.nameFirst} ${attendee.nameLast}`,
+      Email: attendee.email,
+      Phone: attendee.phoneNumber,
+      "Party Size": attendee.partySize,
+      Sponsor: attendee.isSponsor ? "X" : "",
+      "Support Info": attendee.supportDetails || "",
+    }));
+
+    // Create a new worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Calculate auto column widths
+    const colWidths: number[] = data.reduce((acc, row) => {
+      Object.keys(row).forEach((key) => {
+        const cellValue = row[key as keyof typeof row]; // Ensure 'key' is treated as a valid key
+        const columnWidth = cellValue ? String(cellValue).length : 10; // Basic length calculation
+        acc[colIndex(key)] = Math.max(acc[colIndex(key)] || 10, columnWidth); // Update max width
+      });
+      return acc;
+    }, [] as number[]); // Explicitly define accumulator as a number array
+    ws["!cols"] = colWidths.map((width) => ({ wch: width }));
+
+    // Add borders to all cells (including headers)
+    const range = ws["!ref"];
+    if (range) {
+      const decodedRange = XLSX.utils.decode_range(range); // Get range of the data
+      for (let row = decodedRange.s.r; row <= decodedRange.e.r; row++) {
+        for (let col = decodedRange.s.c; col <= decodedRange.e.c; col++) {
+          const cellAddress = { r: row, c: col };
+          const cellRef = XLSX.utils.encode_cell(cellAddress);
+
+          if (!ws[cellRef]) {
+            ws[cellRef] = {}; // Create empty cell if it does not exist
+          }
+
+           // Add thicker border to each cell
+        ws[cellRef].s = {
+          border: {
+            top: { style: 'medium', color: { rgb: '000000' } },
+            left: { style: 'medium', color: { rgb: '000000' } },
+            bottom: { style: 'medium', color: { rgb: '000000' } },
+            right: { style: 'medium', color: { rgb: '000000' } },
+            },
+          };
+        }
+      }
+    }
+
+    // Create a new workbook and append the worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Attendees");
+
+    // Set the file name based on the event name
+    const fileName = `${eventName}_attendees.xlsx`;
+
+    // Export the Excel file with the dynamic file name
+    XLSX.writeFile(wb, fileName);
+  };
+
+  // Helper function to convert object keys to column indexes
+  function colIndex(key: string): number {
+    const colMap: { [key: string]: number } = {
+      Name: 0,
+      Email: 1,
+      Phone: 2,
+      "Party Size": 3,
+      Sponsor: 4,
+      "Support Info": 5,
     };
+    return colMap[key] || 0; // Default to 0 if the key is unknown
+  }
 
   return {
     attendees,
@@ -834,10 +1046,14 @@ const handleBulkDeleteAttendees = async () => {
     selectedAttendeeSearchOptions,
     partySizeTotal,
     selectedAttendees,
+    sponsor,
+    support,
+    setSponsor,
+    setSupport,
     setSelectedAttendees,
     setView,
     setPartySizeTotal,
-    setAttendees, 
+    setAttendees,
     setAttendeesSearchOptions,
     setAttendeesSearchQuery,
     setIsAttendeesModalOpen,
@@ -880,6 +1096,7 @@ const handleBulkDeleteAttendees = async () => {
     handleBulkDeleteAttendees,
     handleAdminSubmit,
     toggleCollapse,
+    exportToExcel,
   };
 };
 
