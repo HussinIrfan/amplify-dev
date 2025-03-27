@@ -24,14 +24,18 @@ export function useHonorsLogic() {
   const [description, setDescription] = useState("");
   const uploadPath = "about-us-founders/"; //S3 Bucket Location TODO, Change at Deployment
 
-  // Function to list existing "About Us" entries
-  function listHonors() {
-    client.models.Honor.observeQuery().subscribe({
-      next: (data) => setHonor([...data.items]),
-      error: (err) => console.log(err),
-    });
-  }
-
+ // Function to list existing "About Us" entries
+function listHonors() {
+  client.models.Honor.observeQuery().subscribe({
+    next: (data) =>
+      setHonor(
+        [...data.items].sort((a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
+      ),
+    error: (err) => console.log(err),
+  });
+}
   // UseEffect to fetch initial data
   useEffect(() => {
     listHonors();
