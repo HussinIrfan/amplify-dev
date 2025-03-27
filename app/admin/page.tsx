@@ -19,7 +19,7 @@ export default function AdminPage() {
 
   /*TODO Place hideSignUp after Sandbox testing done */
   return (
-    <Authenticator loginMechanisms={['email']}>
+    <Authenticator loginMechanisms={['email' ]} hideSignUp>
       {({ user }) => (
         <div className="admin-config">
           <CustomNavbar />
