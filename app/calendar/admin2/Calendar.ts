@@ -8,6 +8,7 @@ import { Sanitize } from "../../supportFunctions/SanitizeInput";
 import { PhoneSanitize } from "../../supportFunctions/SanitizePhoneNum";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import { Event as RBCEvent, Views } from "react-big-calendar";
+import * as XLSX from "xlsx"; //npm install xlsx
 
 import _ from "lodash"; // for binary seachability
 
@@ -35,8 +36,8 @@ export interface Attendee {
   phoneNumber: string;
   email: string;
   partySize: number;
-  sponsor: boolean;
-  support: string;
+  isSponsor: boolean;
+  supportDetails?: string;
 }
 
 const useCalendar = () => {
@@ -298,6 +299,7 @@ const useCalendar = () => {
     setIsAttendeesModalOpen(false);
     setIsModalOpen(false);
     setPartySizeTotal(0);
+    setSponsor(false);
   };
 
   const handleCloseModal = () => {
@@ -644,7 +646,7 @@ const useCalendar = () => {
             await client.models.EventSponsors.create({
               eventId: selectedEvent.id,
               attendeeId: attendee.id,
-              support: support, // Use the inquiry text for the sponsorship
+              supportDetails: support, // Use the inquiry text for the sponsorship
             });
           }
         }
@@ -758,7 +760,7 @@ const useCalendar = () => {
             await client.models.EventSponsors.create({
               eventId: formEventId,
               attendeeId: attendee.id,
-              support: support, // Use the inquiry text for the sponsorship
+              supportDetails: support, // Use the inquiry text for the sponsorship
             });
           }
         }
@@ -778,6 +780,7 @@ const useCalendar = () => {
         await client.models.EventAttentants.list({
           filter: { eventId: { eq: eventId } },
         });
+      console.log("event attendee: ", eventAttendants);
 
       if (eventAttendants && eventAttendants.length > 0) {
         // Extract attendee IDs from the relationships
@@ -793,8 +796,42 @@ const useCalendar = () => {
           filter: { or: filterCondition },
         });
 
-        // Return attendees data
-        return attendees;
+        // Fetch sponsor details for the attendees who are sponsors
+        const { data: eventSponsors } = await client.models.EventSponsors.list({
+          filter: {
+            and: [
+              { eventId: { eq: eventId } }, // Filter by eventId
+            ],
+          },
+        });
+
+        // Map sponsor information to a dictionary based on attendeeId
+        const sponsorInfo = eventSponsors?.reduce((acc, sponsor) => {
+          acc[sponsor.attendeeId] = sponsor;
+          console.log("reduced sponsor list: ", acc);
+          return acc;
+        }, {} as Record<string, any>);
+
+        // Combine attendee details with sponsor data
+        const attendeesWithSponsorInfo = attendees.map((attendee) => {
+          console.log("attendee id: ", attendee.id);
+          console.log("sponsor id: ", sponsorInfo[attendee.id]);
+          const sponsorDetails = sponsorInfo[attendee.id];
+
+          // Safely check sponsorDetails and handle null values
+          const isSponsor = sponsorDetails ? true : false;
+          const supportDetails = sponsorDetails?.supportDetails ?? ""; // Use empty string if null or undefined
+
+          console.log("Sponsor details: ", supportDetails);
+          return {
+            ...attendee,
+            isSponsor, // Set to true if sponsorDetails exist, false otherwise
+            supportDetails, // Set to supportDetails or empty string if null or undefined
+          };
+        });
+
+        // Return combined attendees data with sponsor information
+        return attendeesWithSponsorInfo;
       } else {
         console.error("No attendees found for this event.");
         return []; // Return empty array if no attendees are found
@@ -820,8 +857,8 @@ const useCalendar = () => {
     phoneNumber: string;
     email: string;
     partySize: number;
-    sponsor: boolean;
-    support: string;
+    isSponsor: boolean;
+    supportDetails: string;
   }[] => {
     return attendees.map((attendee) => ({
       id: attendee.id, // Ensure no null values
@@ -830,13 +867,14 @@ const useCalendar = () => {
       phoneNumber: attendee.phoneNumber || "",
       email: attendee.email || "",
       partySize: attendee.partySize || defaultPartySize,
-      sponsor: attendee.sponsor || false,
-      support: attendee.support || "",
+      isSponsor: attendee.isSponsor || false,
+      supportDetails: attendee.supportDetails || "",
     }));
   };
 
   const getRsvpPartyInital = async (eventId: string) => {
     const attendees = await fetchAttendeesForEvent(eventId);
+    console.log("123 attendees getPartyInit: ", attendees);
     if (attendees.length > 0) {
       // Use the helper function to transform the attendees data
       const transformedAttendees = transformAttendeesData(attendees);
@@ -853,11 +891,11 @@ const useCalendar = () => {
     try {
       // Call the refactored function to fetch attendee data
       const attendees = await fetchAttendeesForEvent(eventId);
-
+      console.log("attendees: ", attendees);
       if (attendees.length > 0) {
         // Use the helper function to transform the attendees data
         const transformedAttendees = transformAttendeesData(attendees);
-
+        console.log("transform: ", transformedAttendees);
         // Set state for attendees list
         setAttendeesList(transformedAttendees);
         setIsAttendeesModalOpen(true); // Open modal to display attendees
@@ -898,6 +936,82 @@ const useCalendar = () => {
   const handleViewChange = (newView: string) => {
     setView(newView as (typeof Views)[keyof typeof Views]); // Proper casting
   };
+
+  // Export to Excel
+  const exportToExcel = (attendeesList: Attendee[], eventName: string) => {
+    // Map the attendees list to a format suitable for Excel export
+    const data = attendeesList.map((attendee) => ({
+      Name: `${attendee.nameFirst} ${attendee.nameLast}`,
+      Email: attendee.email,
+      Phone: attendee.phoneNumber,
+      "Party Size": attendee.partySize,
+      Sponsor: attendee.isSponsor ? "X" : "",
+      "Support Info": attendee.supportDetails || "",
+    }));
+
+    // Create a new worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Calculate auto column widths
+    const colWidths: number[] = data.reduce((acc, row) => {
+      Object.keys(row).forEach((key) => {
+        const cellValue = row[key as keyof typeof row]; // Ensure 'key' is treated as a valid key
+        const columnWidth = cellValue ? String(cellValue).length : 10; // Basic length calculation
+        acc[colIndex(key)] = Math.max(acc[colIndex(key)] || 10, columnWidth); // Update max width
+      });
+      return acc;
+    }, [] as number[]); // Explicitly define accumulator as a number array
+    ws["!cols"] = colWidths.map((width) => ({ wch: width }));
+
+    // Add borders to all cells (including headers)
+    const range = ws["!ref"];
+    if (range) {
+      const decodedRange = XLSX.utils.decode_range(range); // Get range of the data
+      for (let row = decodedRange.s.r; row <= decodedRange.e.r; row++) {
+        for (let col = decodedRange.s.c; col <= decodedRange.e.c; col++) {
+          const cellAddress = { r: row, c: col };
+          const cellRef = XLSX.utils.encode_cell(cellAddress);
+
+          if (!ws[cellRef]) {
+            ws[cellRef] = {}; // Create empty cell if it does not exist
+          }
+
+           // Add thicker border to each cell
+        ws[cellRef].s = {
+          border: {
+            top: { style: 'medium', color: { rgb: '000000' } },
+            left: { style: 'medium', color: { rgb: '000000' } },
+            bottom: { style: 'medium', color: { rgb: '000000' } },
+            right: { style: 'medium', color: { rgb: '000000' } },
+            },
+          };
+        }
+      }
+    }
+
+    // Create a new workbook and append the worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Attendees");
+
+    // Set the file name based on the event name
+    const fileName = `${eventName}_attendees.xlsx`;
+
+    // Export the Excel file with the dynamic file name
+    XLSX.writeFile(wb, fileName);
+  };
+
+  // Helper function to convert object keys to column indexes
+  function colIndex(key: string): number {
+    const colMap: { [key: string]: number } = {
+      Name: 0,
+      Email: 1,
+      Phone: 2,
+      "Party Size": 3,
+      Sponsor: 4,
+      "Support Info": 5,
+    };
+    return colMap[key] || 0; // Default to 0 if the key is unknown
+  }
 
   return {
     attendees,
@@ -982,6 +1096,7 @@ const useCalendar = () => {
     handleBulkDeleteAttendees,
     handleAdminSubmit,
     toggleCollapse,
+    exportToExcel,
   };
 };
 

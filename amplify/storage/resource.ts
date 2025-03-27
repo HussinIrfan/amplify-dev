@@ -18,6 +18,9 @@ export const storage = defineStorage({
         'hornors/*': [
             allow.guest.to(['read', 'write', 'delete']),
         ],
+        'eventDetails/*': [
+            allow.guest.to(['read', 'write', 'delete']),
+        ],
     })
 
 });

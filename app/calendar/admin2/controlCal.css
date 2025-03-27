@@ -21,3 +21,7 @@
   .attendees-table tr {
     border-bottom: 1px solid black; /* Adds a bottom border between rows */
   }
+
+  .admin-sposor-text{
+    margin-bottom: 5px;
+  }

@@ -76,7 +76,11 @@ const ControlCalendar: React.FC = () => {
     toggleCollapse,
     handleBulkDeleteAttendees,
     handleAdminSubmit,
+    exportToExcel,
   } = useCalendar(); // Use the custom hook to get the calendar logic
+
+  console.log("Wedsite site: ", attendees);
+  console.log("Wedsite Attendees list site: ", attendeesList);
 
   return (
     <>
@@ -295,6 +299,7 @@ const ControlCalendar: React.FC = () => {
                 )}
 
                 {/** Modal for viewing list of attendees */}
+
                 {isAttendeesModalOpen && (
                   <div className="divTablePopUp">
                     <div className="attendee-div-container">
@@ -322,13 +327,16 @@ const ControlCalendar: React.FC = () => {
                         <button onClick={handleRSVPEventClick}>
                           Add Attendee
                         </button>
+                        <button onClick={() => exportToExcel(attendeesList, selectedEvent.title)}>
+                          Export to Excel
+                        </button>
                         <button onClick={handleCloseAttendeesModal}>
                           Close
                         </button>
                         <p>Total Number of Attendees: {partySizeTotal}</p>
                       </div>
 
-                      {attendees.length > 0 ? (
+                      {attendeesList.length > 0 ? (
                         <div className="table-container">
                           <table className="attendees-table">
                             <thead>
@@ -343,7 +351,7 @@ const ControlCalendar: React.FC = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {attendees.map((attendee) => (
+                              {attendeesList.map((attendee) => (
                                 <tr key={attendee.id}>
                                   <td>
                                     <input
@@ -364,8 +372,18 @@ const ControlCalendar: React.FC = () => {
                                   <td>{attendee.email}</td>
                                   <td>{attendee.phoneNumber}</td>
                                   <td>{attendee.partySize}</td>
-                                  <td>{}</td>
-                                  <td>{}</td>
+                                  <td>
+                                    {attendee.isSponsor ? (
+                                      <strong>X</strong>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </td>
+                                  {/* Conditionally render sponsor details or leave blank if not a sponsor or if details are null/empty */}
+                                  <td>
+                                    {attendee.isSponsor &&
+                                      (attendee.supportDetails?.trim() || "")}
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
@@ -465,7 +483,7 @@ const ControlCalendar: React.FC = () => {
                             onChange={() => setSponsor((prev) => !prev)}
                           />
                         </label>
-                        <p className="sponsorText">
+                        <p className="admin-sposor-text">
                           Become a Sponsor for Event / Additional Contributions
                         </p>
                       </div>
@@ -477,6 +495,7 @@ const ControlCalendar: React.FC = () => {
                             value={support}
                             onChange={(e) => setSupport(e.target.value)}
                             required={sponsor} // Make it required only when the box is checked
+                            className="popUpInputBox"
                           />
                         </label>
                       )}

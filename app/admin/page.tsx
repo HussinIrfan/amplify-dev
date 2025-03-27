@@ -12,8 +12,6 @@ import "../calendar/index.css"; // NEEDED FOR ADMIN CALENDAR
 import EmailList from "./emailList/EmailList";
 import WebsiteSettings from "./WebsiteSettings";
 import StoreFront from "./storeAdmin/Store";
-import ProductList from "./storeAdmin/productList";
-import ProductEditForm from "./storeAdmin/editProductForm";
 
 export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
@@ -39,6 +37,9 @@ export default function AdminPage() {
             }}>
               Sign Out
             </button>
+            <br />
+            <br />
+            <br />
           </div>
         );
       }}
