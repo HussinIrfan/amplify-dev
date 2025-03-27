@@ -61,17 +61,6 @@ const schema = a.schema({
       attendeeId: a.id().required(),
       event: a.belongsTo("Event", "eventId"),
       attendee: a.belongsTo("Attendee", "attendeeId"),
-      isSponsor: a.boolean().default(false), // Flag to indicate if this attendee is a sponsor for this event
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
-
-  EventSponsors: a
-    .model({
-      eventId: a.id().required(), // ID of the event the attendee sponsors
-      attendeeId: a.id().required(), // ID of the attendee who is sponsoring the event
-      event: a.belongsTo("Event", "eventId"), // Link to Event
-      attendee: a.belongsTo("Attendee", "attendeeId"), // Link to Attendee
-      supportDetails: a.string(), // Support or contribution details (optional)
     })
     .authorization((allow) => [allow.publicApiKey()]),
 

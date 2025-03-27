@@ -6,6 +6,7 @@ import logoImage from "../../navbarAssets/Logo-CutOut.png";
 import Image from "next/image";
 import "./controlCal.css";
 import "../client-calendar/RSVPForm.css";
+import "../client-calendar/RSVPForm.css";
 
 const ControlCalendar: React.FC = () => {
   const {
