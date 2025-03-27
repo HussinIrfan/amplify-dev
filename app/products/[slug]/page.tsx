@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
@@ -40,3 +40,4 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     </div>
   );
 }
+*/
