@@ -61,8 +61,19 @@ const schema = a.schema({
       attendeeId: a.id().required(),
       event: a.belongsTo("Event", "eventId"),
       attendee: a.belongsTo("Attendee", "attendeeId"),
+      isSponsor: a.boolean().default(false), 
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+    EventSponsors: a
+  .model({
+    eventId: a.id().required(),  // Event ID
+    attendeeId: a.id().required(), 
+    event: a.belongsTo("Event", "eventId"),  // Link to the event
+    supportDetails: a.string(),
+
+  })
+  .authorization((allow) => [allow.publicApiKey()]),
 
   aboutUs: a
     .model({
