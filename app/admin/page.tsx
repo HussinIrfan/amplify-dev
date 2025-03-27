@@ -14,6 +14,7 @@ import WebsiteSettings from "./WebsiteSettings";
 import StoreFront from "./storeAdmin/Store";
 import ProductList from "./storeAdmin/productList";
 import ProductEditForm from "./storeAdmin/editProductForm";
+import { useState } from "react";
 
 export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
@@ -39,11 +40,29 @@ export default function AdminPage() {
             }}>
               Sign Out
             </button>
-          </div>
-        );
-      }}
-    </Authenticator>
+          )}
+
+          {/* Show Product List or Edit Form */}
+          {!editingProduct ? (
+            <ProductList onEdit={setEditingProduct} />
+          ) : (
+            <ProductEditForm
+              product={editingProduct}
+              onSave={() => setEditingProduct(null)}
+              onCancel={handleCancel} // Pass the onCancel handler
+              isNewProduct={!editingProduct.id} // If no ID, it's a new product
+            />
+          )}
+        </div>
+
+        {/* <Documents /> */}
+        <StoreFront />
+
+        <br />
+        <br />
+        <br />
+        <br />
+      </div> 
+    </>
   );
-
-
 }
