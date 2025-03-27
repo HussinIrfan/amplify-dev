@@ -22,7 +22,7 @@ export function useHonorsLogic() {
   const [title, setTitle] = useState("");
   const [dateAwarded, setDateAwarded] = useState("");
   const [description, setDescription] = useState("");
-  const uploadPath = "about-us-founders/"; //S3 Bucket Location TODO, Change at Deployment
+  const uploadPath = "hornors/"; //S3 Bucket Location TODO, Change at Deployment
 
  // Function to list existing "About Us" entries
 function listHonors() {
