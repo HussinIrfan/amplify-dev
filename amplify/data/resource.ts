@@ -71,7 +71,7 @@ const schema = a.schema({
       attendeeId: a.id().required(), // ID of the attendee who is sponsoring the event
       event: a.belongsTo("Event", "eventId"), // Link to Event
       attendee: a.belongsTo("Attendee", "attendeeId"), // Link to Attendee
-      support: a.string(), // Support or contribution details (optional)
+      supportDetails: a.string(), // Support or contribution details (optional)
     })
   .authorization((allow) => [allow.publicApiKey()]),
 
