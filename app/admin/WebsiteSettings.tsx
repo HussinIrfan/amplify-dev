@@ -6,7 +6,7 @@ import AboutUs from "./aboutUs/AboutUs";
 import OurWork from "./ourWork/OurWork";
 import Calendar from "../calendar/admin2/ControlCalendar";
 import Donations from "./donations/Donations";
-import News from "./news/News";
+import Documents from "./documents/Documents";
 
 export default function Store() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
@@ -37,6 +37,7 @@ export default function Store() {
             <OurWork />
             <Calendar />
             <Donations />
+            <Documents />
           </>
         )}
       </div>

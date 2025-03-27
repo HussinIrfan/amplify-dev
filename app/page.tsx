@@ -27,7 +27,6 @@ export default function App() {
     
       <HPheader />
       <ImageCarousel />
-      <NewsletterPopup />
       <ContactUs/>
       <Footer/>
     </main>
