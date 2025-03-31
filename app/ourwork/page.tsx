@@ -1,80 +1,47 @@
 "use client";
+
 import styles from "./ourwork.module.css";
 import CustomNavbar from "../customNavbar/CustomNavbar";
+import Footer from "../footer/footer";
 import { StorageImage } from '@aws-amplify/ui-react-storage';
-import { useEffect, useState } from "react";
-import {useOurWorkLogic} from "@/app/admin/ourWork/OurWorkLogic";
+import { useOurWorkLogic } from "@/app/admin/ourWork/OurWorkLogic";
 
-export default function OurWorkPage() 
-{
-  const { ourWorks } = useOurWorkLogic(); // fetch organizations
-  const [cachedWorks, setCachedWorks] = useState<typeof ourWorks>([]);
+export default function OurWorkPage() {
+  const { ourWorks } = useOurWorkLogic();
 
-  const checkForUpdates = () => 
-  {
-    const updateData = sessionStorage.getItem("ourWorks");
-
-    if (updateData)
-    {
-      setCachedWorks(JSON.parse(updateData));
-    }
-    else
-    {
-      setCachedWorks(ourWorks);
-    }
-  }
-
-  useEffect(() => 
-  {
-    const cachedData = sessionStorage.getItem("ourWorks");
-    if(cachedData)
-    {
-      setCachedWorks(JSON.parse(cachedData));
-    }
-    else
-    {
-      setCachedWorks(ourWorks);
-      sessionStorage.setItem("ourWorks", JSON.stringify(ourWorks));
-    }
-    console.log("Organization data: ", ourWorks)
-    console.log("cachedworks:", cachedWorks)
-
-    const interval = setInterval(checkForUpdates, 10000);
-    return () => clearInterval(interval);
-  }, [ourWorks]);
-  
   return (
-      <main className="main">
-      <CustomNavbar/>
-
+    <main>
+      <CustomNavbar />
       <div className={styles.main}>
-        {/*Header*/}
-        <h1 className={styles.header}>OUR WORK</h1>
-        <h2 className={styles.subHeader}>
-        THE BETTER TRAINED THEY ARE, THE SAFER OUR COMMUNITY IS
-        </h2>
-       
-       {/* Organizations */}
-        <div className={styles.orgContainer}>
-          
-        {ourWorks.length > 0 ? (
-            ourWorks.map((org) => (
-              <div key={org.id}>
-                <h3>{org.business || "No Business Name"}</h3>
-                <p className={styles.textContainer}>{org.description || "No description available."}</p>
-                <StorageImage
-                  path={org.picture || ""}
-                  alt={org.picture ? `${org.picture} Image` : "No Image"}
-                  className={styles.imageContainer}
-                  fallbackSrc="/ourWork/Document.jpg" 
-                />
-              </div>
-            ))
-          ) : (
-            <p>Loading organizations...</p> 
-          )}
-        </div>
+        <h1 className={styles.header}>Our Work</h1>
+        <p className={styles.subHeader}>
+          The Primary Mission of the South Lake Tahoe Firefighter’s Foundation is to bolster firefighter health, safety, and wellness within our community. We’re dedicated to equipping our local heroes with the tools, training, and resources they need to respond to emergencies effectively while prioritizing their own well-being.<br /><br />
+          In line with our core purpose, we also make donations to public entities that align with our mission, strengthening the broader firefighting network and its capabilities. We contribute to charities aimed at fostering a positive community relationship. We recognize the importance of a strong bond between our firefighters and the community they serve, and we strive to enhance this connection through outreach, education, and philanthropy.
+        </p>
+
+        {ourWorks.length > 0 && (
+          <>
+            <div className={styles.sectionDivider}></div>
+            <h1 className={styles.header}>Partnering Organizations</h1>
+            <div className={styles.organizationGrid}>
+              {ourWorks.map((org) => (
+                <div key={org.id} className={styles.organizationCard}>
+                  <h2 className={styles.businessName}>{org.business}</h2>
+                  <p className={styles.businessDescription}>{org.description}</p>
+                  <StorageImage
+                    path={org.picture || ""}
+                    alt="Organization"
+                    className={styles.organizationImage}
+                    fallbackSrc="/ourWork/Document.jpg"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className={styles.sectionDivider}></div>
+          </>
+        )}
       </div>
-      </main>
-    );
-  }
+      <Footer />
+    </main>
+  );
+}
