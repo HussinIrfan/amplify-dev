@@ -9,6 +9,13 @@
     flex-direction: column;
     margin: 0px;
     padding: 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .admin-config2 {
@@ -345,3 +352,54 @@ button:disabled {
   .signOutButton {
     background: red;
   }
+
+  @media (max-width: 1024px) {
+    .admin-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .about-us-form,
+    .add-email-form {
+      padding: 1rem;
+      width: 90%;
+    }
+    .admin-h1 {
+      font-size: 1.5rem;
+    }
+    .admin-h2 {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .admin-grid {
+      grid-template-columns: 1fr;
+    }
+    .form-group input {
+      font-size: 0.95rem;
+    }
+    .form-submit-btn {
+      font-size: 1rem;
+    }
+    .admin-h1 {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .admin-h1 {
+      font-size: 1.1rem;
+    }
+    .admin-h2,
+    .admin-h3 {
+      font-size: 1.1rem;
+      padding: 0.75rem;
+    }
+    button {
+      width: 100%;
+      font-size: 1rem;
+    }
+    .email-list-container {
+      padding: 0.5rem;
+    }
+  }
+  
