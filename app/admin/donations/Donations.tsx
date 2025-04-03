@@ -4,7 +4,7 @@ import react, { useState } from "react";
 import "./donations.css";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import useDonations from "./DonationsLogic";
-import "../storeAdmin/store.css";
+// import "../storeAdmin/store.css";
 
 export default function Donations() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
