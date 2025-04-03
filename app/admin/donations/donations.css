@@ -1,0 +1,80 @@
+/* donations.css */
+
+.div {
+    margin: 2rem auto;
+    max-width: 600px;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .admin-h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .dropdown-arrow {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .collapsible-content {
+    margin-top: 1rem;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .collapsed {
+    display: none;
+  }
+  
+  .expanded {
+    display: block;
+  }
+  
+  /* Toggle Button Style */
+  .store-toggle-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    background-color: #5c6bc0;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem;
+  }
+  
+  .store-toggle-btn.open {
+    background-color: #4caf50;
+  }
+  
+  .store-toggle-btn.closed {
+    background-color: #f44336;
+  }
+  
+  /* Responsive layout */
+  @media (max-width: 768px) {
+    .div {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+  
+    .admin-h2 {
+      font-size: 1.3rem;
+    }
+  
+    .store-toggle-btn {
+      width: 100%;
+      font-size: 1.1rem;
+    }
+  }
+  
