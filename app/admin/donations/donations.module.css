@@ -70,14 +70,6 @@
     transition: background-color 0.3s ease;
 }
   
-.donations-toggle-btn.open {
-    background-color: #000000;
-}
-  
-.donations-toggle-btn.closed {
-    background-color: #000000;
-}
-
 .donations-toggle-btn.open:hover {
     background-color: #45a049; /* Darker green when store is open */
   }

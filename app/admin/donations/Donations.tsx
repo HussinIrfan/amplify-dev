@@ -11,16 +11,22 @@ export default function Donations() {
 
   return (
     <div className={styles.div}>
-      <div className={styles["admin-h2"]} onClick={toggleCollapse}>
+      <h2 className={styles["admin-h2"]} onClick={toggleCollapse}>
         Donations{" "}
         <span
-          className={`${styles["dropdown-arrow"]} ${
+          className={`dropdown-arrow ${
             isContentCollapsed ? styles.collapsed : ""
           }`}
+          style={{
+            display: "inline-block",
+            marginLeft: "8px",
+            transition: "transform 0.3s",
+            transform: isContentCollapsed ? "rotate(0deg)" : "rotate(-90deg)",
+          }}
         >
           ▼
         </span>
-      </div>
+      </h2>
 
       <div
         className={`${styles["donations-toggle-container"]} ${
