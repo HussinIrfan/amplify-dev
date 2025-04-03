@@ -1,55 +1,46 @@
 "use client";
 
-import react, { useState } from "react";
-import "./donations.css";
+import React from "react";
+import styles from "./donations.module.css"; // Using CSS Modules
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import useDonations from "./DonationsLogic";
-// import "../storeAdmin/store.css";
 
 export default function Donations() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
-
-  const { donationOpen, setDonationOpen, toggleDonationStatus } =
-    useDonations();
+  const { donationOpen, setDonationOpen, toggleDonationStatus } = useDonations();
 
   return (
-    <>
-      <div className="div">
-        <h2 className="admin-h2" onClick={toggleCollapse}>
-          Donations{" "}
-          <span
-            className={`dropdown-arrow ${
-              isContentCollapsed ? "collapsed" : ""
-            }`}
-            style={{
-              display: "inline-block",
-              marginLeft: "8px",
-              transition: "transform 0.3s",
-              transform: isContentCollapsed ? "rotate(0deg)" : "rotate(-90deg)",
-            }}
-          >
-            ▼
-          </span>
-        </h2>
-        {/* Collapsible Section */}
-        <div
-          className={`collapsible-content ${
-            !isContentCollapsed ? "collapsed" : "expanded"
+    <div className={styles.div}>
+      <h2 className={styles.adminH2} onClick={toggleCollapse}>
+        Donations{" "}
+        <span
+          className={`${styles.dropdownArrow} ${
+            isContentCollapsed ? styles.collapsed : ""
           }`}
+          style={{
+            display: "inline-block",
+            marginLeft: "8px",
+            transition: "transform 0.3s",
+            transform: isContentCollapsed ? "rotate(0deg)" : "rotate(-90deg)",
+          }}
         >
-          {isContentCollapsed && <>
-          {/* Add the button */}
+          ▼
+        </span>
+      </h2>
+      <div
+        className={`${styles.collapsibleContent} ${
+          !isContentCollapsed ? styles.collapsed : styles.expanded
+        }`}
+      >
+        {isContentCollapsed && (
           <button
-                onClick={toggleDonationStatus}
-                className={`store-toggle-btn ${donationOpen ? "open" : "closed"}`}
-              >
-                {donationOpen ? "✅ Donations Open" : "❌ Donations Closed"}
-              </button>
-
-
-          </>}
-        </div>
+            onClick={toggleDonationStatus}
+            className={`${styles.storeToggleBtn} ${donationOpen ? styles.open : styles.closed}`}
+          >
+            {donationOpen ? "✅ Donations Open" : "❌ Donations Closed"}
+          </button>
+        )}
       </div>
-    </>
+    </div>
   );
 }
