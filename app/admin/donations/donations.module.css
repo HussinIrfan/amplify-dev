@@ -1,128 +1,135 @@
 .div {
-    margin: 10px;
+    margin: 20px;
     padding: 10px;
     width: 85vw;
     max-width: 95%;
     box-sizing: border-box;
     background-color: #bec0c541;
     border-radius: 5px;
-  }
+}
   
-.donations-container {
-    margin: 2rem auto;
-    max-width: 600px;
-    background-color: #ffffff;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Matches your admin section buttons */
-  .admin-h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+.admin-h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    font-family: inherit;
+    margin: 10px;
+    padding: 10px 15px; 
     background-color: #030000;
     color: #e9e7e7;
-    padding: 10px;
     border-radius: 5px;
-    margin: 10px 0 20px;
-  }
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    cursor: pointer;
+    gap: 8px; 
+}
   
-  .dropdown-arrow {
-    font-size: 1.2rem;
-    margin-left: 0.5rem;
+  
+.dropdown-arrow {
+    font-size: 1.3rem;
+    line-height: 1;
     transition: transform 0.3s ease;
-  }
+    display: inline-block;
+}
   
-  .dropdown-arrow.collapsed {
+
+.dropdown-arrow.collapsed {
     transform: rotate(180deg);
-  }
+}
   
-  .collapsible-content {
+.collapsible-content {
     margin-top: 1rem;
     transition: max-height 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
-  }
+}
   
-  .collapsed {
+.collapsed {
     display: none;
-  }
+}
   
-  .expanded {
+.expanded {
     display: block;
+}
+
+.donations-toggle-container {
+    padding-left: 20px;
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
   }
   
-  /* Toggle Button Style */
-  .store-toggle-btn {
-    padding: 0.75rem 1.5rem;
+.donations-toggle-btn {
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 4px; /* Reduced from 6px to make it more squared */
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     color: #fff;
-    background-color: #5c6bc0;
+    padding: 0.5rem 1rem;
+    background-color: #000000;
     transition: background-color 0.3s ease;
-    margin-bottom: 1rem;
+}
+  
+.donations-toggle-btn.open {
+    background-color: #000000;
+}
+  
+.donations-toggle-btn.closed {
+    background-color: #000000;
+}
+
+.donations-toggle-btn.open:hover {
+    background-color: #45a049; /* Darker green when store is open */
   }
   
-  .store-toggle-btn.open {
-    background-color: #4caf50;
-  }
+.donations-toggle-btn.closed:hover {
+    background-color: #d32f2f; /* Darker red when store is closed */
+}
   
-  .store-toggle-btn.closed {
-    background-color: #f44336;
-  }
   
   /* Small Mobile Devices */
-  @media (max-width: 480px) {
+@media (max-width: 480px) {
     .donations-container {
-      margin: 1rem;
-      padding: 1.25rem;
+        margin: 1rem;
+        padding: 1.25rem;
     }
-  
+
     .admin-h2 {
-      font-size: 1.2rem;
+        font-size: 1.2rem;
     }
-  
+
     .store-toggle-btn {
-      width: 100%;
-      font-size: 1rem;
+        width: 100%;
+        font-size: 1rem;
     }
-  }
-  
-  /* Tablets */
-  @media (min-width: 481px) and (max-width: 1024px) {
+}
+
+/* Tablets */
+@media (min-width: 481px) and (max-width: 1024px) {
     .donations-container {
-      margin: 1.5rem auto;
-      padding: 2rem;
-      max-width: 90%;
+        margin: 1.5rem auto;
+        padding: 2rem;
+        max-width: 90%;
     }
-  
+
     .admin-h2 {
-      font-size: 1.4rem;
+        font-size: 1.4rem;
     }
-  
+
     .store-toggle-btn {
-      width: 100%;
-      font-size: 1.05rem;
+        width: 100%;
+        font-size: 1.05rem;
     }
-  }
-  
-  /* Small Desktops and Laptops */
-  @media (min-width: 1025px) and (max-width: 1366px) {
+}
+
+/* Small Desktops and Laptops */
+@media (min-width: 1025px) and (max-width: 1366px) {
     .donations-container {
-      max-width: 700px;
-      padding: 2.5rem;
+        max-width: 700px;
+        padding: 2.5rem;
     }
-  
+
     .admin-h2 {
-      font-size: 1.6rem;
+        font-size: 1.6rem;
     }
-  }
-  
+}
