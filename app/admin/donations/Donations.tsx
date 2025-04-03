@@ -1,22 +1,20 @@
 "use client";
 
 import React from "react";
-import styles from "./donations.module.css"; // Using CSS Modules
+import "./donations.module.css"; 
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import useDonations from "./DonationsLogic";
 
 export default function Donations() {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
-  const { donationOpen, setDonationOpen, toggleDonationStatus } = useDonations();
+  const { donationOpen, toggleDonationStatus } = useDonations();
 
   return (
-    <div className={styles.div}>
-      <h2 className={styles.adminH2} onClick={toggleCollapse}>
+    <div className="div">
+      <div className="admin-h2" onClick={toggleCollapse}>
         Donations{" "}
         <span
-          className={`${styles.dropdownArrow} ${
-            isContentCollapsed ? styles.collapsed : ""
-          }`}
+          className={`dropdown-arrow ${isContentCollapsed ? "collapsed" : ""}`}
           style={{
             display: "inline-block",
             marginLeft: "8px",
@@ -26,16 +24,17 @@ export default function Donations() {
         >
           ▼
         </span>
-      </h2>
+      </div>
+
       <div
-        className={`${styles.collapsibleContent} ${
-          !isContentCollapsed ? styles.collapsed : styles.expanded
+        className={`collapsible-content ${
+          !isContentCollapsed ? "collapsed" : "expanded"
         }`}
       >
         {isContentCollapsed && (
           <button
             onClick={toggleDonationStatus}
-            className={`${styles.storeToggleBtn} ${donationOpen ? styles.open : styles.closed}`}
+            className={`store-toggle-btn ${donationOpen ? "open" : "closed"}`}
           >
             {donationOpen ? "✅ Donations Open" : "❌ Donations Closed"}
           </button>
