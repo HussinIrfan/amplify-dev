@@ -7,7 +7,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
   
-  .adminH2 {
+.adminH2 {
     font-size: 1.5rem;
     font-weight: bold;
     color: #333;
@@ -15,64 +15,111 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-  }
-  
-  .dropdownArrow {
+}
+
+.dropdownArrow {
     font-size: 1.2rem;
     margin-left: 0.5rem;
     transition: transform 0.3s ease;
-  }
-  
-  .collapsibleContent {
-    margin-top: 1rem;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-  }
-  
-  .collapsed {
-    display: none;
-  }
-  
-  .expanded {
-    display: block;
-  }
-  
-  /* Toggle Button Style */
-  .storeToggleBtn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    color: #fff;
-    background-color: #5c6bc0;
-    transition: background-color 0.3s ease;
-    margin-bottom: 1rem;
-  }
-  
-  .open {
-    background-color: #4caf50;
-  }
-  
-  .closed {
-    background-color: #f44336;
-  }
-  
-  /* Mobile responsive adjustments */
-  @media (max-width: 768px) {
+}
+
+.collapsibleContent {
+margin-top: 1rem;
+transition: max-height 0.3s ease, opacity 0.3s ease;
+overflow: hidden;
+}
+
+.collapsed {
+display: none;
+}
+
+.expanded {
+display: block;
+}
+
+/* Toggle Button Style */
+.storeToggleBtn {
+padding: 0.75rem 1.5rem;
+border: none;
+border-radius: 0.5rem;
+font-size: 1rem;
+font-weight: 500;
+cursor: pointer;
+color: #fff;
+background-color: #5c6bc0;
+transition: background-color 0.3s ease;
+margin-bottom: 1rem;
+}
+
+.open {
+background-color: #4caf50;
+}
+
+.closed {
+background-color: #f44336;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+.div {
+    margin: 1rem;
+    padding: 1.5rem;
+}
+
+.adminH2 {
+    font-size: 1.3rem;
+}
+
+.storeToggleBtn {
+    width: 100%;
+    font-size: 1.1rem;
+}
+}
+
+
+/* Small Mobile Devices (phones, narrow screens) */
+@media (max-width: 480px) {
     .div {
       margin: 1rem;
-      padding: 1.5rem;
+      padding: 1.25rem;
     }
   
     .adminH2 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
   
     .storeToggleBtn {
       width: 100%;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
   }
   
+  /* Tablets (portrait and landscape) */
+  @media (min-width: 481px) and (max-width: 1024px) {
+    .div {
+      margin: 1.5rem auto;
+      padding: 2rem;
+      max-width: 90%;
+    }
+  
+    .adminH2 {
+      font-size: 1.4rem;
+    }
+  
+    .storeToggleBtn {
+      width: 100%;
+      font-size: 1.05rem;
+    }
+  }
+  
+  /* Small Desktops and Laptops */
+  @media (min-width: 1025px) and (max-width: 1366px) {
+    .div {
+      max-width: 700px;
+      padding: 2.5rem;
+    }
+  
+    .adminH2 {
+      font-size: 1.6rem;
+    }
+  }
