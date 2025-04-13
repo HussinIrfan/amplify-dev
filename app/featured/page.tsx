@@ -48,10 +48,10 @@ const FeaturedPage: React.FC = () => {
 
             {products.length > 0 ? (
               products
-                .filter(product => product) // ✅ Removes null/undefined products
+                .filter(product => product) // Removes null/undefined products
                 .map((product, index) => (
                   <div key={index} className="product-card">
-                    {/* ✅ Safe null check for product properties */}
+                    {/*  Safe null check for product properties */}
                        <Image
                       src={product.imageUrl || "/placeholder.jpg"}
                       alt={product.name || "No name available"}
@@ -65,7 +65,7 @@ const FeaturedPage: React.FC = () => {
                     <p className="product-description">{product.description || "No description available."}</p>
                     <p className="product-price">${product.basePrice ? product.basePrice.toFixed(2) : "N/A"}</p>
 
-                    {/* ✅ "View Product" now links to /store1 */}
+                    {/*  "View Product" now links to /store1 */}
                     <Link href={`/store1`}>
                       <button className="view-product">View Product</button>
                     </Link>
