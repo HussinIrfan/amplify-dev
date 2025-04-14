@@ -9,6 +9,8 @@ import { PhoneSanitize } from "../../supportFunctions/SanitizePhoneNum";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import { Event as RBCEvent, Views } from "react-big-calendar";
 import * as XLSX from "xlsx"; //npm install xlsx
+import { remove } from "aws-amplify/storage";
+import { getUrl } from "aws-amplify/storage";
 
 import _ from "lodash"; // for binary seachability
 
@@ -27,6 +29,7 @@ export interface Event {
   end: Date | null; // Allow null for end date
   title: string;
   allDay: boolean;
+  eventDoc: string | "";
 }
 
 export interface Attendee {
@@ -40,12 +43,19 @@ export interface Attendee {
   supportDetails?: string;
 }
 
+interface StorageGetUrlOutput {
+  url: string; // The URL string you need
+  // Other metadata can be here, depending on the API.
+}
+
 const useCalendar = () => {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<(typeof Views)[keyof typeof Views]>(
     Views.MONTH
   );
+
+  const uploadPath = "events/"; // S3 bucket location
 
   const [events, setEvents] = useState<Event[]>([]); // Store events fetched from the database
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
@@ -62,6 +72,8 @@ const useCalendar = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [eventId, setEventId] = useState<string | null>(null);
+  const [eventDoc, setEventDoc] = useState("");
+  const [eventDocUrl, setEventDocUrl] = useState("");
 
   const defaultPartySize = 1;
   const [rsvpFName, setRsvpFName] = useState("");
@@ -113,6 +125,7 @@ const useCalendar = () => {
             location: event.eventLocation ?? "",
             details: event.eventDetails ?? "",
             allDay: event.allday ?? false,
+            eventDoc: event.eventDoc ?? "",
             id: event.id, //Hidden Database ID for editing events
           };
         });
@@ -176,8 +189,6 @@ const useCalendar = () => {
         }
 
         // Proceed with the update
-        console.log("Edit mode: ", isEditMode);
-        console.log("Updating event with ID:", eventId);
         await client.models.Event.update({
           id: eventId, // Use the eventId here
           eventTitle: eventTitle,
@@ -187,6 +198,7 @@ const useCalendar = () => {
           eventEndTime: eventEndTime || null, // Allow null if no time provided
           eventLocation: eventLocation,
           eventDetails: eventDetails,
+          eventDoc: eventDoc,
           allday: allday,
         });
 
@@ -201,6 +213,7 @@ const useCalendar = () => {
           eventEndTime: eventEndTime || null, // Allow null if no time provided
           eventLocation,
           eventDetails,
+          eventDoc,
           allday,
         });
       }
@@ -240,11 +253,35 @@ const useCalendar = () => {
         location: event.eventLocation ?? "",
         details: event.eventDetails ?? "",
         allDay: event.allday ?? false,
+        eventDoc: event.eventDoc ?? "",
         id: event.id,
       };
     });
 
     return updatedEvents;
+  };
+
+  // Update Event Document
+  const updatedEventDoc = async (
+    doc: string,
+    oldDoc: string,
+    eventID: string
+  ) => {
+    try {
+      const result = await client.models.Event.update({
+        id: eventID,
+        eventDoc: doc,
+      });
+      // Only remove old file if the path exists
+      if (oldDoc) {
+        await remove({ path: oldDoc });
+      }
+
+      setEventDoc(doc);
+      return result;
+    } catch (err) {
+      console.error("Error creating document: ", err);
+    }
   };
 
   // Reset form fields to their initial state
@@ -259,6 +296,7 @@ const useCalendar = () => {
     setIsAllDay(false);
     setEventId("");
     setErrorMessage("");
+    setEventDoc("");
   };
 
   const resetRSVPFormFields = () => {
@@ -278,20 +316,40 @@ const useCalendar = () => {
     end: event.end ?? undefined, // Convert null to undefined
   }));
 
-  const handleEventSelect = (event: any) => {
-    //close and reset all feilds
-    resetSelectedEvent();
-    // If the same event is clicked again, close the modal by setting selectedEvent to null
-    if (selectedEvent && selectedEvent.title === event.title) {
-      setSelectedEvent(null); // Close the popup
-    } else {
-      getRsvpPartyInital(event.id);
-      setSelectedEvent(event); // Open the popup with the new event's details
-      try {
-      } catch (error) {
-        // Call the refactored function to fetch attendee data
+  const handleEventSelect = async (event: any) => {
+    try {
+      //close and reset all feilds
+      resetSelectedEvent();
+      // If the same event is clicked again, close the modal by setting selectedEvent to null
+      if (selectedEvent && selectedEvent.title === event.title) {
+        setSelectedEvent(null); // Close the popup
+      } else {
+        getRsvpPartyInital(event.id);
+
+        // Fetch the URL for the event document
+        let docUrl = "";
+        if (event.eventDoc) {
+          const result = await generateDocURL(event.eventDoc); // result will be of type StorageGetUrlOutput
+          docUrl = result.url.toString(); // Extract the URL from the result
+          setEventDocUrl(docUrl);
+        }
+
+        setSelectedEvent({
+          ...event,
+          docURL: docUrl,
+        }); // Open the popup with the new event's details
       }
+    } catch (error) {
+      // Call the refactored function to fetch attendee data
     }
+  };
+
+  const generateDocURL = async (doc: string) => {
+    const docUrl = await getUrl({
+      path: doc,
+      options: { expiresIn: 3600 },
+    });
+    return docUrl;
   };
 
   const resetSelectedEvent = () => {
@@ -308,6 +366,7 @@ const useCalendar = () => {
     setPartySizeTotal(0);
     setIsEditMode(false);
     setSelectedEvent(null); // Clear selected event when modal is closed
+    setEventDocUrl("");
   };
 
   const handleCloseModalBasic = () => {
@@ -343,6 +402,7 @@ const useCalendar = () => {
       setEventDetails(selectedEvent.details);
       setIsAllDay(selectedEvent.allDay);
       setEventId(selectedEvent.id);
+      setEventDoc(selectedEvent.eventDoc);
       setIsModalOpen(true);
       setIsEditMode(true); // Set to edit mode when editing an existing event
     }
@@ -591,7 +651,6 @@ const useCalendar = () => {
         const filterCondition = attendeeIds.map((id) => ({ id: { eq: id } }));
 
         // Fetch attendee details based on IDs using 'or' conditions
-        console.log(attendeeIds);
         const { data: attendees } = await client.models.Attendee.list({
           filter: { or: filterCondition },
         });
@@ -704,7 +763,6 @@ const useCalendar = () => {
         const filterCondition = attendeeIds.map((id) => ({ id: { eq: id } }));
 
         // Fetch attendee details based on IDs using 'or' conditions
-        console.log(attendeeIds);
         const { data: attendees } = await client.models.Attendee.list({
           filter: { or: filterCondition },
         });
@@ -780,7 +838,6 @@ const useCalendar = () => {
         await client.models.EventAttentants.list({
           filter: { eventId: { eq: eventId } },
         });
-      console.log("event attendee: ", eventAttendants);
 
       if (eventAttendants && eventAttendants.length > 0) {
         // Extract attendee IDs from the relationships
@@ -808,21 +865,17 @@ const useCalendar = () => {
         // Map sponsor information to a dictionary based on attendeeId
         const sponsorInfo = eventSponsors?.reduce((acc, sponsor) => {
           acc[sponsor.attendeeId] = sponsor;
-          console.log("reduced sponsor list: ", acc);
           return acc;
         }, {} as Record<string, any>);
 
         // Combine attendee details with sponsor data
         const attendeesWithSponsorInfo = attendees.map((attendee) => {
-          console.log("attendee id: ", attendee.id);
-          console.log("sponsor id: ", sponsorInfo[attendee.id]);
           const sponsorDetails = sponsorInfo[attendee.id];
 
           // Safely check sponsorDetails and handle null values
           const isSponsor = sponsorDetails ? true : false;
           const supportDetails = sponsorDetails?.supportDetails ?? ""; // Use empty string if null or undefined
 
-          console.log("Sponsor details: ", supportDetails);
           return {
             ...attendee,
             isSponsor, // Set to true if sponsorDetails exist, false otherwise
@@ -874,7 +927,6 @@ const useCalendar = () => {
 
   const getRsvpPartyInital = async (eventId: string) => {
     const attendees = await fetchAttendeesForEvent(eventId);
-    console.log("123 attendees getPartyInit: ", attendees);
     if (attendees.length > 0) {
       // Use the helper function to transform the attendees data
       const transformedAttendees = transformAttendeesData(attendees);
@@ -891,11 +943,9 @@ const useCalendar = () => {
     try {
       // Call the refactored function to fetch attendee data
       const attendees = await fetchAttendeesForEvent(eventId);
-      console.log("attendees: ", attendees);
       if (attendees.length > 0) {
         // Use the helper function to transform the attendees data
         const transformedAttendees = transformAttendeesData(attendees);
-        console.log("transform: ", transformedAttendees);
         // Set state for attendees list
         setAttendeesList(transformedAttendees);
         setIsAttendeesModalOpen(true); // Open modal to display attendees
@@ -976,13 +1026,13 @@ const useCalendar = () => {
             ws[cellRef] = {}; // Create empty cell if it does not exist
           }
 
-           // Add thicker border to each cell
-        ws[cellRef].s = {
-          border: {
-            top: { style: 'medium', color: { rgb: '000000' } },
-            left: { style: 'medium', color: { rgb: '000000' } },
-            bottom: { style: 'medium', color: { rgb: '000000' } },
-            right: { style: 'medium', color: { rgb: '000000' } },
+          // Add thicker border to each cell
+          ws[cellRef].s = {
+            border: {
+              top: { style: "medium", color: { rgb: "000000" } },
+              left: { style: "medium", color: { rgb: "000000" } },
+              bottom: { style: "medium", color: { rgb: "000000" } },
+              right: { style: "medium", color: { rgb: "000000" } },
             },
           };
         }
@@ -1048,6 +1098,13 @@ const useCalendar = () => {
     selectedAttendees,
     sponsor,
     support,
+    uploadPath,
+    eventDoc,
+    eventDocUrl,
+    generateDocURL,
+    setEventDocUrl,
+    updatedEventDoc,
+    setEventDoc,
     setSponsor,
     setSupport,
     setSelectedAttendees,

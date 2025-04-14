@@ -1,105 +1,143 @@
 /* RSVP Form Modal */
 .rsvp-form-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 90%;  /* Adjust width to fit smaller screens */
-    max-width: 500px;  /* Set a max width for larger screens */
-    height: auto;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-    overflow-x: hidden;
-  }
-  
-  /* Form Input Fields */
-  .rsvp-form-modal label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .rsvp-form-modal input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  /* Submit and Cancel Buttons */
-  .rsvp-form-modal .submit-button, 
-  .rsvp-form-modal .cancel-button {
-    padding: 10px 20px;
-    border: 1px solid black;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-    width: 100%;
-    font-size: 1em;
-    font-weight: bold;
-  }
-  
-  .rsvp-form-modal .submit-button {
-    background-color: #f5c71a;
-    color: black;
-  }
-  
-  .rsvp-form-modal .cancel-button {
-    background-color: #f44336;
-    color: black;
-  }
-  
-  .rsvp-form-modal button:hover {
-    opacity: 0.9;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure this is lower than the confirmation modal */
+  width: 90%;  /* Adjust width to fit smaller screens */
+  max-width: 500px;  /* Set a max width for larger screens */
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Form Input Fields */
+.rsvp-form-modal label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.rsvp-form-modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Submit and Cancel Buttons */
+.rsvp-form-modal .submit-button, 
+.rsvp-form-modal .cancel-button {
+  padding: 10px 20px;
+  border: 1px solid black;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 100%;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.rsvp-form-modal .submit-button {
+  background-color: #f5c71a;
+  color: black;
+}
+
+.rsvp-form-modal .cancel-button {
+  background-color: #f44336;
+  color: black;
+}
+
+.rsvp-form-modal button:hover {
+  opacity: 0.9;
+}
+
+.sponsor-checkbox-container {
+  display: flex;
+  align-items: center; /* Ensures checkbox and text are vertically aligned */
+}
+
+.sponsor-checkbox-label {
+  margin-right: 8px; /* Adds space between the checkbox and the text */
+}
+
+.sponsor-checkbox-label input {
+  margin-top: 20px; /* Adjust this value to move the checkbox down */
+}
+
+.sponsorText {
+  margin: 0; /* Removes any default margin on the <p> tag */
+  padding-bottom: 18px; /* Slightly raise the text */
+}
+
+
+/* Confirmation Modal (on RSVP Success) */
+.rsvp-confirmation-modal {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 2000; /* Ensure this is higher than the RSVP form modal */
+}
+
+.rsvp-confirmation-content {
+background: white;
+padding: 20px;
+border-radius: 5px;
+text-align: center;
+}
+
+.rsvp-confirmation-content h3 {
+margin-bottom: 10px;
+}
+
+.rsvp-confirmation-content button {
+padding: 10px 20px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.rsvp-confirmation-content button:hover {
+background-color: #0056b3;
+}
+
+
+/* Mobile-Friendly Adjustments */
+@media (max-width: 768px) {
+  .rsvp-form-modal {
+      width: 90%;  /* Keep modal width 90% for smaller screens */
+      height: 90%;
+      max-width: 90%;  /* Reduce max width for smaller screens */
+      padding: 12px;  /* Slightly reduce padding */
   }
 
-  .sponsor-checkbox-container {
-    display: flex;
-    align-items: center; /* Ensures checkbox and text are vertically aligned */
+  .rsvp-form-modal label {
+    display: block;
+    margin-bottom: 1px;
   }
-  
-  .sponsor-checkbox-label {
-    margin-right: 8px; /* Adds space between the checkbox and the text */
+
+  .rsvp-form-modal input {
+      padding: 1px;  /* Slightly bigger input fields on mobile */
   }
-  
-  .sponsor-checkbox-label input {
-    margin-top: 20px; /* Adjust this value to move the checkbox down */
+
+  .rsvp-form-modal .submit-button, 
+  .rsvp-form-modal .cancel-button {
+      padding: 2px 1px;  /* Increase padding for buttons */
+      font-size: 1.1em;  /* Adjust font size for better readability */
   }
-  
-  .sponsorText {
-    margin: 0; /* Removes any default margin on the <p> tag */
-    padding-bottom: 18px; /* Slightly raise the text */
-  }
-  
-  
-  /* Mobile-Friendly Adjustments */
-  @media (max-width: 768px) {
-    .rsvp-form-modal {
-        width: 90%;  /* Keep modal width 90% for smaller screens */
-        height: 90%;
-        max-width: 90%;  /* Reduce max width for smaller screens */
-        padding: 12px;  /* Slightly reduce padding */
-    }
-  
-    .rsvp-form-modal label {
-      display: block;
-      margin-bottom: 1px;
-    }
-  
-    .rsvp-form-modal input {
-        padding: 1px;  /* Slightly bigger input fields on mobile */
-    }
-  
-    .rsvp-form-modal .submit-button, 
-    .rsvp-form-modal .cancel-button {
-        padding: 2px 1px;  /* Increase padding for buttons */
-        font-size: 1.1em;  /* Adjust font size for better readability */
-    }
-  }
-  
+}
