@@ -10,28 +10,60 @@ Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export function useOurWorkLogic() {
+  const { sanitizeInput } = Sanitize();
+
   const [ourWorks, setOurWork] = useState<Array<Schema["ourWork"]["type"]>>([]);
   const [editingOurWorks, setEditingOurWorks] = useState<
     Map<string, Schema["ourWork"]["type"]>
   >(new Map());
+
   const [picture, setPicture] = useState("");
   const [description, setDescription] = useState("");
   const [business, setBusiness] = useState("");
-  const { sanitizeInput } = Sanitize();
-  const uploadPath = "ourWork/"; //S3 Bucket Location
+  const uploadPath = "ourWork/"; // S3 Bucket Location
 
-  // Function to list existing "About Us" entries
   function listOurWork() {
     client.models.ourWork.observeQuery().subscribe({
-      next: (data) => setOurWork([...data.items]),
+      next: (data) =>
+        setOurWork(
+          [...data.items].sort((a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
+        ),
       error: (err) => console.log(err),
     });
   }
 
-  // UseEffect to fetch initial data
   useEffect(() => {
-    listOurWork(); // Fetch emails from the Subscribers table
+    listOurWork();
   }, []);
+
+  async function createOurWorkEntry(
+    picture: string,
+    business: string,
+    description: string
+  ) {
+    try {
+      const result = await client.models.ourWork.create({
+        picture,
+        business,
+        description,
+      });
+      console.log("New entry created:", result);
+      listOurWork();
+      return result;
+    } catch (error) {
+      console.error("Error creating entry:", error);
+    }
+  }
+
+  function handleOurWorkSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    createOurWorkEntry(picture, business, description);
+    setPicture("");
+    setBusiness("");
+    setDescription("");
+  }
 
   const handleEditChangeOurWork = (
     key: string,
@@ -42,7 +74,7 @@ export function useOurWorkLogic() {
     setEditingOurWorks((prev) => {
       const ourWork = prev.get(key);
       if (!ourWork || !ourWork.id) {
-        throw new Error("Employee does not have a valid ID.");
+        throw new Error("Entry does not have a valid ID.");
       }
       const updatedOurWork = { ...ourWork, [field]: sanitizedValue };
       const newMap = new Map(prev);
@@ -58,12 +90,11 @@ export function useOurWorkLogic() {
         if (updatedOurWork) {
           await client.models.ourWork.update(updatedOurWork);
           console.log("Changes saved successfully");
-          listOurWork(); // Refresh the list of employees from the database
-          // Close the edit box after saving changes
+          listOurWork();
           setEditingOurWorks((prev) => {
-            const newEditingOurWorks = new Map(prev);
-            newEditingOurWorks.delete(ourWorkId); // Remove the employee from the editing state
-            return newEditingOurWorks;
+            const newEditing = new Map(prev);
+            newEditing.delete(ourWorkId);
+            return newEditing;
           });
         }
       } catch (error) {
@@ -74,95 +105,48 @@ export function useOurWorkLogic() {
 
   const handleEditToggleOurWork = (ourWorkId: string) => {
     setEditingOurWorks((prev) => {
-      const newEditingOurWorks = new Map(prev);
-      if (newEditingOurWorks.has(ourWorkId)) {
-        newEditingOurWorks.delete(ourWorkId); // Toggle off
+      const newEditing = new Map(prev);
+      if (newEditing.has(ourWorkId)) {
+        newEditing.delete(ourWorkId);
       } else {
-        const ourWorkToEdit = ourWorks.find(
-          (ourWork) => ourWork.id === ourWorkId
-        );
-        if (ourWorkToEdit) {
-          newEditingOurWorks.set(ourWorkId, { ...ourWorkToEdit }); // Set to edit mode
+        const toEdit = ourWorks.find((item) => item.id === ourWorkId);
+        if (toEdit) {
+          newEditing.set(ourWorkId, { ...toEdit });
         }
       }
-      return newEditingOurWorks;
+      return newEditing;
     });
   };
 
-  // Function to cancel the editing of Our Work
   const handleCancelEditOurWork = (ourWorkId: string) => {
     setEditingOurWorks((prev) => {
-      const newEditingOurWorks = new Map(prev);
-      newEditingOurWorks.delete(ourWorkId); // Cancel the editing mode
-      return newEditingOurWorks;
+      const newEditing = new Map(prev);
+      newEditing.delete(ourWorkId);
+      return newEditing;
     });
   };
 
   const handleDeleteOurWork = async (ourWorkId: string) => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
+    if (window.confirm("Are you sure you want to delete this entry?")) {
       try {
-        const busToDelete = ourWorks.find(
-          (ourWork) => ourWork.id === ourWorkId
-        );
+        const toDelete = ourWorks.find((item) => item.id === ourWorkId);
+        if (!toDelete) return;
 
-        if (!busToDelete) {
-          console.log("Unable to find business");
-          return;
-        }
-
-        //remove S3 image object
-        if (busToDelete.picture) {
+        if (toDelete.picture) {
           try {
-            await remove({
-              path: busToDelete.picture,
-              // add bucket path specification if needed here
-            });
+            await remove({ path: toDelete.picture });
           } catch (error) {
-            console.log(`Error deleting S3 bucket Object ${busToDelete}`);
+            console.error("Error deleting image from S3:", error);
           }
         }
 
-        const result = await client.models.ourWork.delete({ id: ourWorkId });
-
-        if (result) {
-          console.log(
-            `Our Work item with ID ${ourWorkId} deleted successfully.`
-          );
-        }
-        setOurWork((prevOurWork) =>
-          prevOurWork.filter((ourWork) => ourWork.id !== ourWorkId)
-        );
+        await client.models.ourWork.delete({ id: ourWorkId });
+        setOurWork((prev) => prev.filter((item) => item.id !== ourWorkId));
       } catch (error) {
-        console.error("Error deleting Our Work item:", error);
+        console.error("Error deleting entry:", error);
       }
     }
   };
-
-  function handleOurWorkSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    createOurWorkEntry(picture, business, description);
-    setPicture("");
-    setBusiness("");
-    setDescription("");
-  }
-
-  async function createOurWorkEntry(
-    picture: string,
-    business: string,
-    description: string
-  ) {
-    try {
-      const result = await client.models.ourWork.create({
-        picture,
-        business,
-        description,
-      });
-      console.log("New entry created", result);
-      return result;
-    } catch (error) {
-      console.error("Error creating entry:", error);
-    }
-  }
 
   return {
     ourWorks,
