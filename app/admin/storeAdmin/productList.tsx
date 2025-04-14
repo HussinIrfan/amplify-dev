@@ -20,7 +20,7 @@ interface ProductListProps {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ onEdit }) => {
-  const { products, deleteProduct } = useStore(); // Use the useStore hook
+  const { products, deleteProduct } = useStore(); 
 
   return (
     <div>
@@ -28,7 +28,6 @@ const ProductList: React.FC<ProductListProps> = ({ onEdit }) => {
       <div className="header-container">
         <div className="product-header">
           <h2>Current Products</h2>
-          {/* Removed the "Add Product" button from here */}
         </div>
 
         {/* Horizontal Bar */}
@@ -82,7 +81,7 @@ const ProductList: React.FC<ProductListProps> = ({ onEdit }) => {
                 <button
                   onClick={() => {
                     if (window.confirm(`Are you sure you want to delete "${product.name}"?`)) {
-                      deleteProduct(product.id); // Call the onDelete function
+                      deleteProduct(product.id); // call the onDelete function
                     }
                   }}
                 >
