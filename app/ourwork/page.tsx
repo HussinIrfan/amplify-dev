@@ -29,7 +29,7 @@ export default function OurWorkPage() {
                   <h2 className={styles.businessName}>{org.business}</h2>
                   <p className={styles.businessDescription}>{org.description}</p>
                   <StorageImage
-                    path={org.picture || ""}
+                    path={org.picture || "No image"}
                     alt="Organization"
                     className={styles.organizationImage}
                     fallbackSrc="/ourWork/Document.jpg"

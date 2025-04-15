@@ -75,7 +75,7 @@ export default function AboutUsPage() {
               {emps.map((member) => (
                 <div key={member.id} className={styles.teamMember}>
                   <StorageImage
-                    path={member.picture || ""}
+                    path={member.picture || "No image"}
                     alt="Team Member Image"
                     className={styles.teamImage}
                     fallbackSrc="/default-placeholder.jpg"
