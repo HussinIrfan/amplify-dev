@@ -2,11 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID!;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET!;
-const PAYPAL_API_URL = 'https://api-m.sandbox.paypal.com';
-
+const PAYPAL_API_URL = "https://api-m.paypal.com";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { cart } = req.body;
+    const { totalAmount } = req.body;
 
     const order = {
       intent: 'CAPTURE',
@@ -14,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         {
           amount: {
             currency_code: 'USD',
-            value: '100.00', // Set total order amount here
+            value: totalAmount.toFixed(2), // Set total order amount here
           },
         },
       ],

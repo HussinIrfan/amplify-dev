@@ -119,8 +119,10 @@ const CartPage = () => {
   };
 
   return storeOpen ? (
+    <>
+    <CustomNavbar/>
     <div className={styles.pageContainer}>
-      <CustomNavbar />
+      
       <main className={styles.mainContent}>
         <div className={styles.cartContainer}>
           <h1 className={styles.heading}>Cart</h1>
@@ -148,6 +150,7 @@ const CartPage = () => {
       </main>
       <Footer />
     </div>
+    </>
   ) : <div>Store Closed</div>;
 };
 

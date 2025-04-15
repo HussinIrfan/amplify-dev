@@ -10,7 +10,10 @@ app.use(express.json());
 const PAYPAL_API = "https://api-m.paypal.com";
 const CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
-
+// Test route
+app.get("/test", (req, res) => {
+  res.json({ message: "CORS is working" });
+});
 const generateAccessToken = async () => {
   const response = await axios.post(
     `${PAYPAL_API}/v1/oauth2/token`,
@@ -26,6 +29,7 @@ const generateAccessToken = async () => {
 app.post("/api/orders", async (req, res) => {
   try {
     const { totalAmount, currency = "USD" } = req.body;
+    console.log("totalammount",totalAmount)
     if (!totalAmount || totalAmount <= 0) {
       return res.status(400).json({ error: "Invalid amount" });
     }

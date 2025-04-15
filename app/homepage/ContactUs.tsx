@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ContactUs.module.css';
 
+
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -104,7 +105,7 @@ const ContactUs = () => {
             className={styles.input}
             type="tel"
             id="phone"
-            placeholder="Phone Number"
+            placeholder="Phone Number (Optional)"
             value={formData.phone}
             onChange={handleInputChange}
           />
