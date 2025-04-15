@@ -152,13 +152,13 @@ const useCalendar = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     // Check if the event title is empty
     if (!eventTitle.trim()) {
       setErrorMessage("Event title cannot be empty.");
       return;
     }
-
+  
     // If start or end time are empty, set them to null
     const startDateTime =
       eventStartDate && eventStartTime
@@ -168,40 +168,50 @@ const useCalendar = () => {
       eventEndDate && eventEndTime
         ? moment(eventEndDate + " " + eventEndTime, dateTimeFormat)
         : null;
-
+  
     // Validate time logic only if both are provided
     if (startDateTime && endDateTime && endDateTime.isBefore(startDateTime)) {
       setErrorMessage("End date/time cannot be before start date/time.");
       return;
     }
-
+  
+    // Format times to HH:mm (24-hour) to ensure compatibility
+    const formattedStartTime = eventStartTime
+      ? moment(eventStartTime, ["h:mm A"]).format("HH:mm")
+      : null;
+  
+    const formattedEndTime = eventEndTime
+      ? moment(eventEndTime, ["h:mm A"]).format("HH:mm")
+      : null;
+  
     // Sanitize Inputs
     setEventTitle(sanitizeInput(eventTitle));
     setEventLocation(sanitizeInput(eventLocation));
     setEventDetails(sanitizeInput(eventDetails));
-
+  
     try {
       if (isEditMode) {
+  
         // Ensure eventId is not null
         if (!eventId) {
           setErrorMessage("Event ID is missing. Cannot update event.");
           return;
         }
-
+  
         // Proceed with the update
-        await client.models.Event.update({
-          id: eventId, // Use the eventId here
-          eventTitle: eventTitle,
-          eventStartDate: eventStartDate,
-          eventEndDate: eventEndDate,
-          eventStartTime: eventStartTime || null, // Allow null if no time provided
-          eventEndTime: eventEndTime || null, // Allow null if no time provided
-          eventLocation: eventLocation,
-          eventDetails: eventDetails,
-          eventDoc: eventDoc,
-          allday: allday,
+        const updateReply = await client.models.Event.update({
+          id: eventId,
+          eventTitle,
+          eventStartDate,
+          eventEndDate,
+          eventStartTime: formattedStartTime || null,
+          eventEndTime: formattedEndTime || null,
+          eventLocation,
+          eventDetails,
+          eventDoc: eventDoc || null,
+          allday,
         });
-
+  
         console.log("Updated Event");
       } else {
         // Create a new event if not in edit mode
@@ -209,18 +219,18 @@ const useCalendar = () => {
           eventTitle,
           eventStartDate,
           eventEndDate,
-          eventStartTime: eventStartTime || null, // Allow null if no time provided
-          eventEndTime: eventEndTime || null, // Allow null if no time provided
+          eventStartTime: formattedStartTime,
+          eventEndTime: formattedEndTime,
           eventLocation,
           eventDetails,
-          eventDoc,
+          eventDoc: eventDoc || null,
           allday,
         });
       }
-
+  
       // Fetch updated events using the newly created function
       const updatedEvents = await fetchUpdatedEvents();
-
+  
       setEvents(updatedEvents);
       resetFormFields();
       setIsModalOpen(false);
@@ -391,7 +401,7 @@ const useCalendar = () => {
 
   const handleEditEventClick = () => {
     resetSelectedEvent();
-
+    
     if (selectedEvent) {
       setEventTitle(selectedEvent.title);
       setEventStartDate(moment(selectedEvent.start).format(dateFormat));
@@ -417,6 +427,14 @@ const useCalendar = () => {
         await deleteSponsorsForEventId(selectedEvent.id); // Delete sponsors first
         await deleteAttendeesForEventId(selectedEvent.id); // Delete attendees for the event
         await client.models.Event.delete({ id: selectedEvent.id }); // Now delete the event itself
+        
+        // delete S3 Bucket Item
+        if(selectedEvent.eventDoc){
+          await remove({
+            path: selectedEvent.eventDoc,
+          })
+        }
+
         handleCloseModal();
         const updatedEvents = await fetchUpdatedEvents();
         setEvents(updatedEvents);
