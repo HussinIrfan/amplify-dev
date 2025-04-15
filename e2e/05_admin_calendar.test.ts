@@ -373,17 +373,25 @@ test.describe("Admin Attendee List test", () => {
   
       await page.waitForTimeout(2000);
     });
-  
+    
+    
     // Perform search
     await page.getByRole('textbox').fill(fName + lName + '@test.com');
     await page.getByRole('button', { name: 'Search' }).click();
-  
+    
     // Assert only the expected search result is visible
     const searchResult = page.getByRole('cell', { name: fName + lName + '@test.com' });
     await expect(searchResult).toBeVisible();
-  
+    
     await expect(page.getByRole('cell', { name: fName1 + lName1 + '@test.com' })).toHaveCount(0);
     await expect(page.getByText('test sponsor message')).toHaveCount(0);
+    
+    await page.getByRole('button', { name: 'Search' }).click();
+    
+    await expect(page.getByRole("cell", { name: `${fName} ${lName}` })).toBeVisible();
+    await expect(page.getByRole("cell", { name: "X" })).toBeVisible();
+    await expect(page.getByRole("cell", { name: "test sponsor message" })).toBeVisible();
+
     await deleteEvent(page, eventName);
   });
   
