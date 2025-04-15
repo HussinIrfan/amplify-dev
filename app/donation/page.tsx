@@ -6,9 +6,9 @@ import CustomNavbar from "../customNavbar/CustomNavbar";
 import Footer from "../footer/footer";
 import useDonations from "../admin/donations/DonationsLogic";
 import Link from "next/link";
-// HARDCODED VALUES
+// PayPal Credentials
 const PAYPAL_CLIENT_ID = "AV6VEgDVIukeYpnclfC3XOYUdvd2Tw-pPtPdysoQx5Z_rpPIjTuIeqhQ1mXeW8cVfBJR5A9J1nCeHERA";
-const API_URL = "http://localhost:5000"; // Use your backend or ngrok URL in production
+const API_URL = "http://localhost:5000"; // Replace with your real backend
 
 declare global {
   interface Window {
@@ -16,58 +16,56 @@ declare global {
   }
 }
 
-const DonationPage: React.FC = () => {
-  const [donationAmount, setDonationAmount] = useState<number | string>("");
+const DonatePage = () => {
+  const [donationAmount, setDonationAmount] = useState<number>(1);
+  const [coverFee, setCoverFee] = useState<boolean>(false); // New state for checkbox
   const paypalContainerRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
   const { donationOpen, setDonationOpen, toggleDonationStatus } = useDonations();
+  const DONATION_AMOUNT = 10.00;
+  const feePercentage = 0.03; // For example, 3% fee
+  const fixedFee = 0.30; // If you want to add a fixed fee
   useEffect(() => {
-    if (paypalLoaded) return;
+    setIsMounted(true);
+  }, []);
 
-    const script = document.createElement("script");
-    script.id = "paypal-sdk";
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=buttons&currency=USD`;
+  useEffect(() => {
+    if (!isMounted || paypalLoaded) return;
+
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
     script.async = true;
     script.onload = () => {
-      console.log("PayPal SDK loaded");
       setPaypalLoaded(true);
       renderPayPalButtons();
     };
-    script.onerror = () => console.error("Failed to load PayPal SDK");
     document.body.appendChild(script);
-  }, [paypalLoaded]);
+  }, [isMounted, paypalLoaded]);
+
+  useEffect(() => {
+    if (!paypalLoaded) return; // Only run if PayPal has been loaded
+  
+    renderPayPalButtons(); // Re-render PayPal buttons whenever donationAmount changes
+  }, [donationAmount]); // Dependency on `donationAmount` to trigger re-render
+
+
 
   const createOrder = async () => {
-    console.log("createOrder() called");
-    const amount = parseFloat(donationAmount as string);
-    if (!amount || isNaN(amount) || amount < 1) {
-      alert("Please enter a valid donation amount (minimum $1).");
-      return;
-    }
-
     try {
+      console.log("ammount:", donationAmount)
       const response = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ totalAmount: amount.toFixed(2), currency: "USD" }),
+        body: JSON.stringify({ totalAmount: parseFloat(donationAmount.toString()), currency: "USD" }),
       });
 
-      const text = await response.text();
-      console.log("Raw response from /api/orders:", text);
-
-      if (!response.ok) {
-        throw new Error(`Backend error: ${text}`);
-      }
-
-      const data = JSON.parse(text);
-      if (!data.id) {
-        throw new Error("No order ID returned by backend");
-      }
-
-      return data.id;
+      if (!response.ok) throw new Error("Failed to create order");
+      const orderData = await response.json();
+      return orderData.id;
     } catch (error) {
-      console.error("createOrder error:", error);
-      alert("Failed to create PayPal order.");
+      console.error("Error creating donation order:", error);
+      alert("Failed to start the donation process.");
     }
   };
 
@@ -78,45 +76,53 @@ const DonationPage: React.FC = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      const data = await response.json();
-      if (response.ok && data.success) {
-        alert("Donation successful! A receipt has been sent to your PayPal email.");
+      const orderData = await response.json();
+      if (orderData.success) {
+        alert(`Thank you for your donation!`);
       } else {
-        console.error("Capture failed:", data);
-        alert("Payment failed.");
+        alert("Donation payment failed.");
       }
     } catch (error) {
-      console.error("captureOrder error:", error);
-      alert("There was an error processing your payment.");
+      console.error("Error capturing donation payment:", error);
+      alert("There was an error processing your donation.");
     }
   };
 
   const renderPayPalButtons = () => {
-    if (!paypalContainerRef.current) return;
+    if (!paypalContainerRef.current) {
+      return setTimeout(renderPayPalButtons, 1000);
+    }
 
     paypalContainerRef.current.innerHTML = "";
-
     if (window.paypal) {
-      window.paypal.Buttons({
-        style: { shape: "rect", layout: "vertical", color: "gold", label: "paypal" },
-        createOrder: createOrder,
-        onApprove: async (data: { orderID: string }) => {
-          if (!data.orderID) {
-            alert("No order ID returned");
-            return;
-          }
-          await captureOrder(data.orderID);
-        },
-        onError: (err: unknown) => {
-          console.error("PayPal Checkout Error:", err);
-          alert("There was an error processing your payment.");
-        },
-      }).render(paypalContainerRef.current);
-    } else {
-      console.error("PayPal SDK not loaded");
+      window.paypal
+        .Buttons({
+          style: {
+            layout: 'vertical'
+          },
+          createOrder,
+          onApprove: async (data: { orderID: string }) => {
+            await captureOrder(data.orderID);
+          },
+          onError: (err: unknown) => {
+            console.error('PayPal Donation Error:', err);
+            alert('There was an error processing your donation.');
+          },
+        })
+        .render(paypalContainerRef.current);
     }
   };
-
+  const updateDonationAmount = (amount: number, coverFee: boolean) => {
+    let newAmount = amount;
+    if (coverFee) {
+      newAmount = amount * (1 + feePercentage) + fixedFee; // Add fee
+    }
+    return parseFloat(newAmount.toFixed(2)); // Convert back to number after rounding
+  };
+  useEffect(() => {
+    // Update the donation amount when the checkbox is checked/unchecked
+    setDonationAmount(updateDonationAmount(donationAmount, coverFee));
+  }, [coverFee]); // Run whenever the checkbox state changes
   return (
     
     <div className={styles.donationPage}>
@@ -129,19 +135,26 @@ const DonationPage: React.FC = () => {
 
         <div className={styles.donationOptionsBox}>
           <h2>Donate Now</h2>
-          <p>Select or enter an amount</p>
-          <div className={styles.donationOptions}>
-            <button onClick={() => setDonationAmount(25)}>$25</button>
-            <button onClick={() => setDonationAmount(50)}>$50</button>
-            <button onClick={() => setDonationAmount(100)}>$100</button>
-          </div>
+          <p>Enter an amount</p>
+
           <input
             type="number"
             className={styles.donationInput}
             placeholder="$"
             value={donationAmount}
-            onChange={(e) => setDonationAmount(e.target.value)}
+            onChange={(e) =>
+              setDonationAmount(isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value))
+            }
           />
+          <div className={styles.checkboxContainer}>
+            <input
+              type="checkbox"
+              id="coverFee"
+              checked={coverFee}
+              onChange={(e) => setCoverFee(e.target.checked)} // Update state on change
+            />
+            <label htmlFor="coverFee">Would you like to cover the PayPal transaction fee?</label>
+          </div>
           <div ref={paypalContainerRef} id="paypal-button-container"></div>
         </div>
       </section>
@@ -162,5 +175,4 @@ const DonationPage: React.FC = () => {
     </div>
   );
 };
-
-export default DonationPage;
+export default DonatePage;

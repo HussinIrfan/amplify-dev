@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID!;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET!;
-const PAYPAL_API_URL = 'https://api-m.sandbox.paypal.com';
+const PAYPAL_API_URL = "https://api-m.paypal.com";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { orderId } = req.query;

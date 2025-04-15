@@ -1,4 +1,7 @@
 /* ✅ HERO SECTION */
+.checkboxContainer {
+    padding-bottom: 5px;
+}
 .hero {
     position: relative;
     width: 100%;
@@ -23,7 +26,7 @@
     font-weight: bold;
     color: white;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-    z-index: 10;
+    z-index: 0;
     background: rgba(0, 0, 0, 0.6);
     padding: 10px 15px;
     border-radius: 6px;
@@ -41,7 +44,7 @@
     font-weight: normal;
     color: white;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-    z-index: 9;
+    z-index: 0;
     max-width: 85%;
     text-align: center;
     background: rgba(0, 0, 0, 0.4);
@@ -51,9 +54,10 @@
 
 
 /* ✅ DONATION BOX */
+
 .donationOptionsBox {
     position: absolute;
-    top: 55%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.98);
@@ -63,9 +67,11 @@
     max-width: 450px;
     text-align: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
 }
 
 /* ✅ DONATION BUTTONS */
+/*
 .donationOptions {
     display: flex;
     justify-content: center;
@@ -88,6 +94,7 @@
 .donationOptions button:hover {
     background-color: #b3b3b3;
 }
+*/
 
 /* ✅ DONATION INPUT */
 .donationInput {

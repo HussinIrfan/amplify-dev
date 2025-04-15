@@ -1,30 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import 'dotenv/config';
+import { NextResponse } from 'next/server';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-// Function to send an email
-export async function POST(req: NextRequest) {
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY!,
+});
+
+export async function POST(req: Request) {
   try {
-    const ses = new SESClient({
-      region: "us-west-2", // Hardcoded region (replace with your desired region)
-    });
-
+    // Get form data from request body
     const { firstName, lastName, email, phone, subject, message } = await req.json();
 
-    const params = {
-      Destination: { ToAddresses: ["support@sltfirefoundation.org"] }, // Hardcoded email
-      Message: {
-        Body: {
-          Text: { Data: `First Name: ${firstName}\nLast Name: ${lastName}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}` },
-        },
-        Subject: { Data: subject },
-      },
-      Source: "support@sltfirefoundation.org", // Hardcoded sender email
-    };
+    // Define the sender and recipient
+    const sentFrom = new Sender("support@sltfirefoundation.org", "Lance Hubbard");
+    const recipients = [
+      new Recipient("support@sltfirefoundation.org", "Lance Hubbard")
+    ];
 
-    await ses.send(new SendEmailCommand(params));
-    return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
-    console.error("SES Error:", error);
-    return NextResponse.json({ error: "Email sending failed" }, { status: 500 });
+    // Compose email content with dynamic form data
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setReplyTo(new Sender(email, `${firstName} ${lastName}`)) // Reply to user's email
+      .setSubject(subject) // Use the subject as the email subject
+      .setHtml(`
+        <strong>Name:</strong> ${firstName} ${lastName}<br>
+        <strong>Email:</strong> ${email}<br>
+        <strong>Phone:</strong> ${phone}<br>
+        <strong>Message:</strong><br>${message}
+      `)
+      .setText(`
+        Name: ${firstName} ${lastName}
+        Email: ${email}
+        Phone: ${phone}
+        Message:
+        ${message}
+      `);
+
+    // Send the email
+    await mailerSend.email.send(emailParams);
+
+    return NextResponse.json({ message: "Email sent successfully" }, { status: 200 });
+
+  } catch (error: any) {
+    console.error("Email sending failed:", error);
+    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
   }
 }
