@@ -76,7 +76,7 @@ async function waitForEventToBeVisible(
   page: Page,
   eventName: string
 ): Promise<void> {
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 3; i++) {
     await page.reload();
     await page.waitForURL(URL_ADMIN);
 
@@ -100,7 +100,7 @@ async function waitForEventToBeVisible(
       return;
     }
 
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(2000);
   }
 
   throw new Error(`Event "${eventName}" was not visible after 5 retries.`);
@@ -113,38 +113,62 @@ async function createAttendee(
   partySize: string,
   sponsor: Boolean,
   email: string = fName + lName + "@test.com",
-  phone: string = "555-555-5555",
+  phone: string = "555-555-5555"
 ): Promise<void> {
-
-  await page.getByRole('button', { name: 'Add Attendee' }).click();
-  await page.locator('div').filter({ hasText: /^First Name:$/ }).getByRole('textbox').fill(fName);
-  await page.locator('div').filter({ hasText: /^Last Name:$/ }).getByRole('textbox').fill(lName);
-  await page.locator('div').filter({ hasText: /^Email:$/ }).getByRole('textbox').fill(email);
-  await page.getByRole('textbox', { name: '555-555-5555' }).fill(phone);
+  await page.getByRole("button", { name: "Add Attendee" }).click();
+  await page
+    .locator("div")
+    .filter({ hasText: /^First Name:$/ })
+    .getByRole("textbox")
+    .fill(fName);
+  await page
+    .locator("div")
+    .filter({ hasText: /^Last Name:$/ })
+    .getByRole("textbox")
+    .fill(lName);
+  await page
+    .locator("div")
+    .filter({ hasText: /^Email:$/ })
+    .getByRole("textbox")
+    .fill(email);
+  await page.getByRole("textbox", { name: "555-555-5555" }).fill(phone);
 
   const size = parseInt(partySize, 10);
   if (size > 1 && size < 10) {
-    await page.getByRole('combobox').selectOption(partySize);
+    await page.getByRole("combobox").selectOption(partySize);
   }
 
   if (sponsor === true) {
     for (let i = 0; i < 3; i++) {
       try {
-        await page.getByLabel('', { exact: true }).check();
+        await page.getByLabel("", { exact: true }).check();
         await page
-          .getByRole('textbox', { name: 'Sponsorship & Support Inquiry:' })
-          .fill('test sponsor message');
+          .getByRole("textbox", { name: "Sponsorship & Support Inquiry:" })
+          .fill("test sponsor message");
         break; // If successful, exit loop
       } catch (err) {
         if (i === 2) {
-          throw new Error('Failed to complete sponsor fields after 3 attempts.');
+          throw new Error(
+            "Failed to complete sponsor fields after 3 attempts."
+          );
         }
         await page.waitForTimeout(1000); // Optional wait between retries
       }
     }
   }
 
-  await page.getByRole('button', { name: 'Submit' }).click();
+  await page.getByRole("button", { name: "Submit" }).click();
+}
+
+async function deleteEvent(page:Page, eventName: string) {
+  
+  await waitForEventToBeVisible(page, eventName);
+
+  page.once("dialog", async (dialog) => await dialog.accept());
+  await page.getByRole("button", { name: "Delete" }).click();
+  await page.waitForTimeout(500);
+  await expect(page.getByText(eventName)).toHaveCount(0, { timeout: 5000 });
+
 }
 
 test.setTimeout(125_000); // 2.5 minutes Timeout for all test
@@ -154,9 +178,7 @@ test.afterEach(async ({ page }) => {
 });
 
 test.describe("Admin Calendar Workflow Test", () => {
-  test("Event CRUD & PDF Upload", async ({
-    page,
-  }) => {
+  test("Event CRUD & PDF Upload", async ({ page }) => {
     await loginAndNavigateToCalendar(page);
 
     const eventName = "test event 1";
@@ -175,7 +197,6 @@ test.describe("Admin Calendar Workflow Test", () => {
     });
 
     await test.step("Step 3: Edit Event", async () => {
-
       await waitForEventToBeVisible(page, eventName);
 
       const tomorrow = new Date(today);
@@ -208,7 +229,6 @@ test.describe("Admin Calendar Workflow Test", () => {
     });
 
     await test.step("Step 4: Delete Event", async () => {
-
       await page.getByText(editName).click();
 
       page.once("dialog", async (dialog) => await dialog.accept());
@@ -226,16 +246,18 @@ test.describe("Admin Calendar Workflow Test", () => {
       await page.locator('input[type="file"]').setInputFiles(pdfPath);
       await page.getByRole("button", { name: "Upload 1 file" }).click();
       await expect(page.getByText("Uploaded", { exact: true })).toBeVisible();
-      await page.getByRole('button', { name: 'Cancel' }).click();
+      await page.getByRole("button", { name: "Cancel" }).click();
     });
   });
 });
 
-test.describe("Admin Event Attendee test", () => {
+test.describe("Admin Attendee List test", () => {
   
-  test("Attendee CRUD LONG TEST", async ({ page }) => {
-    const eventName = "Attendee Testing";
+  const eventName = "Attendee Testing";
+  const fName = "Ben";
+  const lName = "Johns";
 
+  test("Attendee CRUD LONG TEST", async ({ page }) => {
     await loginAndNavigateToCalendar(page);
 
     await test.step("Step 1: Create single non Sponsor Attendee", async () => {
@@ -249,25 +271,25 @@ test.describe("Admin Event Attendee test", () => {
       await page.getByRole("button", { name: "List Attendees" }).click();
       await createAttendee(page, fName, lName, partySize, sponsor);
       await page.waitForTimeout(2000); // Allow backend to settle
-      
+
       await waitForEventToBeVisible(page, eventName);
       await page.getByRole("button", { name: "List Attendees" }).click();
       await expect(
         page.getByRole("cell", { name: `${fName} ${lName}` })
       ).toBeVisible();
-      
+
       await page.waitForTimeout(2000); // Pause before next step
     });
-    
+
     await test.step("Step 2: Create multi non Sponsor Attendee", async () => {
       const fName = "Ben";
       const lName = "Johns";
       const partySize = "5";
       const sponsor = false;
-      
+
       await createAttendee(page, fName, lName, partySize, sponsor);
       await page.waitForTimeout(2000);
-      
+
       await waitForEventToBeVisible(page, eventName);
       await page.getByRole("button", { name: "List Attendees" }).click();
       await expect(
@@ -287,46 +309,96 @@ test.describe("Admin Event Attendee test", () => {
       await page.waitForTimeout(2000);
 
       await waitForEventToBeVisible(page, eventName);
-      await page.getByRole("button", { name: "List Attendees" }).click()
-      
+      await page.getByRole("button", { name: "List Attendees" }).click();
+
       await expect(page.getByRole("cell", { name: "X" })).toBeVisible();
       await expect(
         page.getByRole("cell", { name: "test sponsor message" })
       ).toBeVisible();
-      
-      
+
       await page.waitForTimeout(2000);
     });
-    
+
     await test.step("Step 4: Create multi Sponsor Attendee", async () => {
       const fName = "Luke";
       const lName = "Davis";
       const partySize = "8";
       const sponsor = true;
-      
+
       await createAttendee(page, fName, lName, partySize, sponsor);
       await page.waitForTimeout(2000);
-      
+
       await waitForEventToBeVisible(page, eventName);
-      await page.getByRole("button", { name: "List Attendees" }).click()
+      await page.getByRole("button", { name: "List Attendees" }).click();
       
       await expect(
         page.getByRole("cell", { name: partySize, exact: true })
       ).toBeVisible();
     });
 
-
     await test.step("Step 5: Delete Event", async () => {
-
-      await waitForEventToBeVisible(page, eventName);
-
-
-      page.once("dialog", async (dialog) => await dialog.accept());
-      await page.getByRole("button", { name: "Delete" }).click();
-      await page.waitForTimeout(500);
-      await expect(page.getByText(eventName)).toHaveCount(0, { timeout: 5000 });
+      await deleteEvent(page, eventName)
     });
-
-
+    
+  });
+  
+  // The Above test needs to be completed successfully for this one to pass
+  test("Attendee Search test", async ({ page }) => {
+    await loginAndNavigateToCalendar(page);
+    await createSingleDayEvent(page, eventName);
+    await waitForEventToBeVisible(page, eventName);
+    await page.getByRole("button", { name: "List Attendees" }).click();
+    
+    const fName1 = "Luke";
+    const lName1 = "Davis";
+    
+    await test.step("Step 1: Create Attendees", async () => {
+      const partySize = "1";
+      const sponsor = false;
+      
+      await createAttendee(page, fName, lName, partySize, sponsor);
+      await page.waitForTimeout(2000); // Allow backend to settle
+      const partySize1 = "8";
+      const sponsor1 = true;
+      
+      
+      await page.getByRole("button", { name: "List Attendees" }).click();
+      await createAttendee(page, fName1, lName1, partySize1, sponsor1);
+      await page.waitForTimeout(2000); // Allow backend to settle
+      
+      await page.getByRole("button", { name: "List Attendees" }).click();
+      await expect(page.getByRole("cell", { name: `${fName} ${lName}` })).toBeVisible();
+      await expect(page.getByRole("cell", { name: "X" })).toBeVisible();
+      await expect(page.getByRole("cell", { name: "test sponsor message" })).toBeVisible();
+  
+      await page.waitForTimeout(2000);
+    });
+  
+    // Perform search
+    await page.getByRole('textbox').fill(fName + lName + '@test.com');
+    await page.getByRole('button', { name: 'Search' }).click();
+  
+    // Assert only the expected search result is visible
+    const searchResult = page.getByRole('cell', { name: fName + lName + '@test.com' });
+    await expect(searchResult).toBeVisible();
+  
+    await expect(page.getByRole('cell', { name: fName1 + lName1 + '@test.com' })).toHaveCount(0);
+    await expect(page.getByText('test sponsor message')).toHaveCount(0);
+    await deleteEvent(page, eventName);
+  });
+  
+  test("Attendee Close Button", async ({ page }) => {
+    await loginAndNavigateToCalendar(page);
+    await createSingleDayEvent(page, eventName);
+    await waitForEventToBeVisible(page, eventName);
+    await page.getByRole("button", { name: "List Attendees" }).click();
+    
+    await page.getByRole('button', { name: 'Close' }).click();
+    await expect(page.getByText(eventName)).toBeVisible();
+    await page.getByText(eventName).click();
+    await page.getByRole('button', { name: 'Close' }).click();
+    await expect(page.getByText(eventName)).toBeVisible();
+    await deleteEvent(page, eventName);
+    
   });
 });

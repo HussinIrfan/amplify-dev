@@ -83,7 +83,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose }) => {
               Link
             </a>
           ) : (
-            "Loading..."
+            "N/A"
           )}
         </p>
 

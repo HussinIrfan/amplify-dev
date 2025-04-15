@@ -87,6 +87,7 @@ const ControlCalendar: React.FC = () => {
     toggleCollapse,
     handleBulkDeleteAttendees,
     handleAdminSubmit,
+    handleAttendeeEmalSearch,
     exportToExcel,
   } = useCalendar(); // Use the custom hook to get the calendar logic
 
@@ -347,7 +348,7 @@ const ControlCalendar: React.FC = () => {
                         <p>Email Search</p>
                       </div>
                       <div className="edit-Buttons-space">
-                        <button className="attendee-popup-button">
+                        <button onClick={handleAttendeeEmalSearch} className="attendee-popup-button">
                           Search
                         </button>
                         <button

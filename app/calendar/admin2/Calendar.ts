@@ -12,7 +12,7 @@ import * as XLSX from "xlsx"; //npm install xlsx
 import { remove } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
 
-import _ from "lodash"; // for binary seachability
+import _ from "lodash"; // for binary searchability
 
 Amplify.configure(outputs);
 
@@ -139,15 +139,66 @@ const useCalendar = () => {
   }, []);
 
   function listedAttendees() {
+    // Clear the current list before fetching new data
+    setAttendeesList([]);
+  
     const query = attendeeSearchQuery
       ? { filter: { email: { eq: attendeeSearchQuery } } }
       : {};
-
-    client.models.Attendee.observeQuery(query).subscribe({
-      next: (data) => setAttendees([...data.items]),
-      error: (err) => console.error(err),
-    });
+  
+    client.models.Attendee.list(query)
+      .then(async ({ data }) => {
+        if (!data || data.length === 0) {
+          return; // No attendees found, list is already cleared
+        }
+  
+        const attendeeIds = data.map((attendee) => attendee.id);
+  
+        // Optional: if selectedEvent is available and you want to scope sponsors to this event
+        const sponsorFilter = selectedEvent?.id
+          ? {
+              and: [
+                { eventId: { eq: selectedEvent.id } },
+                {
+                  or: attendeeIds.map((id) => ({ attendeeId: { eq: id } })),
+                },
+              ],
+            }
+          : {
+              or: attendeeIds.map((id) => ({ attendeeId: { eq: id } })),
+            };
+  
+        const { data: sponsors } = await client.models.EventSponsors.list({
+          filter: sponsorFilter,
+        });
+  
+        const sponsorInfo = sponsors?.reduce((acc, sponsor) => {
+          acc[sponsor.attendeeId] = sponsor;
+          return acc;
+        }, {} as Record<string, any>);
+  
+        const attendeesWithSponsorInfo = data.map((attendee) => {
+          const sponsorDetails = sponsorInfo[attendee.id];
+          return {
+            ...attendee,
+            isSponsor: !!sponsorDetails,
+            supportDetails: sponsorDetails?.supportDetails ?? "",
+          };
+        });
+  
+        const transformed = transformAttendeesData(attendeesWithSponsorInfo);
+        setAttendeesList(transformed);
+      })
+      .catch((err) => {
+        console.error("Error fetching attendees by email:", err);
+      });
   }
+
+  // TODO: fetchEventAttendees function for listed attendees
+  const handleAttendeeEmalSearch = () => {
+    listedAttendees();
+    setAttendeesSearchQuery("");
+  };
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -589,29 +640,34 @@ const useCalendar = () => {
       alert("No emails selected for deletion.");
       return;
     }
-
+  
     if (
       window.confirm("Are you sure you want to delete the selected Attendees?")
     ) {
       try {
-        const attendeesToDelete = attendees.filter((attendee) =>
+        // Use attendeesList instead of stale attendees state
+        const attendeesToDelete = attendeesList.filter((attendee) =>
           selectedAttendees.has(attendee.id)
         );
-
+  
         for (const attendee of attendeesToDelete) {
-          // First, delete the attendee from the Attendee table
-          await client.models.Attendee.delete({ id: attendee.id });
-
-          // Then delete the attendee from the EventAttentants table
-          deleteEventAttendeeId(attendee.id);
-
-          // And delete the attendee from the EventSponsors table if they are a sponsor
+          // Use full object if possible
+          await client.models.Attendee.delete(attendee);
+  
+          // Remove relations
+          await deleteEventAttendeeId(attendee.id);
           await deleteSponsorFromEvent(attendee.id);
-
+  
           console.log(`Deleted attendee with ID ${attendee.id}`);
         }
-        listedAttendees();
+  
+        // Clear selection
         setSelectedAttendees(new Set());
+  
+        // Refresh the list
+        setAttendeesList([]); // Clear immediately to trigger re-render
+        await listedAttendees();
+  
       } catch (e) {
         console.error("Error deleting Attendees:", e);
       }
@@ -1170,6 +1226,7 @@ const useCalendar = () => {
     handleAttendeeCheckboxChange,
     handleBulkDeleteAttendees,
     handleAdminSubmit,
+    handleAttendeeEmalSearch,
     toggleCollapse,
     exportToExcel,
   };
