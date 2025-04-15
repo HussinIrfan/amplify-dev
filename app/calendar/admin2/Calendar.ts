@@ -960,7 +960,7 @@ const useCalendar = () => {
         // Return combined attendees data with sponsor information
         return attendeesWithSponsorInfo;
       } else {
-        console.error("No attendees found for this event.");
+        console.log("No attendees found for this event.");
         return []; // Return empty array if no attendees are found
       }
     } catch (error) {
