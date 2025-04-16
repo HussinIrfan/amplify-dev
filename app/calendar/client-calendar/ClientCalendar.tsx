@@ -42,6 +42,7 @@ export default function ClientCalendar() {
   // Handle event selection
   const handleEventSelect = (event: RBCEvent) => {
     setSelectedEvent(event as Event);
+    console.log('event: ', selectedEvent);
   };
 
   const closeModal = () => {

@@ -1,0 +1,199 @@
+# this is an auto generated file. This will be overwritten
+
+mutation CreateIsOpen(
+  $input: CreateIsOpenInput!
+  $condition: ModelIsOpenConditionInput
+) {
+  createIsOpen(input: $input, condition: $condition) {
+    id
+    aboutUS
+    ourWork
+    news
+    calendar
+    donations
+    storeOpen
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateIsOpen(
+  $input: UpdateIsOpenInput!
+  $condition: ModelIsOpenConditionInput
+) {
+  updateIsOpen(input: $input, condition: $condition) {
+    id
+    aboutUS
+    ourWork
+    news
+    calendar
+    donations
+    storeOpen
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteIsOpen(
+  $input: DeleteIsOpenInput!
+  $condition: ModelIsOpenConditionInput
+) {
+  deleteIsOpen(input: $input, condition: $condition) {
+    id
+    aboutUS
+    ourWork
+    news
+    calendar
+    donations
+    storeOpen
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateProduct(
+  $input: CreateProductInput!
+  $condition: ModelProductConditionInput
+) {
+  createProduct(input: $input, condition: $condition) {
+    id
+    name
+    description
+    basePrice
+    imageUrl
+    slug
+    variants {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateProduct(
+  $input: UpdateProductInput!
+  $condition: ModelProductConditionInput
+) {
+  updateProduct(input: $input, condition: $condition) {
+    id
+    name
+    description
+    basePrice
+    imageUrl
+    slug
+    variants {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteProduct(
+  $input: DeleteProductInput!
+  $condition: ModelProductConditionInput
+) {
+  deleteProduct(input: $input, condition: $condition) {
+    id
+    name
+    description
+    basePrice
+    imageUrl
+    slug
+    variants {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateProductVariant(
+  $input: CreateProductVariantInput!
+  $condition: ModelProductVariantConditionInput
+) {
+  createProductVariant(input: $input, condition: $condition) {
+    id
+    productId
+    size
+    quantity
+    product {
+      id
+      name
+      description
+      basePrice
+      imageUrl
+      slug
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    productVariantsId
+    __typename
+  }
+}
+
+mutation UpdateProductVariant(
+  $input: UpdateProductVariantInput!
+  $condition: ModelProductVariantConditionInput
+) {
+  updateProductVariant(input: $input, condition: $condition) {
+    id
+    productId
+    size
+    quantity
+    product {
+      id
+      name
+      description
+      basePrice
+      imageUrl
+      slug
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    productVariantsId
+    __typename
+  }
+}
+
+mutation DeleteProductVariant(
+  $input: DeleteProductVariantInput!
+  $condition: ModelProductVariantConditionInput
+) {
+  deleteProductVariant(input: $input, condition: $condition) {
+    id
+    productId
+    size
+    quantity
+    product {
+      id
+      name
+      description
+      basePrice
+      imageUrl
+      slug
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    productVariantsId
+    __typename
+  }
+}

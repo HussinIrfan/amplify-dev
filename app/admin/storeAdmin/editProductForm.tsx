@@ -10,7 +10,7 @@ Amplify.configure(outputs);
 const client = generateClient<any>();
 
 type SizeQuantities = {
-  [key: string]: { checked: boolean; quantity: number };
+  [key: string]: { checked: boolean; quantity: string };
 };
 
 const ProductEditForm = ({
@@ -28,22 +28,25 @@ const ProductEditForm = ({
   const [slug, setSlug] = useState(product.slug || "");
   const [price, setPrice] = useState(product.price || "");
   const [description, setDescription] = useState(product.description || "");
-  const [defaultQuantity, setDefaultQuantity] = useState(product.defaultQuantity || 0);
+  const [defaultQuantity, setDefaultQuantity] = useState(
+    product.defaultQuantity?.toString() || ""
+  );
   const [photo, setPhoto] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState(product.imageUrl || "/default_stor_image.jpg");
+  const [previewUrl, setPreviewUrl] = useState(
+    product.imageUrl || "/default_stor_image.jpg"
+  );
   const [isUploading, setIsUploading] = useState(false);
 
   const [sizes, setSizes] = useState<SizeQuantities>({
-    S: { checked: false, quantity: 0 },
-    M: { checked: false, quantity: 0 },
-    L: { checked: false, quantity: 0 },
-    XL: { checked: false, quantity: 0 },
+    S: { checked: false, quantity: "" },
+    M: { checked: false, quantity: "" },
+    L: { checked: false, quantity: "" },
+    XL: { checked: false, quantity: "" },
   });
 
-  // Clean up object URLs
   useEffect(() => {
     return () => {
-      if (previewUrl.startsWith('blob:')) {
+      if (previewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(previewUrl);
       }
     };
@@ -76,17 +79,15 @@ const ProductEditForm = ({
   const handleQuantityChange = (size: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setSizes({
       ...sizes,
-      [size]: { ...sizes[size], quantity: parseInt(e.target.value) || 0 },
+      [size]: { ...sizes[size], quantity: e.target.value },
     });
   };
 
   const uploadPhoto = async (file: File): Promise<string> => {
-    // Implement your actual photo upload logic here
-    // This is a placeholder - replace with your S3 upload code
     console.log("Uploading file:", file.name);
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve("/default_stor_image.jpg"); // Return your actual uploaded URL
+        resolve("/default_stor_image.jpg");
       }, 1000);
     });
   };
@@ -102,13 +103,11 @@ const ProductEditForm = ({
     }
 
     setIsUploading(true);
-    let imageUrl = product.imageUrl; // Keep existing URL for edits
+    let imageUrl = product.imageUrl;
 
     try {
       if (isNewProduct || photo) {
-        imageUrl = photo 
-          ? await uploadPhoto(photo) 
-          : "/default_stor_image.jpg";
+        imageUrl = photo ? await uploadPhoto(photo) : "/default_stor_image.jpg";
       }
 
       const updatedProduct = {
@@ -117,13 +116,13 @@ const ProductEditForm = ({
         price: parseFloat(price),
         description,
         slug,
-        defaultQuantity,
+        defaultQuantity: parseInt(defaultQuantity || "0"),
         imageUrl,
         variants: Object.entries(sizes)
           .filter(([_, value]) => value.checked)
           .map(([size, value]) => ({
             size,
-            quantity: value.quantity,
+            quantity: parseInt(value.quantity || "0"),
           })),
       };
 
@@ -155,9 +154,9 @@ const ProductEditForm = ({
 
       const pushData = await client.models.Product.update(updatedData);
       console.log("Product updated:", pushData);
-      alert("Product successfully updated!");
+      alert("Product successfully updated.");
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating product, changes not saved", error);
       throw error;
     }
   };
@@ -174,9 +173,9 @@ const ProductEditForm = ({
 
       const pushData = await client.models.Product.create(newProduct);
       console.log("Product created:", pushData);
-      alert("Product successfully added!");
+      alert("Product successfully added.");
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error creating product. Please try again.", error);
       throw error;
     }
   };
@@ -203,17 +202,17 @@ const ProductEditForm = ({
       <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
 
       <label>Description (Max 120 characters)</label>
-      <textarea 
-        value={description} 
-        onChange={(e) => setDescription(e.target.value)} 
-        maxLength={120} 
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        maxLength={120}
       />
 
       <label>Default Quantity</label>
       <input
         type="number"
         value={defaultQuantity}
-        onChange={(e) => setDefaultQuantity(parseInt(e.target.value) || 0)}
+        onChange={(e) => setDefaultQuantity(e.target.value)}
       />
 
       <label>Upload Photo</label>
@@ -226,11 +225,11 @@ const ProductEditForm = ({
           onError={(e) => {
             (e.target as HTMLImageElement).src = "/default_stor_image.jpg";
           }}
-          style={{ 
-            maxWidth: "100px", 
+          style={{
+            maxWidth: "100px",
             maxHeight: "100px",
             marginTop: "10px",
-            display: previewUrl ? "block" : "none"
+            display: previewUrl ? "block" : "none",
           }}
         />
       </div>
@@ -240,10 +239,10 @@ const ProductEditForm = ({
         {Object.entries(sizes).map(([size, value]) => (
           <div key={size} className="size-quantity-input">
             <label>
-              <input 
-                type="checkbox" 
-                checked={value.checked} 
-                onChange={handleSizeChange(size)} 
+              <input
+                type="checkbox"
+                checked={value.checked}
+                onChange={handleSizeChange(size)}
               />
               {size}
             </label>
@@ -260,10 +259,7 @@ const ProductEditForm = ({
       </div>
 
       <div className="form-actions">
-        <button 
-          onClick={handleSave} 
-          disabled={isUploading}
-        >
+        <button onClick={handleSave} disabled={isUploading}>
           {isUploading ? "Saving..." : isNewProduct ? "Add Product" : "Save Product"}
         </button>
         <button onClick={onCancel} className="cancel-button">

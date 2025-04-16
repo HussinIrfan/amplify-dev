@@ -22,6 +22,7 @@ export function useHonorsLogic() {
   const [title, setTitle] = useState("");
   const [dateAwarded, setDateAwarded] = useState("");
   const [description, setDescription] = useState("");
+  // SLTFF-365 bug fix
   const uploadPath = "hornors/"; //S3 Bucket Location TODO, Change at Deployment
 
  // Function to list existing "About Us" entries
