@@ -10,43 +10,69 @@ import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { useEffect, useState } from "react";
 import { getItem, setItem } from "../utils/storageUtils";
 
-// Import static images
+// Static image
 import AboutTheFoundation from "../aboutusAssets/aboutthefoundation.jpg";
 
 export default function AboutUsPage() {
-  const { emps } = useAboutUsLogic(); // Fetch team members
-  const { stations } = useFireStationsLogic(); // Fetch fire stations
-  const { honors } = useHonorsLogic(); // Fetch honors data
+  const { emps } = useAboutUsLogic();
+  const { stations } = useFireStationsLogic();
+  const { honors } = useHonorsLogic();
 
+  // Cache-aware state (fallbacks to cached data)
+  const [cachedEmps, setCachedEmps] = useState<typeof emps>([]);
+  const [cachedStations, setCachedStations] = useState<typeof stations>([]);
+  const [cachedHonors, setCachedHonors] = useState<typeof honors>([]);  
+
+  // Update localStorage only when new data is available
   useEffect(() => {
-    // Check and set caching for team members
-    const cachedEmps = getItem('emps');
-    if (!cachedEmps && emps.length > 0) {
-      setItem('emps', emps);
-    }
 
-    // Check and set caching for fire stations
-    const cachedStations = getItem('stations');
-    if (!cachedStations && stations.length > 0) {
-      setItem('stations', stations);
+    if (typeof window !== "undefined") {
+      const localEmps = getItem<typeof emps>("emps");
+      const localStations = getItem<typeof stations>("stations");
+      const localHonors = getItem<typeof honors>("honors");
+  
+      if (localEmps) setCachedEmps(localEmps);
+      if (localStations) setCachedStations(localStations);
+      if (localHonors) setCachedHonors(localHonors);
     }
+    
+    const hasEmps = emps.length > 0;
+    const hasStations = stations.length > 0;
+    const hasHonors = honors.length > 0;
 
-    // Check and set caching for honors
-    const cachedHonors = getItem('honors');
-    if (!cachedHonors && honors.length > 0) {
-      setItem('honors', honors);
-    }
+  // ✅ Update or clear employees
+  if (hasEmps) {
+    setCachedEmps(emps);
+    setItem("emps", emps);
+  } else {
+    setCachedEmps([]);
+    localStorage.removeItem("emps");
+  }
 
-    console.log("✅ Team Members Data:", emps);
-    console.log("🚒 Fire Stations Data:", stations);
-    console.log("🏆 Honors Data:", honors);
-  }, [emps, stations, honors]); // Ensure dependencies are correctly listed to prevent excessive localStorage operations
+  // ✅ Update or clear stations
+  if (hasStations) {
+    setCachedStations(stations);
+    setItem("stations", stations);
+  } else {
+    setCachedStations([]);
+    localStorage.removeItem("stations");
+  }
+
+  // ✅ Update or clear honors
+  if (hasHonors) {
+    setCachedHonors(honors);
+    setItem("honors", honors);
+  } else {
+    setCachedHonors([]);
+    localStorage.removeItem("honors");
+  }
+}, [emps, stations, honors]);
 
   return (
     <main>
       <CustomNavbar />
       <div className={styles.main}>
-        {/* ✅ About The Foundation Section */}
+        {/* ✅ About the Foundation */}
         <h1 className={styles.header}>About the Foundation</h1>
         <div className={styles.section}>
           <img
@@ -63,39 +89,46 @@ export default function AboutUsPage() {
             capabilities.
           </p>
         </div>
-
-        {/* ✅ Yellow divider between sections */}
+        {/* Yellow Bars */}
         <div className={styles.sectionDivider}></div>
 
-        {/* ✅ Foundation Team Section - Dynamic */}
-        {emps && emps.length > 0 && (
+        {/* ✅ Team Members */}
+        {cachedEmps.length > 0 && (
           <>
             <h1 className={styles.header}>The Foundation Team</h1>
             <div className={styles.teamGrid}>
-              {emps.map((member) => (
+              {cachedEmps.map((member) => (
                 <div key={member.id} className={styles.teamMember}>
-                  <StorageImage
-                    path={member.picture || ""}
-                    alt="Team Member Image"
-                    className={styles.teamImage}
-                    fallbackSrc="/default-placeholder.jpg"
-                  />
+                  {member.picture ? (
+                    <StorageImage
+                      path={member.picture}
+                      alt="Team Member Image"
+                      className={styles.teamImage}
+                      fallbackSrc="/default-placeholder.jpg"
+                   />
+                  ) : (
+                    <img
+                      src="/default-placeholder.jpg"
+                      alt="Team Member Image"
+                      className={styles.teamImage}
+                    />
+                  )}
                   <h2 className={styles.memberName}>{member.name}</h2>
                   <p className={styles.memberTitle}>{member.title}</p>
                   <p className={styles.memberDescription}>{member.description}</p>
                 </div>
               ))}
             </div>
-            <div className={styles.sectionDivider}></div> {/* Yellow divider */}
+            <div className={styles.sectionDivider}></div>
           </>
         )}
 
-        {/* ✅ Fire Stations Section - Dynamic */}
-        {stations && stations.length > 0 && (
+        {/* ✅ Fire Stations */}
+        {cachedStations.length > 0 && (
           <>
             <h1 className={styles.header}>Firefighter Stations</h1>
             <div className={styles.stationGrid}>
-              {stations.map((station) => (
+              {cachedStations.map((station) => (
                 <div key={station.id} className={styles.stationCard}>
                   <StorageImage
                     path={station.image || ""}
@@ -109,16 +142,16 @@ export default function AboutUsPage() {
                 </div>
               ))}
             </div>
-            <div className={styles.sectionDivider}></div> {/* Yellow divider */}
+            <div className={styles.sectionDivider}></div>
           </>
         )}
 
-        {/* ✅ Honors & Awards Section - Dynamic */}
-        {honors && honors.length > 0 && (
+        {/* ✅ Honors */}
+        {cachedHonors.length > 0 && (
           <>
             <h1 className={styles.header}>Honors & Awards</h1>
             <div className={styles.honorsGrid}>
-              {honors.map((honor) => (
+              {cachedHonors.map((honor) => (
                 <div key={honor.id} className={styles.honorCard}>
                   <StorageImage
                     path={honor.recipientImage || ""}
@@ -127,15 +160,13 @@ export default function AboutUsPage() {
                     fallbackSrc="/default-placeholder.jpg"
                   />
                   <h2 className={styles.honorTitle}>{honor.recipientName}</h2>
-                  <p className={styles.honorRecipient}>
-                    <strong>{honor.title}</strong> {/* Recipient: */}
-                  </p>
+                  <p className={styles.honorRecipient}><strong>{honor.title}</strong></p>
                   <p className={styles.honorDate}>Awarded on: {honor.dateAwarded}</p>
                   <p className={styles.honorDescription}>{honor.description}</p>
                 </div>
               ))}
             </div>
-            <div className={styles.sectionDivider}></div> {/* Yellow divider */}
+            <div className={styles.sectionDivider}></div>
           </>
         )}
       </div>
