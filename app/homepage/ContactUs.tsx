@@ -30,7 +30,7 @@ const ContactUs = () => {
     setResponseMessage('');
     // Send form data to API
     try {
-      const res = await fetch('https://sltfirefoundation.org/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
