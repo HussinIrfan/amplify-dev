@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
 const mailerSend = new MailerSend({
-  apiKey: process.env.MAILERSEND_API_KEY!,
+  apiKey: process.env.API_KEY!,
 });
 
 export async function POST(req: Request) {
