@@ -3,14 +3,13 @@ import { NextResponse } from 'next/server';
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
 const mailerSend = new MailerSend({
-  apiKey: process.env.MAILERSEND_API_KEY!,
+  apiKey: "mlsn.bdd56bf0e3a5e26cf0a208de4aeb33f2b7f73d6d7c51f5ce5998107085838949",
 });
 
 export async function POST(req: Request) {
   try {
     // Get form data from request body
     const { firstName, lastName, email, phone, subject, message } = await req.json();
-    console.log("MailerSend API Key: ", process.env.MAILERSEND_API_KEY);
     // Define the sender and recipient
     const sentFrom = new Sender("support@sltfirefoundation.org", "Lance Hubbard");
     const recipients = [
