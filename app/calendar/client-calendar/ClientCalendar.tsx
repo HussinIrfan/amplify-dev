@@ -1,15 +1,12 @@
 // ClientCalendar.tsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CalendarLocal from "../CalendarLocal";
-import moment from "moment";
-import RSVPEvent, { Event } from "./RSVPEventDetails"; // Import the EventModal component
+import RSVPEvent, { Event } from "./RSVPEventDetails";
 import { Event as RBCEvent } from "react-big-calendar";
 import useCalendar from "../admin2/Calendar";
 
-
 export default function ClientCalendar() {
-
   const {
     events,
     selectedEvent,
@@ -35,14 +32,29 @@ export default function ClientCalendar() {
     handleRSVPSubmit,
     handleCloseModalBasic,
     handleRSVPEventClick,
-  } = useCalendar(); // Only use selectedEvent and isModalOpen state
+  } = useCalendar();
 
+  const [defaultView, setDefaultView] = useState<"month" | "agenda">("month");
 
+  // SSR-safe mobile detection
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isMobile = window.innerWidth <= 768;
+      setDefaultView(isMobile ? "agenda" : "month");
 
-  // Handle event selection
+      const handleResize = () => {
+        const isMobileView = window.innerWidth <= 768;
+        setDefaultView(isMobileView ? "agenda" : "month");
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   const handleEventSelect = (event: RBCEvent) => {
     setSelectedEvent(event as Event);
-    console.log('event: ', selectedEvent);
+    console.log("event: ", selectedEvent);
   };
 
   const closeModal = () => {
@@ -53,21 +65,20 @@ export default function ClientCalendar() {
     <>
       <div className="calendar-container">
         <CalendarLocal
-          views={{
-            month: true,
-            agenda: true,
-          }}
+          views={{ month: true, agenda: true }}
+          defaultView={defaultView}
           toolbar={true}
           events={mappedEvents}
-          onSelectEvent={handleEventSelect} // Open modal when event is clicked
+          onSelectEvent={handleEventSelect}
         />
 
-
-        {/* Modal to display event details */}
         {selectedEvent && (
-          <div className="calendar-internal-RSVP"
-          >
-            <RSVPEvent eventId={selectedEvent.id} event={selectedEvent} onClose={closeModal} />
+          <div className="calendar-internal-RSVP">
+            <RSVPEvent
+              eventId={selectedEvent.id}
+              event={selectedEvent}
+              onClose={closeModal}
+            />
           </div>
         )}
       </div>
