@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-
 // Assume the page with HPheader is available at this URL
 const URL_HOME = "http://localhost:3000";
 const INSTAGRAM = "https://www.instagram.com/sltfirefightersfoundation/";
