@@ -7,8 +7,12 @@ import Image from "next/image";
 import "./controlCal.css";
 import "../client-calendar/RSVPForm.css";
 import "../client-calendar/RSVPForm.css";
+import { FileUploader } from "@aws-amplify/ui-react-storage";
+import "@aws-amplify/ui-react/styles.css";
 
 const ControlCalendar: React.FC = () => {
+  const ref = React.useRef(null); // reset File Uploader
+
   const {
     attendees,
     view,
@@ -40,6 +44,12 @@ const ControlCalendar: React.FC = () => {
     selectedAttendees,
     sponsor,
     support,
+    uploadPath,
+    eventDoc,
+    eventDocUrl,
+    setEventDocUrl,
+    updatedEventDoc,
+    setEventDoc,
     setSponsor,
     setSupport,
     setSelectedAttendees,
@@ -77,11 +87,9 @@ const ControlCalendar: React.FC = () => {
     toggleCollapse,
     handleBulkDeleteAttendees,
     handleAdminSubmit,
+    handleAttendeeEmalSearch,
     exportToExcel,
   } = useCalendar(); // Use the custom hook to get the calendar logic
-
-  console.log("Wedsite site: ", attendees);
-  console.log("Wedsite Attendees list site: ", attendeesList);
 
   return (
     <>
@@ -214,6 +222,21 @@ const ControlCalendar: React.FC = () => {
                           className="popUpInputBox-Deatils"
                         />
                       </div>
+                      <div>
+                        <p />
+                        Event pdf Document Upload
+                        <FileUploader
+                          acceptedFileTypes={["application/pdf"]}
+                          path={uploadPath}
+                          maxFileCount={1}
+                          autoUpload={false}
+                          isResumable
+                          ref={ref}
+                          onUploadSuccess={(file) =>
+                            setEventDoc(file.key || "")
+                          } // Assign file name or emtpy string if none
+                        />
+                      </div>
                       {errorMessage && (
                         <p style={{ color: "red" }}>{errorMessage}</p>
                       )}
@@ -266,6 +289,15 @@ const ControlCalendar: React.FC = () => {
                       <strong className="strong-title">Details:</strong>{" "}
                       {selectedEvent.details}
                     </p>
+                    <a><strong>Current Flyer: </strong></a>
+                        <a
+                          href={`${eventDocUrl}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {"Event Flyer"}{" "}
+                          {/* Show the name of the file or a fallback message */}
+                        </a>
                     <div className="divButton">
                       <button
                         type="button"
@@ -316,7 +348,7 @@ const ControlCalendar: React.FC = () => {
                         <p>Email Search</p>
                       </div>
                       <div className="edit-Buttons-space">
-                        <button className="attendee-popup-button">
+                        <button onClick={handleAttendeeEmalSearch} className="attendee-popup-button">
                           Search
                         </button>
                         <button
@@ -328,7 +360,11 @@ const ControlCalendar: React.FC = () => {
                         <button onClick={handleRSVPEventClick}>
                           Add Attendee
                         </button>
-                        <button onClick={() => exportToExcel(attendeesList, selectedEvent.title)}>
+                        <button
+                          onClick={() =>
+                            exportToExcel(attendeesList, selectedEvent.title)
+                          }
+                        >
                           Export to Excel
                         </button>
                         <button onClick={handleCloseAttendeesModal}>
@@ -597,6 +633,34 @@ const ControlCalendar: React.FC = () => {
                           onChange={(e) => setEventDetails(e.target.value)}
                           placeholder="Details"
                           className="popUpInputBox-Deatils"
+                        />
+                      </div>
+                      <div>
+                      <a><strong>Current Flyer: </strong></a>
+                        <a
+                          href={`${eventDocUrl}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {"Event Flyer"}{" "}
+                          {/* Show the name of the file or a fallback message */}
+                        </a>
+                        <FileUploader
+                          // Only accept document type files
+                          acceptedFileTypes={["application/pdf"]}
+                          path={uploadPath}
+                          maxFileCount={1}
+                          autoUpload={false}
+                          isResumable
+                          ref={ref}
+                          onUploadSuccess={(file) => {
+                            updatedEventDoc(
+                              file.key || "",
+                              selectedEvent.eventDoc,
+                              selectedEvent.id
+                            );
+                            (ref.current as any).clearFiles();
+                          }}
                         />
                       </div>
                       {errorMessage && (

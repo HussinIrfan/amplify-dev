@@ -21,6 +21,7 @@ export function useFireStationsLogic() {
   const [stationName, setStationName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  // SLTFF-365 bug fix
   const uploadPath = "fire-stations/"; //S3 Bucket Location TODO, Change at Deployment
 
   // Function to list existing "About Us" entries

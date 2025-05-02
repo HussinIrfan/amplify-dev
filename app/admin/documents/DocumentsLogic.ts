@@ -81,7 +81,6 @@ export function useDocumentsLogic() {
   }, [uploadDoc501c3, uploadDoc990]); // Adding uploadDoc501c3 as a dependency to ensure useEffect runs after it's updated
   
 
-  //TODO: remove old file before updating new files
   const updateDoc990 = async (doc: string) => {
     try {
       const result = await client.models.documents.update({

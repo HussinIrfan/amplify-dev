@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { getItem, setItem } from "../utils/storageUtils";
 
 // Import static images
-import AboutTheFoundation from "../aboutusAssets/aboutthefoundation.png";
+import AboutTheFoundation from "../aboutusAssets/aboutthefoundation.jpg";
 
 export default function AboutUsPage() {
   const { emps } = useAboutUsLogic(); // Fetch team members
@@ -75,7 +75,7 @@ export default function AboutUsPage() {
               {emps.map((member) => (
                 <div key={member.id} className={styles.teamMember}>
                   <StorageImage
-                    path={member.picture || ""}
+                    path={member.picture || "No image"}
                     alt="Team Member Image"
                     className={styles.teamImage}
                     fallbackSrc="/default-placeholder.jpg"
@@ -128,7 +128,7 @@ export default function AboutUsPage() {
                   />
                   <h2 className={styles.honorTitle}>{honor.recipientName}</h2>
                   <p className={styles.honorRecipient}>
-                    Recipient: <strong>{honor.title}</strong>
+                    <strong>{honor.title}</strong> {/* Recipient: */}
                   </p>
                   <p className={styles.honorDate}>Awarded on: {honor.dateAwarded}</p>
                   <p className={styles.honorDescription}>{honor.description}</p>

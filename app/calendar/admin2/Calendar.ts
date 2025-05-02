@@ -9,8 +9,10 @@ import { PhoneSanitize } from "../../supportFunctions/SanitizePhoneNum";
 import { useCollapse } from "@/app/supportFunctions/ToggleCollase";
 import { Event as RBCEvent, Views } from "react-big-calendar";
 import * as XLSX from "xlsx"; //npm install xlsx
+import { remove } from "aws-amplify/storage";
+import { getUrl } from "aws-amplify/storage";
 
-import _ from "lodash"; // for binary seachability
+import _ from "lodash"; // for binary searchability
 
 Amplify.configure(outputs);
 
@@ -27,6 +29,7 @@ export interface Event {
   end: Date | null; // Allow null for end date
   title: string;
   allDay: boolean;
+  eventDoc: string | "";
 }
 
 export interface Attendee {
@@ -40,12 +43,19 @@ export interface Attendee {
   supportDetails?: string;
 }
 
+interface StorageGetUrlOutput {
+  url: string; // The URL string you need
+  // Other metadata can be here, depending on the API.
+}
+
 const useCalendar = () => {
   const { isContentCollapsed, toggleCollapse } = useCollapse();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<(typeof Views)[keyof typeof Views]>(
     Views.MONTH
   );
+
+  const uploadPath = "events/"; // S3 bucket location
 
   const [events, setEvents] = useState<Event[]>([]); // Store events fetched from the database
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
@@ -62,6 +72,8 @@ const useCalendar = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [eventId, setEventId] = useState<string | null>(null);
+  const [eventDoc, setEventDoc] = useState("");
+  const [eventDocUrl, setEventDocUrl] = useState("");
 
   const defaultPartySize = 1;
   const [rsvpFName, setRsvpFName] = useState("");
@@ -113,6 +125,7 @@ const useCalendar = () => {
             location: event.eventLocation ?? "",
             details: event.eventDetails ?? "",
             allDay: event.allday ?? false,
+            eventDoc: event.eventDoc ?? "",
             id: event.id, //Hidden Database ID for editing events
           };
         });
@@ -126,26 +139,77 @@ const useCalendar = () => {
   }, []);
 
   function listedAttendees() {
+    // Clear the current list before fetching new data
+    setAttendeesList([]);
+  
     const query = attendeeSearchQuery
       ? { filter: { email: { eq: attendeeSearchQuery } } }
       : {};
-
-    client.models.Attendee.observeQuery(query).subscribe({
-      next: (data) => setAttendees([...data.items]),
-      error: (err) => console.error(err),
-    });
+  
+    client.models.Attendee.list(query)
+      .then(async ({ data }) => {
+        if (!data || data.length === 0) {
+          return; // No attendees found, list is already cleared
+        }
+  
+        const attendeeIds = data.map((attendee) => attendee.id);
+  
+        // Optional: if selectedEvent is available and you want to scope sponsors to this event
+        const sponsorFilter = selectedEvent?.id
+          ? {
+              and: [
+                { eventId: { eq: selectedEvent.id } },
+                {
+                  or: attendeeIds.map((id) => ({ attendeeId: { eq: id } })),
+                },
+              ],
+            }
+          : {
+              or: attendeeIds.map((id) => ({ attendeeId: { eq: id } })),
+            };
+  
+        const { data: sponsors } = await client.models.EventSponsors.list({
+          filter: sponsorFilter,
+        });
+  
+        const sponsorInfo = sponsors?.reduce((acc, sponsor) => {
+          acc[sponsor.attendeeId] = sponsor;
+          return acc;
+        }, {} as Record<string, any>);
+  
+        const attendeesWithSponsorInfo = data.map((attendee) => {
+          const sponsorDetails = sponsorInfo[attendee.id];
+          return {
+            ...attendee,
+            isSponsor: !!sponsorDetails,
+            supportDetails: sponsorDetails?.supportDetails ?? "",
+          };
+        });
+  
+        const transformed = transformAttendeesData(attendeesWithSponsorInfo);
+        setAttendeesList(transformed);
+      })
+      .catch((err) => {
+        console.error("Error fetching attendees by email:", err);
+      });
   }
+
+  // TODO: fetchEventAttendees function for listed attendees
+  const handleAttendeeEmalSearch = () => {
+    listedAttendees();
+    setAttendeesSearchQuery("");
+  };
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     // Check if the event title is empty
     if (!eventTitle.trim()) {
       setErrorMessage("Event title cannot be empty.");
       return;
     }
-
+  
     // If start or end time are empty, set them to null
     const startDateTime =
       eventStartDate && eventStartTime
@@ -155,41 +219,50 @@ const useCalendar = () => {
       eventEndDate && eventEndTime
         ? moment(eventEndDate + " " + eventEndTime, dateTimeFormat)
         : null;
-
+  
     // Validate time logic only if both are provided
     if (startDateTime && endDateTime && endDateTime.isBefore(startDateTime)) {
       setErrorMessage("End date/time cannot be before start date/time.");
       return;
     }
-
+  
+    // Format times to HH:mm (24-hour) to ensure compatibility
+    const formattedStartTime = eventStartTime
+      ? moment(eventStartTime, ["h:mm A"]).format("HH:mm")
+      : null;
+  
+    const formattedEndTime = eventEndTime
+      ? moment(eventEndTime, ["h:mm A"]).format("HH:mm")
+      : null;
+  
     // Sanitize Inputs
     setEventTitle(sanitizeInput(eventTitle));
     setEventLocation(sanitizeInput(eventLocation));
     setEventDetails(sanitizeInput(eventDetails));
-
+  
     try {
       if (isEditMode) {
+  
         // Ensure eventId is not null
         if (!eventId) {
           setErrorMessage("Event ID is missing. Cannot update event.");
           return;
         }
-
+  
         // Proceed with the update
-        console.log("Edit mode: ", isEditMode);
-        console.log("Updating event with ID:", eventId);
-        await client.models.Event.update({
-          id: eventId, // Use the eventId here
-          eventTitle: eventTitle,
-          eventStartDate: eventStartDate,
-          eventEndDate: eventEndDate,
-          eventStartTime: eventStartTime || null, // Allow null if no time provided
-          eventEndTime: eventEndTime || null, // Allow null if no time provided
-          eventLocation: eventLocation,
-          eventDetails: eventDetails,
-          allday: allday,
+        const updateReply = await client.models.Event.update({
+          id: eventId,
+          eventTitle,
+          eventStartDate,
+          eventEndDate,
+          eventStartTime: formattedStartTime || null,
+          eventEndTime: formattedEndTime || null,
+          eventLocation,
+          eventDetails,
+          eventDoc: eventDoc || null,
+          allday,
         });
-
+  
         console.log("Updated Event");
       } else {
         // Create a new event if not in edit mode
@@ -197,17 +270,18 @@ const useCalendar = () => {
           eventTitle,
           eventStartDate,
           eventEndDate,
-          eventStartTime: eventStartTime || null, // Allow null if no time provided
-          eventEndTime: eventEndTime || null, // Allow null if no time provided
+          eventStartTime: formattedStartTime,
+          eventEndTime: formattedEndTime,
           eventLocation,
           eventDetails,
+          eventDoc: eventDoc || null,
           allday,
         });
       }
-
+  
       // Fetch updated events using the newly created function
       const updatedEvents = await fetchUpdatedEvents();
-
+  
       setEvents(updatedEvents);
       resetFormFields();
       setIsModalOpen(false);
@@ -240,11 +314,35 @@ const useCalendar = () => {
         location: event.eventLocation ?? "",
         details: event.eventDetails ?? "",
         allDay: event.allday ?? false,
+        eventDoc: event.eventDoc ?? "",
         id: event.id,
       };
     });
 
     return updatedEvents;
+  };
+
+  // Update Event Document
+  const updatedEventDoc = async (
+    doc: string,
+    oldDoc: string,
+    eventID: string
+  ) => {
+    try {
+      const result = await client.models.Event.update({
+        id: eventID,
+        eventDoc: doc,
+      });
+      // Only remove old file if the path exists
+      if (oldDoc) {
+        await remove({ path: oldDoc });
+      }
+
+      setEventDoc(doc);
+      return result;
+    } catch (err) {
+      console.error("Error creating document: ", err);
+    }
   };
 
   // Reset form fields to their initial state
@@ -259,6 +357,7 @@ const useCalendar = () => {
     setIsAllDay(false);
     setEventId("");
     setErrorMessage("");
+    setEventDoc("");
   };
 
   const resetRSVPFormFields = () => {
@@ -278,20 +377,40 @@ const useCalendar = () => {
     end: event.end ?? undefined, // Convert null to undefined
   }));
 
-  const handleEventSelect = (event: any) => {
-    //close and reset all feilds
-    resetSelectedEvent();
-    // If the same event is clicked again, close the modal by setting selectedEvent to null
-    if (selectedEvent && selectedEvent.title === event.title) {
-      setSelectedEvent(null); // Close the popup
-    } else {
-      getRsvpPartyInital(event.id);
-      setSelectedEvent(event); // Open the popup with the new event's details
-      try {
-      } catch (error) {
-        // Call the refactored function to fetch attendee data
+  const handleEventSelect = async (event: any) => {
+    try {
+      //close and reset all feilds
+      resetSelectedEvent();
+      // If the same event is clicked again, close the modal by setting selectedEvent to null
+      if (selectedEvent && selectedEvent.title === event.title) {
+        setSelectedEvent(null); // Close the popup
+      } else {
+        getRsvpPartyInital(event.id);
+
+        // Fetch the URL for the event document
+        let docUrl = "";
+        if (event.eventDoc) {
+          const result = await generateDocURL(event.eventDoc); // result will be of type StorageGetUrlOutput
+          docUrl = result.url.toString(); // Extract the URL from the result
+          setEventDocUrl(docUrl);
+        }
+
+        setSelectedEvent({
+          ...event,
+          docURL: docUrl,
+        }); // Open the popup with the new event's details
       }
+    } catch (error) {
+      // Call the refactored function to fetch attendee data
     }
+  };
+
+  const generateDocURL = async (doc: string) => {
+    const docUrl = await getUrl({
+      path: doc,
+      options: { expiresIn: 3600 },
+    });
+    return docUrl;
   };
 
   const resetSelectedEvent = () => {
@@ -308,6 +427,7 @@ const useCalendar = () => {
     setPartySizeTotal(0);
     setIsEditMode(false);
     setSelectedEvent(null); // Clear selected event when modal is closed
+    setEventDocUrl("");
   };
 
   const handleCloseModalBasic = () => {
@@ -332,7 +452,7 @@ const useCalendar = () => {
 
   const handleEditEventClick = () => {
     resetSelectedEvent();
-
+    
     if (selectedEvent) {
       setEventTitle(selectedEvent.title);
       setEventStartDate(moment(selectedEvent.start).format(dateFormat));
@@ -343,6 +463,7 @@ const useCalendar = () => {
       setEventDetails(selectedEvent.details);
       setIsAllDay(selectedEvent.allDay);
       setEventId(selectedEvent.id);
+      setEventDoc(selectedEvent.eventDoc);
       setIsModalOpen(true);
       setIsEditMode(true); // Set to edit mode when editing an existing event
     }
@@ -357,6 +478,14 @@ const useCalendar = () => {
         await deleteSponsorsForEventId(selectedEvent.id); // Delete sponsors first
         await deleteAttendeesForEventId(selectedEvent.id); // Delete attendees for the event
         await client.models.Event.delete({ id: selectedEvent.id }); // Now delete the event itself
+        
+        // delete S3 Bucket Item
+        if(selectedEvent.eventDoc){
+          await remove({
+            path: selectedEvent.eventDoc,
+          })
+        }
+
         handleCloseModal();
         const updatedEvents = await fetchUpdatedEvents();
         setEvents(updatedEvents);
@@ -511,29 +640,34 @@ const useCalendar = () => {
       alert("No emails selected for deletion.");
       return;
     }
-
+  
     if (
       window.confirm("Are you sure you want to delete the selected Attendees?")
     ) {
       try {
-        const attendeesToDelete = attendees.filter((attendee) =>
+        // Use attendeesList instead of stale attendees state
+        const attendeesToDelete = attendeesList.filter((attendee) =>
           selectedAttendees.has(attendee.id)
         );
-
+  
         for (const attendee of attendeesToDelete) {
-          // First, delete the attendee from the Attendee table
-          await client.models.Attendee.delete({ id: attendee.id });
-
-          // Then delete the attendee from the EventAttentants table
-          deleteEventAttendeeId(attendee.id);
-
-          // And delete the attendee from the EventSponsors table if they are a sponsor
+          // Use full object if possible
+          await client.models.Attendee.delete(attendee);
+  
+          // Remove relations
+          await deleteEventAttendeeId(attendee.id);
           await deleteSponsorFromEvent(attendee.id);
-
+  
           console.log(`Deleted attendee with ID ${attendee.id}`);
         }
-        listedAttendees();
+  
+        // Clear selection
         setSelectedAttendees(new Set());
+  
+        // Refresh the list
+        setAttendeesList([]); // Clear immediately to trigger re-render
+        await listedAttendees();
+  
       } catch (e) {
         console.error("Error deleting Attendees:", e);
       }
@@ -591,7 +725,6 @@ const useCalendar = () => {
         const filterCondition = attendeeIds.map((id) => ({ id: { eq: id } }));
 
         // Fetch attendee details based on IDs using 'or' conditions
-        console.log(attendeeIds);
         const { data: attendees } = await client.models.Attendee.list({
           filter: { or: filterCondition },
         });
@@ -704,7 +837,6 @@ const useCalendar = () => {
         const filterCondition = attendeeIds.map((id) => ({ id: { eq: id } }));
 
         // Fetch attendee details based on IDs using 'or' conditions
-        console.log(attendeeIds);
         const { data: attendees } = await client.models.Attendee.list({
           filter: { or: filterCondition },
         });
@@ -780,7 +912,6 @@ const useCalendar = () => {
         await client.models.EventAttentants.list({
           filter: { eventId: { eq: eventId } },
         });
-      console.log("event attendee: ", eventAttendants);
 
       if (eventAttendants && eventAttendants.length > 0) {
         // Extract attendee IDs from the relationships
@@ -808,21 +939,17 @@ const useCalendar = () => {
         // Map sponsor information to a dictionary based on attendeeId
         const sponsorInfo = eventSponsors?.reduce((acc, sponsor) => {
           acc[sponsor.attendeeId] = sponsor;
-          console.log("reduced sponsor list: ", acc);
           return acc;
         }, {} as Record<string, any>);
 
         // Combine attendee details with sponsor data
         const attendeesWithSponsorInfo = attendees.map((attendee) => {
-          console.log("attendee id: ", attendee.id);
-          console.log("sponsor id: ", sponsorInfo[attendee.id]);
           const sponsorDetails = sponsorInfo[attendee.id];
 
           // Safely check sponsorDetails and handle null values
           const isSponsor = sponsorDetails ? true : false;
           const supportDetails = sponsorDetails?.supportDetails ?? ""; // Use empty string if null or undefined
 
-          console.log("Sponsor details: ", supportDetails);
           return {
             ...attendee,
             isSponsor, // Set to true if sponsorDetails exist, false otherwise
@@ -833,7 +960,7 @@ const useCalendar = () => {
         // Return combined attendees data with sponsor information
         return attendeesWithSponsorInfo;
       } else {
-        console.error("No attendees found for this event.");
+        console.log("No attendees found for this event.");
         return []; // Return empty array if no attendees are found
       }
     } catch (error) {
@@ -874,7 +1001,6 @@ const useCalendar = () => {
 
   const getRsvpPartyInital = async (eventId: string) => {
     const attendees = await fetchAttendeesForEvent(eventId);
-    console.log("123 attendees getPartyInit: ", attendees);
     if (attendees.length > 0) {
       // Use the helper function to transform the attendees data
       const transformedAttendees = transformAttendeesData(attendees);
@@ -891,11 +1017,9 @@ const useCalendar = () => {
     try {
       // Call the refactored function to fetch attendee data
       const attendees = await fetchAttendeesForEvent(eventId);
-      console.log("attendees: ", attendees);
       if (attendees.length > 0) {
         // Use the helper function to transform the attendees data
         const transformedAttendees = transformAttendeesData(attendees);
-        console.log("transform: ", transformedAttendees);
         // Set state for attendees list
         setAttendeesList(transformedAttendees);
         setIsAttendeesModalOpen(true); // Open modal to display attendees
@@ -976,13 +1100,13 @@ const useCalendar = () => {
             ws[cellRef] = {}; // Create empty cell if it does not exist
           }
 
-           // Add thicker border to each cell
-        ws[cellRef].s = {
-          border: {
-            top: { style: 'medium', color: { rgb: '000000' } },
-            left: { style: 'medium', color: { rgb: '000000' } },
-            bottom: { style: 'medium', color: { rgb: '000000' } },
-            right: { style: 'medium', color: { rgb: '000000' } },
+          // Add thicker border to each cell
+          ws[cellRef].s = {
+            border: {
+              top: { style: "medium", color: { rgb: "000000" } },
+              left: { style: "medium", color: { rgb: "000000" } },
+              bottom: { style: "medium", color: { rgb: "000000" } },
+              right: { style: "medium", color: { rgb: "000000" } },
             },
           };
         }
@@ -1048,6 +1172,13 @@ const useCalendar = () => {
     selectedAttendees,
     sponsor,
     support,
+    uploadPath,
+    eventDoc,
+    eventDocUrl,
+    generateDocURL,
+    setEventDocUrl,
+    updatedEventDoc,
+    setEventDoc,
     setSponsor,
     setSupport,
     setSelectedAttendees,
@@ -1095,6 +1226,7 @@ const useCalendar = () => {
     handleAttendeeCheckboxChange,
     handleBulkDeleteAttendees,
     handleAdminSubmit,
+    handleAttendeeEmalSearch,
     toggleCollapse,
     exportToExcel,
   };

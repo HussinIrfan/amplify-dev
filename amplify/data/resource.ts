@@ -38,6 +38,7 @@ const schema = a.schema({
       eventLocation: a.string(),
       eventDetails: a.string(),
       allday: a.boolean(),
+      eventDoc: a.string(),
       attendents: a.hasMany("EventAttentants", "eventId"), // Link to attendees
       sponsors: a.hasMany("EventSponsors", "eventId"), // Link to sponsors for this event
     })

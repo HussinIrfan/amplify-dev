@@ -1,0 +1,178 @@
+# this is an auto generated file. This will be overwritten
+
+subscription OnCreateIsOpen($filter: ModelSubscriptionIsOpenFilterInput) {
+  onCreateIsOpen(filter: $filter) {
+    id
+    aboutUS
+    ourWork
+    news
+    calendar
+    donations
+    storeOpen
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateIsOpen($filter: ModelSubscriptionIsOpenFilterInput) {
+  onUpdateIsOpen(filter: $filter) {
+    id
+    aboutUS
+    ourWork
+    news
+    calendar
+    donations
+    storeOpen
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteIsOpen($filter: ModelSubscriptionIsOpenFilterInput) {
+  onDeleteIsOpen(filter: $filter) {
+    id
+    aboutUS
+    ourWork
+    news
+    calendar
+    donations
+    storeOpen
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
+  onCreateProduct(filter: $filter) {
+    id
+    name
+    description
+    basePrice
+    imageUrl
+    slug
+    variants {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateProduct($filter: ModelSubscriptionProductFilterInput) {
+  onUpdateProduct(filter: $filter) {
+    id
+    name
+    description
+    basePrice
+    imageUrl
+    slug
+    variants {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteProduct($filter: ModelSubscriptionProductFilterInput) {
+  onDeleteProduct(filter: $filter) {
+    id
+    name
+    description
+    basePrice
+    imageUrl
+    slug
+    variants {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateProductVariant(
+  $filter: ModelSubscriptionProductVariantFilterInput
+) {
+  onCreateProductVariant(filter: $filter) {
+    id
+    productId
+    size
+    quantity
+    product {
+      id
+      name
+      description
+      basePrice
+      imageUrl
+      slug
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    productVariantsId
+    __typename
+  }
+}
+
+subscription OnUpdateProductVariant(
+  $filter: ModelSubscriptionProductVariantFilterInput
+) {
+  onUpdateProductVariant(filter: $filter) {
+    id
+    productId
+    size
+    quantity
+    product {
+      id
+      name
+      description
+      basePrice
+      imageUrl
+      slug
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    productVariantsId
+    __typename
+  }
+}
+
+subscription OnDeleteProductVariant(
+  $filter: ModelSubscriptionProductVariantFilterInput
+) {
+  onDeleteProductVariant(filter: $filter) {
+    id
+    productId
+    size
+    quantity
+    product {
+      id
+      name
+      description
+      basePrice
+      imageUrl
+      slug
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    productVariantsId
+    __typename
+  }
+}
