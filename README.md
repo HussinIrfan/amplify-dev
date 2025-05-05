@@ -3,10 +3,9 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="app/navbarAssets/firelogo.png" alt="Logo" width="80" height="80">
+    <img src="app/navbarAssets/navbarBG.png" alt="Logo">
   </a>
 
-<h2 align="center">South Lake Tahoe Firefighter Foundation</h2>
 </div>
 
 
@@ -31,46 +30,86 @@
 
 * [![Next][Next.js]][Next-url]
 
-## Prototype Images
-<img src="https://github.com/user-attachments/assets/776898c8-fac0-4904-bf25-d724628f2ef1" alt="Home1" width="350" height="450">
-<img src="https://github.com/user-attachments/assets/af6c9da8-8f53-447d-8489-3c280866ab68" alt="aboutus1" width="350" height="450">
-<img src="https://github.com/user-attachments/assets/aa35673a-0dc6-4040-9851-8334272978c7" alt="donate" width="350" height="450">
-<img src="https://github.com/user-attachments/assets/1941cf1d-475d-4a17-a83b-2dfa7862be3f" alt="calendar" width="350" height="450">
-<img src="https://github.com/user-attachments/assets/d2907ae7-8c99-4232-b626-0024572c24cd" alt="contactus" width="350" height="450">
-<img src="https://github.com/user-attachments/assets/ebb42bfc-7cf4-4cfd-8913-5b3c0c3b1765" alt="store" width="350" height="450">
+## Website Images
+<img src="https://github.com/user-attachments/assets/de9ec692-47b1-41db-b380-79d3ea92fda4" alt="Home1" >
+<img src="https://github.com/user-attachments/assets/05f8b979-af50-4e2c-ab92-cc85a2cc6368" alt="aboutus1" >
+<img src="https://github.com/user-attachments/assets/4e7241e0-19c2-40ce-a753-ed9468feab1b" alt="donate" >
+<img src="https://github.com/user-attachments/assets/fcb9a28c-dcbb-46fe-84a5-ebcc81d740d1" alt="calendar" >
+<img src="https://github.com/user-attachments/assets/fb2c9832-a942-439b-890a-3d707e9679f2" alt="contactus" >
+<img src="https://github.com/user-attachments/assets/cd839335-cfde-41b8-8a4f-f3b567224453" alt="store" >
+
+<!-- Team Members -->
+## Team Members
+Team Lead:   
+Hussin Irfan, hirfan@csus.edu
+
+Members:  
+Alexander Fails, afails@csus.edu  
+Emilio Sanchez, esanchez-sanchez2@csus.edu           
+Isabella Spradling, ispradling@csus.edu  
+Anh Huynh, thuyanhhuynh@csus.edu  
+Chloe Linchangco, chloelinchangco@csus.edu  
+Armaan Randhawa, armaanrandhawa@csus.edu  
+Prabhnoor Kaur, prabhnoorkaur@csus.edu  
 
 <!-- Testing -->
 ## Testing
-placeholder for 191
-<!-- b -->
-## Deployment
-placeholder for 191
+All projects features were tested using: Playwright  
+To run tests you will need to fully setup project for running on local environment
+
+Installs:  
+```bash
+npm init playwright@latest
+```
+
+Run test with ui:
+```bash
+npx playwright test --ui
+```
 <!-- c -->
-## Developer Instructions 
-placeholder for 191
+## Developer Instructions
+
+**Packages needed to run locally:**
+
+```bash
+npm install
+```
+
+```bash
+npm install -g @aws-amplify/cli
+```
+
+```bash
+npm install react-big-calendar
+```
+
+```bash
+npm install @parcel/watcher
+```
+
+```bash
+npm install xlsx
+```
+
+```bash
+npm install mailersend
+```
+
+```bash
+npm install @paypal/checkout-server-sdk
+```
 
 
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] About Us Page
-    - [ ] Create frontend with images for staff/shifts
-    - [ ] Connect frontend to backend
-- [ ] Calendar Page
-    - [ ] Design a fully functional news calendar
-    - [ ] Enable RSVP for events
-    - [ ] Connect to database to allow admin to edit events
-- [ ] Donation Page
-    - [ ] Create frontend for easy to use donation payments
-    - [ ] Connect to Paypal API for payment processing
-    - [ ] Connect to backend to send confirmation info to client and user
-- [ ] Store Page
-    - [ ] Create frontend for fully functional store with merchandise
-    - [ ] Connect merch to backend to allow admin to edit store
-    - [ ] Create checkout and confirmation pages
 
 
 
+
+<div align="center">
+  <a href="https://github.com/github_username/repo_name">
+    <img src="app/navbarAssets/Logo-CutOut.png" alt="Logo" width="180" height = "180">
+  </a>
+
+</div>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
