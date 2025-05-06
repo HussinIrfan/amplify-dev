@@ -1,6 +1,5 @@
 import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend';
 import type { Schema } from '../../data/resource';
-import { env } from '$amplify/env/contact-email'; // Access the environment variables
 
 export const handler: Schema['sendContactEmail']['functionHandler'] = async (event) => {
   try {
@@ -16,7 +15,7 @@ export const handler: Schema['sendContactEmail']['functionHandler'] = async (eve
 
 
     const mailerSend = new MailerSend({
-        apiKey: env.MAILERSEND_API_KEY, // Use the API key retrieved from secrets
+        apiKey: 'env.MAILERSEND_API_KEY', // Use the API key retrieved from secrets
       });
 
     const sentFrom = new Sender("support@sltfirefoundation.org", "Lance Hubbard");
