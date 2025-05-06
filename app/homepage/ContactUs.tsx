@@ -53,6 +53,7 @@ const ContactUs = () => {
         subject: formData.subject,
         message: formData.message,
       })
+      setResponseMessage('Your message has been sent successfully!');
     } catch (error) {
       console.error('Error sending message:', error);
       setResponseMessage('Error sending message. Please try again.');
@@ -129,7 +130,7 @@ const ContactUs = () => {
             required
           >
             <option value="general">General Inquiry</option>
-            <option value="store_purchases">Store Purchases</option>
+            <option value="Upcoming Events">Upcoming Events</option>
             <option value="donations">Donations</option>
           </select>
         </div>
