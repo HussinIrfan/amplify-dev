@@ -1,8 +1,8 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-import { contactHandler } from '../functions/contactHandler/resource';
+import { contactHandler  } from '../functions/contactHandler/resource';
 
 const schema = a.schema({
-  sendContactEmail: a
+  contactHandler: a
   .query()
   .arguments({
     firstName: a.string(),
@@ -14,7 +14,7 @@ const schema = a.schema({
   })
   .returns(a.string()) // Returning a simple string instead of an object
   .authorization((allow) => [allow.publicApiKey()])
-  .handler(a.handler.function(contactHandler)),
+  .handler(a.handler.function(contactHandler )),
 
   isOpen: a
     .model({

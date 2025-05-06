@@ -1,7 +1,7 @@
 import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend';
 import type { Schema } from '../../data/resource';
 
-export const handler: Schema['sendContactEmail']['functionHandler'] = async (event) => {
+export const handler: Schema['contactHandler']['functionHandler'] = async (event) => {
   try {
     const { firstName, lastName, email, phone, subject, message } = event.arguments;
 
@@ -15,7 +15,7 @@ export const handler: Schema['sendContactEmail']['functionHandler'] = async (eve
 
 
     const mailerSend = new MailerSend({
-        apiKey: 'env.MAILERSEND_API_KEY', // Use the API key retrieved from secrets
+        apiKey: process.env.MAILERSEND_API_KEY as string, // Use the API key retrieved from secrets
       });
 
     const sentFrom = new Sender("support@sltfirefoundation.org", "Lance Hubbard");
