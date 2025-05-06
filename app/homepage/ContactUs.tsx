@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styles from './ContactUs.module.css';
+import { Schema } from "@/amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
 
+const client = generateClient<Schema>();  // Create a client based on your schema
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -28,29 +31,35 @@ const ContactUs = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setResponseMessage('');
-    // Send form data to API
+  
+    // Prepare the form data to send to the Lambda function
+    const requestBody = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      subject: formData.subject,
+      message: formData.message,
+    };
+  
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        setResponseMessage('Your message has been sent successfully!');
-      } else {
-        setResponseMessage(result.error || 'Something went wrong. Please try again.');
-      }
+      // Call the GraphQL mutation
+      //const response = await client.queries.sendContactEmail(requestBody);
+      client.queries.contactHandler({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+      })
     } catch (error) {
+      console.error('Error sending message:', error);
       setResponseMessage('Error sending message. Please try again.');
     }
-
+  
     setIsSubmitting(false);
   };
-
   return (
     <div className={styles.contactContainer}>
       <h2>Contact Us</h2>
