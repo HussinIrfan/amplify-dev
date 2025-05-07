@@ -6,9 +6,13 @@ import CustomNavbar from "../customNavbar/CustomNavbar";
 import Footer from "../footer/footer";
 import useDonations from "../admin/donations/DonationsLogic";
 import Link from "next/link";
+import { Schema } from "@/amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
+
+const client = generateClient<Schema>();  // Create a client based on your schema
+
 // PayPal Credentials
 const PAYPAL_CLIENT_ID = "AV6VEgDVIukeYpnclfC3XOYUdvd2Tw-pPtPdysoQx5Z_rpPIjTuIeqhQ1mXeW8cVfBJR5A9J1nCeHERA";
-const API_URL = "http://localhost:5000"; // Replace with your real backend
 
 declare global {
   interface Window {
@@ -23,9 +27,11 @@ const DonatePage = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
   const { donationOpen, setDonationOpen, toggleDonationStatus } = useDonations();
+  const [orderID, setOrderID] = useState<string | null>(null);  // Use state to hold orderID
   const DONATION_AMOUNT = 10.00;
   const feePercentage = 0.03; // For example, 3% fee
   const fixedFee = 0.30; // If you want to add a fixed fee
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -44,40 +50,30 @@ const DonatePage = () => {
   }, [isMounted, paypalLoaded]);
 
   useEffect(() => {
-    if (!paypalLoaded) return; // Only run if PayPal has been loaded
-  
+    if (!paypalLoaded) return;
+
     renderPayPalButtons(); // Re-render PayPal buttons whenever donationAmount changes
-  }, [donationAmount]); // Dependency on `donationAmount` to trigger re-render
-
-
+  }, [donationAmount]);
 
   const createOrder = async () => {
     try {
-      console.log("ammount:", donationAmount)
-      const response = await fetch(`${API_URL}/api/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ totalAmount: parseFloat(donationAmount.toString()), currency: "USD" }),
-      });
-
-      if (!response.ok) throw new Error("Failed to create order");
-      const orderData = await response.json();
-      return orderData.id;
+      // Call the Lambda function to create the donation order
+      const response = client.queries.paypalHandlerCreate({totalAmount: parseFloat(donationAmount.toString()), currency: 'USD'});
+      const id = response; 
+      setOrderID(String(id));
     } catch (error) {
       console.error("Error creating donation order:", error);
       alert("Failed to start the donation process.");
     }
+    
   };
 
   const captureOrder = async (orderID: string) => {
     try {
-      const response = await fetch(`${API_URL}/api/orders/${orderID}/capture`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      // Call the Lambda function to capture the donation
+      const response = client.queries.paypalHandlerCapture({orderId: orderID});
 
-      const orderData = await response.json();
-      if (orderData.success) {
+      if (String(response) == "success") {
         alert(`Thank you for your donation!`);
       } else {
         alert("Donation payment failed.");
@@ -112,6 +108,7 @@ const DonatePage = () => {
         .render(paypalContainerRef.current);
     }
   };
+
   const updateDonationAmount = (amount: number, coverFee: boolean) => {
     let newAmount = amount;
     if (coverFee) {
@@ -119,47 +116,47 @@ const DonatePage = () => {
     }
     return parseFloat(newAmount.toFixed(2)); // Convert back to number after rounding
   };
+
   useEffect(() => {
-    // Update the donation amount when the checkbox is checked/unchecked
     setDonationAmount(updateDonationAmount(donationAmount, coverFee));
   }, [coverFee]); // Run whenever the checkbox state changes
+
   return (
-    
     <div className={styles.donationPage}>
-     {donationOpen ? (
-      <>
-      <CustomNavbar />
-      <section className={styles.hero}>
-        <h1 className={styles.heroText}>South Lake Tahoe Firefighter's Foundation</h1>
-        <h2 className={styles.heroSubText}>Your support helps provide vital resources</h2>
+      {donationOpen ? (
+        <>
+          <CustomNavbar />
+          <section className={styles.hero}>
+            <h1 className={styles.heroText}>South Lake Tahoe Firefighter's Foundation</h1>
+            <h2 className={styles.heroSubText}>Your support helps provide vital resources</h2>
 
-        <div className={styles.donationOptionsBox}>
-          <h2>Donate Now</h2>
-          <p>Enter an amount</p>
+            <div className={styles.donationOptionsBox}>
+              <h2>Donate Now</h2>
+              <p>Enter an amount</p>
 
-          <input
-            type="number"
-            className={styles.donationInput}
-            placeholder="$"
-            value={donationAmount}
-            onChange={(e) =>
-              setDonationAmount(isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value))
-            }
-          />
-          <div className={styles.checkboxContainer}>
-            <input
-              type="checkbox"
-              id="coverFee"
-              checked={coverFee}
-              onChange={(e) => setCoverFee(e.target.checked)} // Update state on change
-            />
-            <label htmlFor="coverFee">Would you like to cover the PayPal transaction fee?</label>
-          </div>
-          <div ref={paypalContainerRef} id="paypal-button-container"></div>
-        </div>
-      </section>
-      <Footer />
-      </>
+              <input
+                type="number"
+                className={styles.donationInput}
+                placeholder="$"
+                value={donationAmount}
+                onChange={(e) =>
+                  setDonationAmount(isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value))
+                }
+              />
+              <div className={styles.checkboxContainer}>
+                <input
+                  type="checkbox"
+                  id="coverFee"
+                  checked={coverFee}
+                  onChange={(e) => setCoverFee(e.target.checked)} // Update state on change
+                />
+                <label htmlFor="coverFee">Would you like to cover the PayPal transaction fee?</label>
+              </div>
+              <div ref={paypalContainerRef} id="paypal-button-container"></div>
+            </div>
+          </section>
+          <Footer />
+        </>
       ) : (
         <>
           <div className="store-closed-container">
@@ -171,8 +168,8 @@ const DonatePage = () => {
           </div>
         </>
       )}
-      
     </div>
   );
 };
+
 export default DonatePage;
