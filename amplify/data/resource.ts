@@ -1,5 +1,7 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { contactHandler  } from '../functions/contactHandler/resource';
+import { paypalHandlerCreate } from "../functions/papypalHandlerCreate/resource";
+import { paypalHandlerCapture } from "../functions/paypalHandlerCapture/resource";
 
 const schema = a.schema({
   contactHandler: a
@@ -15,6 +17,25 @@ const schema = a.schema({
   .returns(a.string()) // Returning a simple string instead of an object
   .authorization((allow) => [allow.publicApiKey()])
   .handler(a.handler.function(contactHandler )),
+
+  paypalHandlerCreate: a
+  .query()
+  .arguments({
+    totalAmount: a.integer(), // Total donation amount
+    currency: a.string(), // Currency (optional, default can be USD)
+  })
+  .returns(a.string()) // PayPal order response object
+  .authorization((allow) => [allow.publicApiKey()]) // Public API key authorization
+  .handler(a.handler.function(paypalHandlerCreate)),
+
+  paypalHandlerCapture: a
+  .query()
+  .arguments({
+    orderId: a.string(), // PayPal order ID to capture the payment
+  })
+  .returns(a.string()) // Response from PayPal (success or failure message)
+  .authorization((allow) => [allow.publicApiKey()]) // Public API key authorization
+  .handler(a.handler.function(paypalHandlerCapture)),
 
   isOpen: a
     .model({
