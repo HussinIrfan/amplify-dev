@@ -37,6 +37,10 @@ const DonatePage = () => {
   }, []);
 
   useEffect(() => {
+    console.log('Updated orderID:', orderID);  // Logs whenever orderID changes
+  }, [orderID]);  // Trigger useEffect whenever orderID changes
+  
+  useEffect(() => {
     if (!isMounted || paypalLoaded) return;
 
     const script = document.createElement('script');
@@ -58,9 +62,13 @@ const DonatePage = () => {
   const createOrder = async () => {
     try {
       // Call the Lambda function to create the donation order
-      const response = client.queries.paypalHandlerCreate({totalAmount: parseFloat(donationAmount.toString()), currency: 'USD'});
-      const id = response; 
-      setOrderID(String(id));
+      const response = await client.queries.paypalHandlerCreate({totalAmount: parseFloat(donationAmount.toString()), currency: 'USD'});
+      const id = response.data; 
+      //console.log("id:");
+      //console.log(id);
+      //setOrderID(id);
+      //console.log(orderID);
+      return response.data;
     } catch (error) {
       console.error("Error creating donation order:", error);
       alert("Failed to start the donation process.");
@@ -98,7 +106,8 @@ const DonatePage = () => {
           },
           createOrder,
           onApprove: async (data: { orderID: string }) => {
-            await captureOrder(data.orderID);
+            //console.log("data:", data.orderID);
+            await captureOrder(String(orderID));
           },
           onError: (err: unknown) => {
             console.error('PayPal Donation Error:', err);
